@@ -1,5 +1,6 @@
 {
   "name": "accounting",
+  "homepage": "https://iianjun.github.io/accounting_front/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
