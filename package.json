@@ -1,6 +1,6 @@
 {
   "name": "accounting",
-  "homepage": "https://iianjun.github.io/accounting_front/",
+  "homepage": "https://iianjun.github.io/walley/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
