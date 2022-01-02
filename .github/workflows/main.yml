@@ -1,9 +1,6 @@
 name: Build & Deploy & Lighthouse
-on:
-  push:
-    branch: master
-  pull_request:
-    branch: master
+on: [push]
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
