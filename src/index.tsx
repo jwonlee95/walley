@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { LandingPage, LoginPage, SignUpPage } from "pages";
+import { AboutPage, LandingPage, LoginPage, SignUpPage } from "pages";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -11,6 +11,7 @@ ReactDOM.render(
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/about" element={<AboutPage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
