@@ -9,7 +9,7 @@ export const NavBar: React.FC = () => {
       <Link to="/signup">
         <button>Sign Up</button>
       </Link>
-      <Link to="about">
+      <Link to="/about">
         <button>About Us</button>
       </Link>
     </>

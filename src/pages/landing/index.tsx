@@ -1,6 +1,6 @@
 import React from "react";
 import { NavBar } from "components";
-export const LandingPage: React.FC = () => {
+export const LandingPage = () => {
   return (
     <div>
       <NavBar />

@@ -1,4 +1,10 @@
 import React from "react";
+import { NavBar } from "components/navbar";
 export const SignUpPage: React.FC = () => {
-  return <div>This is Sign up page</div>;
+  return (
+    <div>
+      <NavBar />
+      This is Sign up page
+    </div>
+  );
 };
