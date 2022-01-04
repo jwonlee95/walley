@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.js": "/walley/static/js/main.9bd70fe7.js",
+    "main.js": "/walley/static/js/main.ea52c695.js",
     "static/js/787.6e463f98.chunk.js": "/walley/static/js/787.6e463f98.chunk.js",
     "index.html": "/walley/index.html",
-    "main.9bd70fe7.js.map": "/walley/static/js/main.9bd70fe7.js.map",
+    "main.ea52c695.js.map": "/walley/static/js/main.ea52c695.js.map",
     "787.6e463f98.chunk.js.map": "/walley/static/js/787.6e463f98.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.9bd70fe7.js"
+    "static/js/main.ea52c695.js"
   ]
 }
