@@ -10,7 +10,7 @@ import HomePage from "pages/home";
 
 const routes: IRoute[] = [
     {
-        path: '/',
+        path: '/home',
         exact: true,
         component: HomePage,
         name: 'Home Page',

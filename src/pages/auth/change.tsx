@@ -29,7 +29,7 @@ const ChangePasswordPage: React.FunctionComponent<IPageProps> = props => {
         auth.currentUser?.updatePassword(password)
         .then(() => {
             logging.info('Password change successful.');
-            history.push('/');
+            history.push('/home');
         })
         .catch(error => {
             logging.error(error);
@@ -39,7 +39,7 @@ const ChangePasswordPage: React.FunctionComponent<IPageProps> = props => {
     }
 
     if (auth.currentUser?.providerData[0]?.providerId !== 'password')
-        return <Redirect to="/" />;
+        return <Redirect to="/home" />;
 
     return (
         <AuthContainer header="Change Password">

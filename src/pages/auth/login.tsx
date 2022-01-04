@@ -24,7 +24,7 @@ const LoginPage: React.FunctionComponent<IPageProps> = props => {
         auth.signInWithEmailAndPassword(email, password)
         .then(result => {
             logging.info(result);
-            history.push('/');
+            history.push('/home');
         })
         .catch(error => {
             logging.error(error);
@@ -41,7 +41,7 @@ const LoginPage: React.FunctionComponent<IPageProps> = props => {
         SignInWithSocialMedia(provider)
         .then(result => {
             logging.info(result);
-            history.push('/');
+            history.push('/home');
         })
         .catch(error => {
             logging.error(error);
