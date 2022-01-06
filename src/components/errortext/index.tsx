@@ -1,6 +1,6 @@
 import React from "react";
 
-export interface IErrorTextProps {
+interface IErrorTextProps {
   error: string;
 }
 
