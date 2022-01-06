@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
-// import { AuthRoute } from "components";
+import { AuthRoute } from "components";
 import { auth } from "config/firebase";
 import logging from "config/logging";
 import routes from "config/routes";
@@ -36,9 +36,9 @@ const Application: React.FunctionComponent<IApplicationProps> = (props) => {
             render={(routeProps: RouteComponentProps<any>) => {
               if (route.protected)
                 return (
-                  // <AuthRoute>
-                  <route.component {...routeProps} />
-                  // </AuthRoute>
+                  <AuthRoute>
+                    <route.component {...routeProps} />
+                  </AuthRoute>
                 );
 
               return <route.component {...routeProps} />;
