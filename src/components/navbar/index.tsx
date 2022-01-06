@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
-import "styles/styles.scss";
+// import "styles/styles.scss";
 import Logo from "assets/logo.png";
 import { Stack, Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";

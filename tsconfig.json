@@ -26,7 +26,7 @@
       "config/*": ["config/*"],
       "interfaces/*": ["interfaces/*"],
       "auth/*": ["auth/*"],
-      "styles/*": ["styles/*"],
+
       "assets/*": ["assets/*"]
       
     },

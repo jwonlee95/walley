@@ -2,7 +2,7 @@ name: Build & Deploy & Lighthouse
 on: [push]
 
 jobs:
-  build-and-deploy:
+  build & deploy & audit:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
@@ -17,9 +17,6 @@ jobs:
         with:
           branch: gh-pages
           folder: build
-  audit:
-    runs-on: ubuntu-latest
-    steps:
       - name: Audit live URL
         uses: jakejarvis/lighthouse-action@master
         with:
