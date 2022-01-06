@@ -5,7 +5,7 @@ import logging from "config/logging";
 
 export interface IAuthRouteProps {}
 
-export const AuthRoute: React.FunctionComponent<IAuthRouteProps> = (props) => {
+export const AuthRoute: React.FC<IAuthRouteProps> = (props) => {
   const { children } = props;
 
   if (!auth.currentUser) {
