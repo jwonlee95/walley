@@ -1,3 +1,4 @@
+@import "./navbar.scss";
 // Raleway
 // Font-weight 400, 500, 600, 700, 800 available
 // To see more: https://fonts.google.com/specimen/Raleway
@@ -8,9 +9,11 @@
 // To see more: https://fonts.google.com/specimen/Inter
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Raleway:wght@400;500;600;700;800&display=swap");
 // Font
+
 $head-fontSize: 40px;
 $font-size: 16px;
-$family-font: "Inter", -apple-system, sans-serif;
+$raleway: "Raleway", sans-serif;
+$inter: "Inter", -apple-system, sans-serif;
 
 // Colors
 $theme-color: #83b0f3;
