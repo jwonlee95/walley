@@ -22,7 +22,11 @@
     "jsx": "react-jsx",
     "paths": {
       "components/*":["components/*"], 
-      "page/*" : ["pages/*"]
+      "page/*" : ["pages/*"],
+      "config/*": ["config/*"],
+      "interfaces/*": ["interfaces/*"],
+      "auth/*": ["auth/*"]
+      
     },
   },
   "include": [
