@@ -1,10 +1,9 @@
 import React from "react";
-import { NavBar } from "components";
+import { AppWrapper } from "components";
 export const LandingPage = () => {
   return (
-    <div>
-      <NavBar />
-      This is homepage
-    </div>
+    <AppWrapper>
+      <div className="test-para">This is LandingPage</div>
+    </AppWrapper>
   );
 };

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
+    "baseUrl": "./src",
     "target": "es5",
     "lib": [
       "dom",
@@ -26,7 +26,6 @@
       "config/*": ["config/*"],
       "interfaces/*": ["interfaces/*"],
       "auth/*": ["auth/*"],
-      "styles/*": ["styles/*"],
       "assets/*": ["assets/*"]
       
     },

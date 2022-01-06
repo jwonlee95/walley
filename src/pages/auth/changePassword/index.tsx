@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 
-import { AuthContainer, ErrorText } from "components";
+import { ErrorText, AppWrapper } from "components";
 import { auth } from "config/firebase";
 import logging from "config/logging";
 import IPageProps from "interfaces/page";
@@ -44,7 +44,8 @@ export const ChangePasswordPage: React.FunctionComponent<IPageProps> = (
     return <Redirect to="/home" />;
 
   return (
-    <AuthContainer header="Change Password">
+    <AppWrapper>
+      <div>Change Password</div>
       <form>
         <input
           autoComplete="new-password"
@@ -86,6 +87,6 @@ export const ChangePasswordPage: React.FunctionComponent<IPageProps> = (
         Change Password
       </button>
       <ErrorText error={error} />
-    </AuthContainer>
+    </AppWrapper>
   );
 };
