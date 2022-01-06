@@ -1,5 +1,5 @@
 import React from "react";
-// import "styles/styles.scss";
+import "styles/styles.scss";
 import { AppWrapper } from "components";
 export const AccountPage: React.FC<{}> = () => {
   return (
