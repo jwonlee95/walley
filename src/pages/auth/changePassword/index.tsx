@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 
-import { ErrorText, AppWrapper } from "components";
+import { AppWrapper } from "components";
 import { auth } from "config/firebase";
 import logging from "config/logging";
 import IPageProps from "interfaces/page";
@@ -86,7 +86,7 @@ export const ChangePasswordPage: React.FunctionComponent<IPageProps> = (
       >
         Change Password
       </button>
-      <ErrorText error={error} />
+      {/* <ErrorText error={error} /> */}
     </AppWrapper>
   );
 };

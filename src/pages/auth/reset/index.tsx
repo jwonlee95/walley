@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { RouteComponentProps, useHistory } from "react-router-dom";
-import { ErrorText, AppWrapper } from "components";
+import { AppWrapper } from "components";
 import CircularProgress from "@mui/material/CircularProgress";
 import { auth } from "config/firebase";
 import logging from "config/logging";
@@ -124,7 +124,7 @@ export const ResetPasswordPage: React.FunctionComponent<
               >
                 Reset Password
               </button>
-              <ErrorText error={error} />
+              {/* <ErrorText error={error} /> */}
             </>
           ) : (
             <p>Invalid link.</p>

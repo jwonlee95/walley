@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { ErrorText, AppWrapper } from "components";
+import { AppWrapper } from "components";
 import { auth } from "config/firebase";
 import logging from "config/logging";
 import IPageProps from "interfaces/page";
@@ -57,7 +57,7 @@ export const ForgotPasswordPage: React.FunctionComponent<IPageProps> = (
           >
             Send Reset Link
           </button>
-          <ErrorText error={error} />
+          {/* <ErrorText error={error} /> */}
         </>
       )}
     </AppWrapper>
