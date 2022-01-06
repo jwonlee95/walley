@@ -1,18 +1,31 @@
 name: Build & Deploy & Lighthouse
 on: [push]
 
-build & deploy & audit:
-  runs-on: ubuntu-latest
-  steps:
-    - name: Checkout 🛎️
-      uses: actions/checkout@v2.4.0
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2.4.0
 
-    - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
-      run: |
-        npm ci
-        npm run build
-    - name: Deploy to GitHub Pages 🚀
-      uses: JamesIves/github-pages-deploy-action@4.1.9
-      with:
-        branch: gh-pages
-        folder: build
+      - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
+        run: |
+          npm ci
+          npm run build
+      - name: Deploy to GitHub Pages 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.9
+        with:
+          branch: gh-pages
+          folder: build
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Audit live URL
+        uses: jakejarvis/lighthouse-action@master
+        with:
+          url: "https://iianjun.github.io/walley/"
+      - name: Upload results as an artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: report
+          path: "./report "
