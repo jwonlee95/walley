@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 
-import { AuthContainer, ErrorText, AppWrapper } from "components";
+import { ErrorText, AppWrapper } from "components";
 import { auth } from "config/firebase";
 import logging from "config/logging";
 import IPageProps from "interfaces/page";
@@ -45,49 +45,48 @@ export const ChangePasswordPage: React.FunctionComponent<IPageProps> = (
 
   return (
     <AppWrapper>
-      <AuthContainer header="Change Password">
-        <form>
-          <input
-            autoComplete="new-password"
-            type="password"
-            name="oldPassword"
-            id="oldPassword"
-            placeholder="Current Password"
-            onChange={(event) => setOld(event.target.value)}
-            value={old}
-          />
-        </form>
-        <form>
-          <input
-            autoComplete="new-password"
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Enter Password"
-            onChange={(event) => setPassword(event.target.value)}
-            value={password}
-          />
-        </form>
-        <form>
-          <input
-            autoComplete="new-password"
-            type="password"
-            name="confirm"
-            id="confirm"
-            placeholder="Confirm Password"
-            onChange={(event) => setConfirm(event.target.value)}
-            value={confirm}
-          />
-        </form>
-        <button
-          disabled={changing}
-          color="success"
-          onClick={() => passwordChangeRequest()}
-        >
-          Change Password
-        </button>
-        <ErrorText error={error} />
-      </AuthContainer>
+      <div>Change Password</div>
+      <form>
+        <input
+          autoComplete="new-password"
+          type="password"
+          name="oldPassword"
+          id="oldPassword"
+          placeholder="Current Password"
+          onChange={(event) => setOld(event.target.value)}
+          value={old}
+        />
+      </form>
+      <form>
+        <input
+          autoComplete="new-password"
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Enter Password"
+          onChange={(event) => setPassword(event.target.value)}
+          value={password}
+        />
+      </form>
+      <form>
+        <input
+          autoComplete="new-password"
+          type="password"
+          name="confirm"
+          id="confirm"
+          placeholder="Confirm Password"
+          onChange={(event) => setConfirm(event.target.value)}
+          value={confirm}
+        />
+      </form>
+      <button
+        disabled={changing}
+        color="success"
+        onClick={() => passwordChangeRequest()}
+      >
+        Change Password
+      </button>
+      <ErrorText error={error} />
     </AppWrapper>
   );
 };

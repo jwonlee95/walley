@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { AuthContainer, ErrorText, AppWrapper } from "components";
+import { ErrorText, AppWrapper } from "components";
 import { auth } from "config/firebase";
 import logging from "config/logging";
 import IPageProps from "interfaces/page";
@@ -34,33 +34,32 @@ export const ForgotPasswordPage: React.FunctionComponent<IPageProps> = (
 
   return (
     <AppWrapper>
-      <AuthContainer header="Send Password Reset">
-        {sent ? (
-          <p>A link has been sent to your email with instructions.</p>
-        ) : (
-          <>
-            <p>Please enter your email.</p>
-            <form>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                placeholder="Email Address"
-                onChange={(event) => setEmail(event.target.value)}
-                value={email}
-              />
-            </form>
-            <button
-              disabled={sending}
-              color="success"
-              onClick={() => resetPasswordRequest()}
-            >
-              Send Reset Link
-            </button>
-            <ErrorText error={error} />
-          </>
-        )}
-      </AuthContainer>
+      <div>Send Password Reset</div>
+      {sent ? (
+        <p>A link has been sent to your email with instructions.</p>
+      ) : (
+        <>
+          <p>Please enter your email.</p>
+          <form>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Email Address"
+              onChange={(event) => setEmail(event.target.value)}
+              value={email}
+            />
+          </form>
+          <button
+            disabled={sending}
+            color="success"
+            onClick={() => resetPasswordRequest()}
+          >
+            Send Reset Link
+          </button>
+          <ErrorText error={error} />
+        </>
+      )}
     </AppWrapper>
   );
 };
