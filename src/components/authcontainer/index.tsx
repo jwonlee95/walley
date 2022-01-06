@@ -1,7 +1,8 @@
 import React from "react";
 
 export interface IAuthContainerProps {
-  header: any;
+  header?: any;
+  children?: any;
 }
 export const AuthContainer: React.FunctionComponent<IAuthContainerProps> = (
   props
