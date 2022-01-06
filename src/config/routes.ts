@@ -1,4 +1,3 @@
-import { LandingPage } from "pages/landing";
 import IRoute from "interfaces/route";
 import {
   ChangePasswordPage,
@@ -8,6 +7,10 @@ import {
   RegisterPage,
   ResetPasswordPage,
   HomePage,
+  SignUpPage,
+  AccountPage,
+  LandingPage,
+  AboutPage,
 } from "pages";
 
 const routes: IRoute[] = [
@@ -65,6 +68,27 @@ const routes: IRoute[] = [
     exact: true,
     component: LandingPage,
     name: "Landing Page",
+    protected: false,
+  },
+  {
+    path: "/signup",
+    exact: true,
+    component: SignUpPage,
+    name: "Sign Up Page",
+    protected: false,
+  },
+  {
+    path: "/account",
+    exact: true,
+    component: AccountPage,
+    name: "Account Page",
+    protected: false,
+  },
+  {
+    path: "/about",
+    exact: true,
+    component: AboutPage,
+    name: "About Page",
     protected: false,
   },
 ];

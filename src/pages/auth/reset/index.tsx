@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { RouteComponentProps, useHistory } from "react-router-dom";
-import { AuthContainer, ErrorText } from "components";
+import { AuthContainer, ErrorText, AppWrapper } from "components";
 import CircularProgress from "@mui/material/CircularProgress";
 import { auth } from "config/firebase";
 import logging from "config/logging";
@@ -84,51 +84,53 @@ export const ResetPasswordPage: React.FunctionComponent<
   };
 
   return (
-    <AuthContainer header="Reset Password">
-      {verifying ? (
-        // add Spinner
-        <CircularProgress color="inherit" />
-      ) : (
-        <>
-          {verified ? (
-            <>
-              <p>Please enter a strong password.</p>
-              <form>
-                <input
-                  autoComplete="new-password"
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="Enter Password"
-                  onChange={(event) => setPassword(event.target.value)}
-                  value={password}
-                />
-              </form>
-              <form>
-                <input
-                  autoComplete="new-password"
-                  type="password"
-                  name="confirm"
-                  id="confirm"
-                  placeholder="Confirm Password"
-                  onChange={(event) => setConfirm(event.target.value)}
-                  value={confirm}
-                />
-              </form>
-              <button
-                disabled={changing}
-                color="success"
-                onClick={() => passwordResetRequest()}
-              >
-                Reset Password
-              </button>
-              <ErrorText error={error} />
-            </>
-          ) : (
-            <p>Invalid link.</p>
-          )}
-        </>
-      )}
-    </AuthContainer>
+    <AppWrapper>
+      <AuthContainer header="Reset Password">
+        {verifying ? (
+          // add Spinner
+          <CircularProgress color="inherit" />
+        ) : (
+          <>
+            {verified ? (
+              <>
+                <p>Please enter a strong password.</p>
+                <form>
+                  <input
+                    autoComplete="new-password"
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="Enter Password"
+                    onChange={(event) => setPassword(event.target.value)}
+                    value={password}
+                  />
+                </form>
+                <form>
+                  <input
+                    autoComplete="new-password"
+                    type="password"
+                    name="confirm"
+                    id="confirm"
+                    placeholder="Confirm Password"
+                    onChange={(event) => setConfirm(event.target.value)}
+                    value={confirm}
+                  />
+                </form>
+                <button
+                  disabled={changing}
+                  color="success"
+                  onClick={() => passwordResetRequest()}
+                >
+                  Reset Password
+                </button>
+                <ErrorText error={error} />
+              </>
+            ) : (
+              <p>Invalid link.</p>
+            )}
+          </>
+        )}
+      </AuthContainer>
+    </AppWrapper>
   );
 };

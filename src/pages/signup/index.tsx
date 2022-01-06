@@ -1,10 +1,9 @@
 import React from "react";
-import { NavBar } from "components/navbar";
+import { AppWrapper } from "components";
 export const SignUpPage: React.FC = () => {
   return (
-    <div>
-      <NavBar />
-      This is Sign up page
-    </div>
+    <AppWrapper>
+      <div className="test-para">This is Sign up page</div>
+    </AppWrapper>
   );
 };

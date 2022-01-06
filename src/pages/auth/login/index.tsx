@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 
-import { AuthContainer, ErrorText } from "components";
+import { AuthContainer, ErrorText, AppWrapper } from "components";
 import { auth, Providers } from "config/firebase";
 import logging from "config/logging";
 import IPageProps from "interfaces/page";
@@ -52,59 +52,61 @@ export const LoginPage: React.FunctionComponent<IPageProps> = (props) => {
   };
 
   return (
-    <AuthContainer header="Login">
-      <form>
-        <input
-          type="email"
-          name="email"
-          id="email"
-          placeholder="Email Address"
-          onChange={(event) => setEmail(event.target.value)}
-          value={email}
-        />
-      </form>
-      <form>
-        <input
-          autoComplete="new-password"
-          type="password"
-          name="password"
-          id="password"
-          placeholder="Enter Password"
-          onChange={(event) => setPassword(event.target.value)}
-          value={password}
-        />
-      </form>
-      <button
-        disabled={authenticating}
-        color="success"
-        onClick={() => signInWithEmailAndPassword()}
-      >
-        Login
-      </button>
-      <small>
-        <p className="m-1 text-center">
-          Don't have an account? <Link to="/register">Register here.</Link>
-        </p>
-        <p className="m-1 text-center">
-          <Link to="/forget">Forget your password?</Link>
-        </p>
-      </small>
-      <ErrorText error={error} />
-      <hr className="bg-info m-3" />
-      <button
-        disabled={authenticating}
-        onClick={() => signInWithSocialMedia(Providers.google)}
-        style={{ backgroundColor: "#ea4335", borderColor: "#ea4335" }}
-      >
-        <i className="fab fa-google mr-2"></i> Sign in with Google
-      </button>
-      <button
-        disabled={authenticating}
-        onClick={() => signInWithSocialMedia(Providers.apple)}
-        style={{ backgroundColor: "#ea4335", borderColor: "#ea4335" }}
-      >
-        <i className="fab fa-google mr-2"></i> Sign in with Apple
-      </button>
-    </AuthContainer>
+    <AppWrapper>
+      <AuthContainer header="Login">
+        <form>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            placeholder="Email Address"
+            onChange={(event) => setEmail(event.target.value)}
+            value={email}
+          />
+        </form>
+        <form>
+          <input
+            autoComplete="new-password"
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Enter Password"
+            onChange={(event) => setPassword(event.target.value)}
+            value={password}
+          />
+        </form>
+        <button
+          disabled={authenticating}
+          color="success"
+          onClick={() => signInWithEmailAndPassword()}
+        >
+          Login
+        </button>
+        <small>
+          <p className="m-1 text-center">
+            Don't have an account? <Link to="/register">Register here.</Link>
+          </p>
+          <p className="m-1 text-center">
+            <Link to="/forget">Forget your password?</Link>
+          </p>
+        </small>
+        <ErrorText error={error} />
+        <hr className="bg-info m-3" />
+        <button
+          disabled={authenticating}
+          onClick={() => signInWithSocialMedia(Providers.google)}
+          style={{ backgroundColor: "#ea4335", borderColor: "#ea4335" }}
+        >
+          <i className="fab fa-google mr-2"></i> Sign in with Google
+        </button>
+        <button
+          disabled={authenticating}
+          onClick={() => signInWithSocialMedia(Providers.apple)}
+          style={{ backgroundColor: "#ea4335", borderColor: "#ea4335" }}
+        >
+          <i className="fab fa-google mr-2"></i> Sign in with Apple
+        </button>
+      </AuthContainer>
+    </AppWrapper>
   );
 };
