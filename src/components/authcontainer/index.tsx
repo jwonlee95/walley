@@ -1,16 +1,14 @@
 import React from "react";
 
 export interface IAuthContainerProps {
-  header?: any;
-  children?: any;
+  header: string;
+  children: React.ReactNode;
 }
 export const AuthContainer: React.FC<IAuthContainerProps> = (props) => {
-  const { children, header } = props;
-
   return (
     <div>
-      <div>{header}</div>
-      <div>{children}</div>
+      <div>{props.header}</div>
+      <div>{props.children}</div>
     </div>
   );
 };
