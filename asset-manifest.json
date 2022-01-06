@@ -1,12 +1,16 @@
 {
   "files": {
-    "main.js": "/walley/static/js/main.d4b306f3.js",
+    "main.css": "/walley/static/css/main.6ca5b63c.css",
+    "main.js": "/walley/static/js/main.96365c65.js",
     "static/js/787.6e463f98.chunk.js": "/walley/static/js/787.6e463f98.chunk.js",
+    "static/media/logo.png": "/walley/static/media/logo.09864b7dbdb7dc912a8a.png",
     "index.html": "/walley/index.html",
-    "main.d4b306f3.js.map": "/walley/static/js/main.d4b306f3.js.map",
+    "main.6ca5b63c.css.map": "/walley/static/css/main.6ca5b63c.css.map",
+    "main.96365c65.js.map": "/walley/static/js/main.96365c65.js.map",
     "787.6e463f98.chunk.js.map": "/walley/static/js/787.6e463f98.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.d4b306f3.js"
+    "static/css/main.6ca5b63c.css",
+    "static/js/main.96365c65.js"
   ]
 }
