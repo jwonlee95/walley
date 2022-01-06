@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 
-import { AppWrapper } from "components";
+import { ErrorText, AppWrapper } from "components";
 import { auth } from "config/firebase";
 import logging from "config/logging";
 import IPageProps from "interfaces/page";
@@ -94,7 +94,7 @@ export const RegisterPage: React.FunctionComponent<IPageProps> = (props) => {
           Already have an account? <Link to="/login">Login.</Link>
         </p>
       </small>
-      {/* <ErrorText error={error} /> */}
+      <ErrorText error={error} />
     </AppWrapper>
   );
 };

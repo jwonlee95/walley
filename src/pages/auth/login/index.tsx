@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 
-import { AppWrapper } from "components";
+import { ErrorText, AppWrapper } from "components";
 import { auth, Providers } from "config/firebase";
 import logging from "config/logging";
 import IPageProps from "interfaces/page";
@@ -90,7 +90,7 @@ export const LoginPage: React.FunctionComponent<IPageProps> = (props) => {
           <Link to="/forget">Forget your password?</Link>
         </p>
       </small>
-      {/* <ErrorText error={error} /> */}
+      <ErrorText error={error} />
       <hr className="bg-info m-3" />
       <button
         disabled={authenticating}
