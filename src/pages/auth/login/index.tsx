@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Button, Card, CardBody, CardHeader } from 'reactstrap';
-import { AuthContainer, ErrorText, CenterPiece, LoadingComponent } from 'components';
-import { auth, Providers } from 'config/firebase';
+import { ErrorText, CenterPiece, LoadingComponent } from 'components';
+import { Providers } from 'config/firebase';
 import logging from 'config/logging';
 import IPageProps from 'interfaces/page';
 import firebase from 'firebase/compat/app';

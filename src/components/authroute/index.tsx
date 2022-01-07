@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
-import { auth } from 'config/firebase';
 import logging from 'config/logging';
 import UserContext from 'contexts/user';
 
