@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 
-import { AuthContainer, ErrorText } from "components";
+import { ErrorText, AppWrapper } from "components";
 import { auth } from "config/firebase";
 import logging from "config/logging";
 import IPageProps from "interfaces/page";
@@ -47,7 +47,9 @@ export const RegisterPage: React.FunctionComponent<IPageProps> = (props) => {
   };
 
   return (
-    <AuthContainer header="Register">
+    <AppWrapper>
+      <div>Register</div>
+
       <form>
         <input
           type="email"
@@ -93,6 +95,6 @@ export const RegisterPage: React.FunctionComponent<IPageProps> = (props) => {
         </p>
       </small>
       <ErrorText error={error} />
-    </AuthContainer>
+    </AppWrapper>
   );
 };

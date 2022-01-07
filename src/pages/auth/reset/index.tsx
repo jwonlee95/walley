@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { RouteComponentProps, useHistory } from "react-router-dom";
-import { AuthContainer, ErrorText } from "components";
+import { ErrorText, AppWrapper } from "components";
 import CircularProgress from "@mui/material/CircularProgress";
 import { auth } from "config/firebase";
 import logging from "config/logging";
@@ -84,7 +84,9 @@ export const ResetPasswordPage: React.FunctionComponent<
   };
 
   return (
-    <AuthContainer header="Reset Password">
+    <AppWrapper>
+      <div>Reset Password</div>
+
       {verifying ? (
         // add Spinner
         <CircularProgress color="inherit" />
@@ -129,6 +131,6 @@ export const ResetPasswordPage: React.FunctionComponent<
           )}
         </>
       )}
-    </AuthContainer>
+    </AppWrapper>
   );
 };

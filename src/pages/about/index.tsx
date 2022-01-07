@@ -1,11 +1,10 @@
-import { NavBar } from "components/navbar";
+import { AppWrapper } from "components";
 import React from "react";
 
 export const AboutPage: React.FC = () => {
   return (
-    <div>
-      <NavBar />
-      This is About Us Page
-    </div>
+    <AppWrapper>
+      <div className="test-para">This is About Us Page</div>
+    </AppWrapper>
   );
 };

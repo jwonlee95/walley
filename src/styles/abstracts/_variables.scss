@@ -1,4 +1,3 @@
-@import "./navbar.scss";
 // Raleway
 // Font-weight 400, 500, 600, 700, 800 available
 // To see more: https://fonts.google.com/specimen/Raleway
@@ -8,7 +7,6 @@
 // Font-weight 300, 400, 500, 600, 700 available
 // To see more: https://fonts.google.com/specimen/Inter
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Raleway:wght@400;500;600;700;800&display=swap");
-// Font
 
 $head-fontSize: 40px;
 $font-size: 16px;
@@ -17,6 +15,7 @@ $inter: "Inter", -apple-system, sans-serif;
 
 // Colors
 $theme-color: #83b0f3;
+$dark-theme-color: #496ea6;
 $violet: #8876fe;
 $red: #ff3a3a;
 $orange: #ff9f0a;
@@ -31,24 +30,5 @@ $purple: #bf5af2;
 $pink: #f29b9b;
 $brown: #ac8f68;
 $light-pink: #ecb4ac;
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-}
-
-// Mixins
-@mixin flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-@mixin button-layout($background-color, $text-color) {
-  width: 180px;
-  height: 50px;
-  @include flex-center();
-  background-color: $background-color;
-  color: $text-color;
-}
+$transparent: rgba(255, 255, 255, 0);
+$white: #fff;

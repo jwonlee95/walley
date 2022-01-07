@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 
-import { AuthContainer } from "components";
+import { AppWrapper } from "components";
 import { auth } from "config/firebase";
 import logging from "config/logging";
 import IPageProps from "interfaces/page";
@@ -17,7 +17,9 @@ export const LogoutPage: React.FunctionComponent<IPageProps> = (props) => {
   };
 
   return (
-    <AuthContainer header="Logout">
+    <AppWrapper>
+      <div>Logout</div>
+
       <p className="text-center">Are you sure you want to logout?</p>
       <div className="text-center">
         <button
@@ -31,6 +33,6 @@ export const LogoutPage: React.FunctionComponent<IPageProps> = (props) => {
           Logout
         </button>
       </div>
-    </AuthContainer>
+    </AppWrapper>
   );
 };

@@ -3,10 +3,10 @@ import { Redirect } from 'react-router-dom';
 import logging from 'config/logging';
 import UserContext from 'contexts/user';
 
-export interface IAuthRouteProps {}
+interface IAuthRouteProps {}
 
-export const AuthRoute: React.FunctionComponent<IAuthRouteProps> = (props) => {
-    const { children } = props;
+export const AuthRoute: React.FC<IAuthRouteProps> = (props) => {
+  const { children } = props;
 
     const userContext = useContext(UserContext);
 
