@@ -60,7 +60,7 @@ const Application: React.FunctionComponent<IApplicationProps> = (props) => {
     userDispatch,
   };
 
-  if (loading) return <CircularProgress color="inherit" />;
+  if (loading) return { authStage } && <CircularProgress color="inherit" />;
 
   return (
     <UserContextProvider value={userContextValues}>

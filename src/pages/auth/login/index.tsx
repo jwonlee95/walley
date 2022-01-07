@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Button, Card, CardBody, CardHeader } from "reactstrap";
 import { ErrorText } from "components";
 import { Providers } from "config/firebase";
 import logging from "config/logging";
@@ -85,15 +84,14 @@ export const LoginPage: React.FunctionComponent<IPageProps> = (props) => {
         <div>{isLogin ? "Login" : "Sign Up"}</div>
         <div>
           <ErrorText error={error} />
-          <Button
-            block
+          <button
             disabled={authenticating}
             onClick={() => signInWithSocialMedia(Providers.google)}
             style={{ backgroundColor: "#ea4335", borderColor: "#ea4335" }}
           >
             <i className="fab fa-google mr-2"></i> Sign {isLogin ? "in" : "up"}{" "}
             with Google
-          </Button>
+          </button>
           {authenticating}
         </div>
       </div>
