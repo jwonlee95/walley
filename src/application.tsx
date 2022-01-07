@@ -1,53 +1,88 @@
-import React, { useEffect, useState } from "react";
-import { Route, RouteComponentProps, Switch } from "react-router-dom";
-import CircularProgress from "@mui/material/CircularProgress";
-import { AuthRoute } from "components";
-import { auth } from "config/firebase";
-import logging from "config/logging";
-import routes from "config/routes";
+import React, { useEffect, useReducer, useState } from 'react';
+import { Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { AuthRoute, LoadingComponent } from 'components';
+import logging from 'config/logging';
+import routes from 'config/routes';
+import { initialUserState, UserContextProvider, userReducer } from './contexts/user';
+import { Validate } from 'modules/auth/auth';
 
 export interface IApplicationProps {}
 
 const Application: React.FunctionComponent<IApplicationProps> = (props) => {
-  const [loading, setLoading] = useState<boolean>(true);
+    const [userState, userDispatch] = useReducer(userReducer, initialUserState);
+    const [authStage, setAuthStage] = useState<string>('Checking localstorage ...');
+    const [loading, setLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        logging.info("User detected.");
-      } else {
-        logging.info("No user detected");
-      }
+    useEffect(() => {
+        setTimeout(() => {
+            CheckLocalStorageForCredentials();
+        }, 1000);
 
-      setLoading(false);
-    });
-  }, []);
+        // eslint-disable-next-line
+    }, []);
 
-  if (loading) return <CircularProgress color="inherit" />;
+    const CheckLocalStorageForCredentials = () => {
+        setAuthStage('Checking credentials ...');
 
-  return (
-    <div>
-      <Switch>
-        {routes.map((route, index) => (
-          <Route
-            key={index}
-            path={route.path}
-            exact={route.exact}
-            render={(routeProps: RouteComponentProps<any>) => {
-              if (route.protected)
-                return (
-                  <AuthRoute>
-                    <route.component {...routeProps} />
-                  </AuthRoute>
-                );
+        const fire_token = localStorage.getItem('fire_token');
 
-              return <route.component {...routeProps} />;
-            }}
-          />
-        ))}
-      </Switch>
-    </div>
-  );
+        if (fire_token === null) {
+            userDispatch({ type: 'logout', payload: initialUserState });
+            setAuthStage('No credentials found');
+            setTimeout(() => {
+                setLoading(false);
+            }, 500);
+        } else {
+            return Validate(fire_token, (error, user) => {
+                if (error) {
+                    logging.error(error);
+                    userDispatch({ type: 'logout', payload: initialUserState });
+                    setTimeout(() => {
+                        setLoading(false);
+                    }, 500);
+                } else if (user) {
+                    setAuthStage('User Authentificated');
+                    userDispatch({ type: 'login', payload: { user, fire_token } });
+                    setTimeout(() => {
+                        setLoading(false);
+                    }, 500);
+                }
+            });
+        }
+    };
+
+    const userContextValues = {
+        userState,
+        userDispatch
+    };
+
+    if (loading) {
+        return <LoadingComponent>{authStage}</LoadingComponent>;
+    }
+
+    return (
+        <UserContextProvider value={userContextValues}>
+            <Switch>
+                {routes.map((route, index) => (
+                    <Route
+                        key={index}
+                        path={route.path}
+                        exact={route.exact}
+                        render={(routeProps: RouteComponentProps<any>) => {
+                            if (route.protected)
+                                return (
+                                    <AuthRoute>
+                                        <route.component {...routeProps} />
+                                    </AuthRoute>
+                                );
+
+                            return <route.component {...routeProps} />;
+                        }}
+                    />
+                ))}
+            </Switch>
+        </UserContextProvider>
+    );
 };
 
 export default Application;
