@@ -1,32 +1,69 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
-import CircularProgress from "@mui/material/CircularProgress";
 import { AuthRoute } from "components";
-import { auth } from "config/firebase";
+import CircularProgress from "@mui/material/CircularProgress";
 import logging from "config/logging";
 import routes from "config/routes";
+
+import {
+  initialUserState,
+  UserContextProvider,
+  userReducer,
+} from "./contexts/user";
+import { Validate } from "modules/auth/auth";
 
 export interface IApplicationProps {}
 
 const Application: React.FunctionComponent<IApplicationProps> = (props) => {
+  const [userState, userDispatch] = useReducer(userReducer, initialUserState);
+  const [authStage, setAuthStage] = useState<string>(
+    "Checking localstorage ..."
+  );
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        logging.info("User detected.");
-      } else {
-        logging.info("No user detected");
-      }
+    setTimeout(() => {
+      CheckLocalStorageForCredentials();
+    }, 1000);
 
-      setLoading(false);
-    });
+    // eslint-disable-next-line
   }, []);
 
-  if (loading) return <CircularProgress color="inherit" />;
+  const CheckLocalStorageForCredentials = () => {
+    setAuthStage("Checking credentials ...");
+
+    const fire_token = localStorage.getItem("fire_token");
+
+    if (fire_token === null) {
+      userDispatch({ type: "logout", payload: initialUserState });
+      setAuthStage("No credentials found");
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
+    } else {
+      return Validate(fire_token, (error, user) => {
+        if (error) {
+          logging.error(error);
+          userDispatch({ type: "logout", payload: initialUserState });
+          setLoading(false);
+        } else if (user) {
+          setAuthStage("User Authentificated");
+          userDispatch({ type: "login", payload: { user, fire_token } });
+          setLoading(false);
+        }
+      });
+    }
+  };
+
+  const userContextValues = {
+    userState,
+    userDispatch,
+  };
+
+  if (loading) return { authStage } && <CircularProgress color="inherit" />;
 
   return (
-    <div>
+    <UserContextProvider value={userContextValues}>
       <Switch>
         {routes.map((route, index) => (
           <Route
@@ -46,7 +83,7 @@ const Application: React.FunctionComponent<IApplicationProps> = (props) => {
           />
         ))}
       </Switch>
-    </div>
+    </UserContextProvider>
   );
 };
 

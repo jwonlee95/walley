@@ -1,17 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Redirect } from "react-router-dom";
-import { auth } from "config/firebase";
 import logging from "config/logging";
+import UserContext from "contexts/user";
 
 interface IAuthRouteProps {}
 
 export const AuthRoute: React.FC<IAuthRouteProps> = (props) => {
   const { children } = props;
 
-  if (!auth.currentUser) {
-    logging.warn("No user detected, redirecting");
-    return <Redirect to="/login" />;
-  }
+  const userContext = useContext(UserContext);
 
-  return <div>{children}</div>;
+  if (userContext.userState.user._id === "") {
+    logging.info("Unauthorized, redirecting.");
+    return <Redirect to="/login" />;
+  } else {
+    return <>{children}</>;
+  }
 };
