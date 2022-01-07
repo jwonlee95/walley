@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/walley/static/css/main.f7132b8a.css",
-    "main.js": "/walley/static/js/main.6749abe2.js",
+    "main.css": "/walley/static/css/main.6ca5b63c.css",
+    "main.js": "/walley/static/js/main.4353c0fb.js",
     "static/js/787.6e463f98.chunk.js": "/walley/static/js/787.6e463f98.chunk.js",
-    "static/media/logo.png": "/walley/static/media/logo.1b9a8e10a046dd525eed.png",
+    "static/media/logo.png": "/walley/static/media/logo.09864b7dbdb7dc912a8a.png",
     "index.html": "/walley/index.html",
-    "main.f7132b8a.css.map": "/walley/static/css/main.f7132b8a.css.map",
-    "main.6749abe2.js.map": "/walley/static/js/main.6749abe2.js.map",
+    "main.6ca5b63c.css.map": "/walley/static/css/main.6ca5b63c.css.map",
+    "main.4353c0fb.js.map": "/walley/static/js/main.4353c0fb.js.map",
     "787.6e463f98.chunk.js.map": "/walley/static/js/787.6e463f98.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f7132b8a.css",
-    "static/js/main.6749abe2.js"
+    "static/css/main.6ca5b63c.css",
+    "static/js/main.4353c0fb.js"
   ]
 }
