@@ -4,7 +4,7 @@ import { ErrorText, AppWrapper } from "components";
 import CircularProgress from "@mui/material/CircularProgress";
 import { auth } from "config/firebase";
 import logging from "config/logging";
-import IPageProps from "interfaces/page";
+import { IPageProps } from "interfaces/page";
 import queryString from "querystring";
 
 export const ResetPasswordPage: React.FunctionComponent<

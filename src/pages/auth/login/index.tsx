@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { ErrorText } from "components";
 import { Providers } from "config/firebase";
 import logging from "config/logging";
-import IPageProps from "interfaces/page";
+import { IPageProps } from "interfaces";
 import firebase from "firebase/compat/app";
 import { Authenticate, SignInWithSocialMedia } from "modules/auth/auth";
 import UserContext from "contexts/user";
