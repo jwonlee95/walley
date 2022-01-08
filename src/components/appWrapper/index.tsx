@@ -6,9 +6,9 @@ interface AppWrapperProps {
 }
 export const AppWrapper: React.FC<AppWrapperProps> = (props) => {
   return (
-    <>
+    <div className="appWrapper">
       <NavBar />
-      {props.children}
-    </>
+      <div>{props.children}</div>
+    </div>
   );
 };

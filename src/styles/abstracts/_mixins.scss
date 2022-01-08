@@ -6,6 +6,11 @@
   align-items: center;
 }
 
+@mixin flex-row-center {
+  display: flex;
+  justify-content: center;
+}
+
 @mixin button-layout($background-color, $text-color) {
   width: 90px;
   height: 36.5px;
