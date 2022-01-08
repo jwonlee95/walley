@@ -2,6 +2,8 @@
 @import "../abstracts/variables";
 
 nav {
+  max-width: 1260px;
+  margin: auto;
   height: 80px;
   //   background-color: red;
   display: flex;
@@ -46,6 +48,10 @@ nav {
     font-family: inherit;
     font-weight: inherit;
     @include button-layout($transparent, $theme-color);
+    &:hover {
+      background-color: $dark-theme-color;
+      color: white;
+    }
   }
 
   //sign up button
@@ -56,10 +62,5 @@ nav {
     &:hover {
       background: $dark-theme-color;
     }
-  }
-
-  //account icon
-  .accountIcon {
-    // background-color: gray;
   }
 }

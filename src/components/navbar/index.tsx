@@ -4,8 +4,6 @@ import "styles/styles.scss";
 import Logo from "assets/logo.png";
 import { Stack, Button } from "@mui/material";
 
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-
 export const NavBar: React.FC<{}> = () => {
   const history = useHistory();
 
@@ -29,13 +27,6 @@ export const NavBar: React.FC<{}> = () => {
           </Link>
           <Link className="link" to="/signup">
             <Button className="signUpBtn">SIGN UP</Button>
-          </Link>
-          <Link className="link" to="/account">
-            <AccountCircleIcon
-              className="accountIcon"
-              fontSize="large"
-              color="disabled"
-            />
           </Link>
         </Stack>
       </Stack>

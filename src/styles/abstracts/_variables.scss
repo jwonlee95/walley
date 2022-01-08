@@ -1,12 +1,12 @@
 // Raleway
 // Font-weight 400, 500, 600, 700, 800 available
 // To see more: https://fonts.google.com/specimen/Raleway
-@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&display=swap");
 
 // Inter
 // Font-weight 300, 400, 500, 600, 700 available
 // To see more: https://fonts.google.com/specimen/Inter
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Raleway:wght@400;500;600;700;800&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Raleway:wght@400;500;600;700;800;900&display=swap");
 
 $head-fontSize: 40px;
 $font-size: 16px;
@@ -30,5 +30,20 @@ $purple: #bf5af2;
 $pink: #f29b9b;
 $brown: #ac8f68;
 $light-pink: #ecb4ac;
-$transparent: rgba(255, 255, 255, 0);
+$transparent: #ffffff00;
 $white: #fff;
+$section-background: rgba(205, 221, 244, 0.1);
+$skyblue-border-line: #cdddf4;
+$footer: #242f39;
+
+// media query
+$media-l: 1380px;
+$media-m: 1020px;
+$media-s: 800px;
+$media-xs: 500px;
+// 0 - 500 - 800 - 1020 - 1380 - ...
+//   30    40    55      64
+
+// section size
+$section-l: 800px;
+$section-m: 600px;

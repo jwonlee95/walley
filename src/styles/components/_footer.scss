@@ -1,0 +1,50 @@
+@import "../abstracts/mixins";
+@import "../abstracts/variables";
+
+.footer-wrapper {
+  //   max-width: 1280px;
+
+  background-color: $footer;
+  left: 0;
+  right: 0;
+  position: absolute;
+
+  display: grid;
+  color: white;
+  justify-content: center;
+  grid-template-columns: 15% 15% 15% 15% 15%;
+  @media (max-width: $media-s) {
+    grid-template-columns: 45% 45%;
+  }
+  .links-wrapper {
+    padding: 40px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    @media (max-width: $media-s) {
+      align-items: baseline;
+    }
+    ul {
+      font-family: $inter;
+      font-size: 13px;
+    }
+    ul:before {
+      content: attr(data-header);
+      font-weight: 800;
+    }
+    li:first-child {
+      margin-top: 12px;
+    }
+    li {
+      font-weight: 300;
+      line-height: 19.35px;
+      margin-bottom: 12px;
+      list-style: none;
+    }
+    .link {
+      color: rgb(240, 240, 240);
+      border-bottom: 1px solid rgb(240, 240, 240);
+    }
+  }
+}
