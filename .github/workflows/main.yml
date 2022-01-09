@@ -22,8 +22,8 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - run: |
-          echo {{ github.workspace }}
-          mkdir {{ github.workspace }}/tmp/artifacts
+          echo ${{ github.workspace }}
+          mkdir ${{ github.workspace }}/tmp/artifacts
       - name: Lighthouse
         uses: foo-software/lighthouse-check-action@master
         with:
