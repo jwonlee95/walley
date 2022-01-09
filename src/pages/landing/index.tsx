@@ -7,7 +7,7 @@ const {
   BE,
   BoardGraph,
   BrushTouch,
-  BudgetPlannerSVG,
+  BudgetPlannerIMG,
   LargeRectangle,
   SmallRectangle,
   Create,
@@ -35,7 +35,7 @@ const MainSection: React.FC<{}> = () => {
         <div className="img-wrapper">
           <img
             className="budget-planner"
-            src={BudgetPlannerSVG}
+            src={BudgetPlannerIMG}
             alt="budget-planner"
           />
         </div>

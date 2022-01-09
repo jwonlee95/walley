@@ -11,6 +11,7 @@
     &:hover {
       background: $theme-color;
     }
+    border-radius: 15px;
   }
   // height: 550px;
   margin: 40px 0px;
@@ -43,13 +44,12 @@
 }
 .border-section {
   border: 5px solid $skyblue-border-line;
-  z-index: -1;
 }
 .stacked-rectangle-wrapper {
   background-image: url("../../assets/stacked-rectangle.svg");
   background-position: right 10px top 30px;
   padding: 50px;
-  z-index: 300;
+
   background-repeat: no-repeat;
   background-size: 200px;
   @media (max-width: $media-l) {
@@ -74,6 +74,7 @@
 .be {
   margin-left: -30px;
   margin-top: -40px;
+  z-index: 1;
   @media (max-width: $media-l) {
     width: 140px;
     margin-top: -30px;
@@ -197,7 +198,7 @@
 
 .section-heading {
   font-family: $raleway;
-  font-size: 64px;
+  font-size: 70px;
   @media (max-width: $media-l) {
     font-size: 55px;
   }
