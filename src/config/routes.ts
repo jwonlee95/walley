@@ -11,6 +11,7 @@ import {
   AccountPage,
   LandingPage,
   AboutPage,
+  EditPage,
 } from "pages";
 
 const routes: IRoute[] = [
@@ -89,6 +90,13 @@ const routes: IRoute[] = [
     exact: true,
     component: AboutPage,
     name: "About Page",
+    protected: false,
+  },
+  {
+    path: "/edit",
+    exact: true,
+    component: EditPage,
+    name: "Edit Page",
     protected: false,
   },
 ];
