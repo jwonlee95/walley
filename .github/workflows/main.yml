@@ -1,5 +1,5 @@
 name: Build & Deploy & Lighthouse
-on: [push]
+on: [pull_request]
 
 jobs:
   build-and-deploy:
@@ -17,15 +17,13 @@ jobs:
         with:
           branch: gh-pages
           folder: build
-  audit:
+  lighthouse:
     runs-on: ubuntu-latest
     steps:
-      - name: Audit live URL
-        uses: jakejarvis/lighthouse-action@master
+      - uses: actions/checkout@master
+      - name: Lighthouse
+        uses: foo-software/lighthouse-check-action@master
         with:
-          url: "https://iianjun.github.io/walley/"
-      - name: Upload results as an artifact
-        uses: actions/upload-artifact@master
-        with:
-          name: report
-          path: "./report "
+          urls: "https://iianjun.github.io/walley/"
+          gitHubAccessToken: ${{ secrets.WALLEY_SECRET_TOKEN }}
+          device: "desktop"
