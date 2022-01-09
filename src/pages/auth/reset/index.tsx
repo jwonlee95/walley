@@ -88,7 +88,6 @@ export const ResetPasswordPage: React.FunctionComponent<
       <div>Reset Password</div>
 
       {verifying ? (
-        // add Spinner
         <CircularProgress color="inherit" />
       ) : (
         <>
