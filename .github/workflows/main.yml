@@ -25,12 +25,13 @@ jobs:
       - name: Lighthouse
         uses: foo-software/lighthouse-check-action@master
         with:
-          outputDirectory: ${{ github.workspace }}/tmp/artifacts
           gitHubAccessToken: ${{ secrets.LIGHTHOUSE_CHECK_GITHUB_ACCESS_TOKEN  }}
+          prCommentEnabled: true
           device: "desktop"
           urls: "https://iianjun.github.io/walley/"
+          outputDirectory: /tmp/artifacts
       - name: Upload artifacts
         uses: actions/upload-artifact@master
         with:
           name: Lighthouse reports
-          path: ${{ github.workspace }}/tmp/artifacts
+          path: /tmp/artifacts
