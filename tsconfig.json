@@ -27,8 +27,8 @@
       "interfaces/*": ["interfaces/*"],
       "auth/*": ["auth/*"],
       "assets/*": ["assets/*"]
-      
     },
+
   },
   "include": [
     "src"
