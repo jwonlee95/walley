@@ -17,6 +17,7 @@ export const LoginPage: React.FunctionComponent<IPageProps> = (props) => {
 
   const userContext = useContext(UserContext);
   const history = useHistory();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isLogin = window.location.pathname.includes("login");
 
   const signInWithSocialMedia = (provider: firebase.auth.AuthProvider) => {
