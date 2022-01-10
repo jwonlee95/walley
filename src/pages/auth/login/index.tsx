@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { AppWrapper, ErrorText } from "components";
+import { AppWrapper } from "components";
 import { Providers } from "config/firebase";
 import logging from "config/logging";
 import IPageProps from "interfaces/page";
