@@ -7,7 +7,6 @@ import {
   RegisterPage,
   ResetPasswordPage,
   HomePage,
-  SignUpPage,
   AccountPage,
   LandingPage,
   AboutPage,
@@ -68,13 +67,6 @@ const routes: IRoute[] = [
     exact: true,
     component: LandingPage,
     name: "Landing Page",
-    protected: false,
-  },
-  {
-    path: "/signup",
-    exact: true,
-    component: SignUpPage,
-    name: "Sign Up Page",
     protected: false,
   },
   {

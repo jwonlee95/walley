@@ -48,20 +48,10 @@ nav {
   .loginBtn {
     font-family: inherit;
     font-weight: inherit;
-    @include button-layout($transparent, $theme-color);
-    &:hover {
-      background-color: $dark-theme-color;
-      color: white;
-    }
-  }
-
-  //sign up button
-  .signUpBtn {
-    font-family: inherit;
-    font-weight: inherit;
     @include button-layout($theme-color, $white);
     &:hover {
-      background: $dark-theme-color;
+      background-color: $dark-theme-color;
     }
+    width: 180px;
   }
 }

@@ -8,9 +8,10 @@ import LargeRectangle from "./large-rectangle.svg";
 import Logo from "./logo.png";
 import SmallRectangle from "./small-rectangle.svg";
 import StackedRectangle from "./stacked-rectangle.svg";
-
+import GoogleIcon from "./google-icon.svg";
+import AppleIcon from "./apple-icon.svg";
 const IMAGES = {
-  Logo: Logo,
+  logo: Logo,
   landing: {
     BE: BE,
     BoardGraph: BoardGraph,
@@ -21,6 +22,10 @@ const IMAGES = {
     LargeRectangle: LargeRectangle,
     SmallRectangle: SmallRectangle,
     StackedRectangle: StackedRectangle,
+  },
+  login: {
+    GoogleIcon: GoogleIcon,
+    AppleIcon: AppleIcon,
   },
 };
 export default IMAGES;
