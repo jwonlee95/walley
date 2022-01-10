@@ -1,8 +1,8 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
-import "styles/styles.scss";
-import Logo from "assets/logo.png";
+
 import { Stack, Button } from "@mui/material";
+import IMAGES from "assets";
 
 export const NavBar: React.FC<{}> = () => {
   const history = useHistory();
@@ -13,18 +13,16 @@ export const NavBar: React.FC<{}> = () => {
   return (
     <nav>
       <div className="logo">
-        <img src={Logo} alt="logo" onClick={handleClickLogo} />
+        <img src={IMAGES.logo} alt="logo" onClick={handleClickLogo} />
       </div>
 
       <Stack className="authStack" spacing={2} direction="row">
         <Link className="link" to="/about">
           <Button className="aboutBtn">ABOUT US</Button>
         </Link>
+
         <Link className="link" to="/login">
-          <Button className="loginBtn">LOGIN</Button>
-        </Link>
-        <Link className="link" to="/signup">
-          <Button className="signUpBtn">SIGN UP</Button>
+          <Button className="loginBtn">SIGN IN / SIGN UP</Button>
         </Link>
       </Stack>
     </nav>
