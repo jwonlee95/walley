@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/walley/static/css/main.bcc8593b.css",
-    "main.js": "/walley/static/js/main.88a8a3f2.js",
+    "main.css": "/walley/static/css/main.827167a4.css",
+    "main.js": "/walley/static/js/main.13583ca8.js",
     "static/js/787.6e463f98.chunk.js": "/walley/static/js/787.6e463f98.chunk.js",
     "static/media/logo.png": "/walley/static/media/logo.7199efc6756e2050e48d.png",
     "static/media/budget-planner.svg": "/walley/static/media/budget-planner.d39e85096b50903728ed9e0e69e174a4.svg",
@@ -9,17 +9,19 @@
     "static/media/board-graph.png": "/walley/static/media/board-graph.99d13640ddcec9b92cdf.png",
     "static/media/BE.svg": "/walley/static/media/BE.b32bb51b2413751b41f3e3ca0fbd363f.svg",
     "static/media/create.png": "/walley/static/media/create.a51d75b9357adc4729f7.png",
+    "static/media/google-icon.svg": "/walley/static/media/google-icon.d7b28877129388d91ce99f7b0fc9519a.svg",
+    "static/media/apple-icon.svg": "/walley/static/media/apple-icon.80023a4c88de2be38da262a55f1a920b.svg",
     "index.html": "/walley/index.html",
     "static/media/brush-touch.svg": "/walley/static/media/brush-touch.888e53e75cb0f0939d4473479e8dea63.svg",
     "static/media/stacked-rectangle.svg": "/walley/static/media/stacked-rectangle.859b39ddd8928ce2fe9b464659e4ff5f.svg",
     "static/media/large-rectangle.svg": "/walley/static/media/large-rectangle.911c3035797a32ea55b7e0303e015f27.svg",
     "static/media/small-rectangle.svg": "/walley/static/media/small-rectangle.bdbe8ca6a3a382c26d5bdb94c976b39e.svg",
-    "main.bcc8593b.css.map": "/walley/static/css/main.bcc8593b.css.map",
-    "main.88a8a3f2.js.map": "/walley/static/js/main.88a8a3f2.js.map",
+    "main.827167a4.css.map": "/walley/static/css/main.827167a4.css.map",
+    "main.13583ca8.js.map": "/walley/static/js/main.13583ca8.js.map",
     "787.6e463f98.chunk.js.map": "/walley/static/js/787.6e463f98.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.bcc8593b.css",
-    "static/js/main.88a8a3f2.js"
+    "static/css/main.827167a4.css",
+    "static/js/main.13583ca8.js"
   ]
 }
