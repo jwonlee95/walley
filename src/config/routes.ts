@@ -63,6 +63,13 @@ const routes: IRoute[] = [
     protected: false,
   },
   {
+    path: "/",
+    exact: true,
+    component: LandingPage,
+    name: "Production Landing Page",
+    protected: false,
+  },
+  {
     path: "/walley",
     exact: true,
     component: LandingPage,
