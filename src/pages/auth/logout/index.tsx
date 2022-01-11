@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { AppWrapper } from "components";
 import { auth } from "config/firebase";
 import logging from "config/logging";
-import IPageProps from "interfaces/page";
+import { IPageProps } from "interfaces/page";
 
 export const LogoutPage: React.FunctionComponent<IPageProps> = (props) => {
   const history = useHistory();

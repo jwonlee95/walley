@@ -4,7 +4,7 @@ import { Redirect, useHistory } from "react-router-dom";
 import { ErrorText, AppWrapper } from "components";
 import { auth } from "config/firebase";
 import logging from "config/logging";
-import IPageProps from "interfaces/page";
+import { IPageProps } from "interfaces/page";
 
 export const ChangePasswordPage: React.FunctionComponent<IPageProps> = (
   props

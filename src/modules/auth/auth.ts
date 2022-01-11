@@ -3,7 +3,7 @@ import firebase from "firebase/compat/app";
 import { auth } from "config/firebase";
 import config from "config/config";
 import logging from "config/logging";
-import IUser from "interfaces/user";
+import { IUser } from "interfaces";
 
 const NAMESPACE = "Auth";
 
