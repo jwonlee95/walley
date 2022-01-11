@@ -33,7 +33,7 @@ export const ForgotPasswordPage: React.FunctionComponent<IPageProps> = (
   };
 
   return (
-    <AppWrapper>
+    <AppWrapper title="Forget Password">
       <div>Send Password Reset</div>
       {sent ? (
         <p>A link has been sent to your email with instructions.</p>

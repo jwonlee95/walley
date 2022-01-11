@@ -3,7 +3,7 @@ import "styles/styles.scss";
 import { AppWrapper } from "components";
 export const AccountPage: React.FC<{}> = () => {
   return (
-    <AppWrapper>
+    <AppWrapper title="Account">
       <div className="test-para">This is Account Page</div>
     </AppWrapper>
   );

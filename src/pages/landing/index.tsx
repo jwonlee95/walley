@@ -134,7 +134,7 @@ const FunctionalitySection: React.FC<{}> = () => {
 
 export const LandingPage: React.FC<{}> = () => {
   return (
-    <AppWrapper>
+    <AppWrapper title="">
       <MainSection />
       <IntroSection />
       <FunctionalitySection />

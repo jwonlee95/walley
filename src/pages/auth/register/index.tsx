@@ -47,7 +47,7 @@ export const RegisterPage: React.FunctionComponent<IPageProps> = (props) => {
   };
 
   return (
-    <AppWrapper>
+    <AppWrapper title="Register">
       <div>Register</div>
 
       <form>

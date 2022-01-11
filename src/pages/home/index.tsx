@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { ErrorText } from "components";
+import { ErrorText, AppWrapper } from "components";
 import CircularProgress from "@mui/material/CircularProgress";
 import { IPageProps, IExpense, IIncome } from "interfaces";
 import UserContext from "contexts/user";
@@ -56,7 +56,7 @@ export const HomePage: React.FC<IPageProps> = (props) => {
   if (loading) return <CircularProgress color="inherit" />;
 
   return (
-    <div>
+    <AppWrapper title="Home">
       <p>Welcome to this page that is protected by Friebase auth!</p>
       <p>
         Add expense <Link to="/expense">here</Link>.
@@ -90,6 +90,6 @@ export const HomePage: React.FC<IPageProps> = (props) => {
         })}
         <ErrorText error={error} />
       </div>
-    </div>
+    </AppWrapper>
   );
 };
