@@ -1,18 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { ErrorText } from "components";
 import CircularProgress from "@mui/material/CircularProgress";
 import { IPageProps, IExpense, IIncome, IUser } from "interfaces";
+import UserContext from "contexts/user";
 import config from "config/config";
 import logging from "config/logging";
 
 export const HomePage: React.FC<IPageProps> = (props) => {
   const [expense, setExpense] = useState<IExpense[]>([]);
-  const [income, setIncome] = useState<IIncome[]>([]);
+  const [income, setIncome] = useState<IExpense[]>([]);
   const [list, setList] = useState<IExpense[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
+
+  const { user } = useContext(UserContext).userState;
 
   useEffect(() => {
     listExpenseIncome();
@@ -20,26 +23,22 @@ export const HomePage: React.FC<IPageProps> = (props) => {
 
   const listExpenseIncome = async () => {
     try {
-      const responseE = await axios({
+      const response = await axios({
         method: "GET",
-        url: `${config.server.url}/api/expense`,
+        url: `${config.server.url}/users/${user._id}`,
+        data: {
+          expense,
+          income,
+        },
       });
 
-      const responseI = await axios({
-        method: "GET",
-        url: `${config.server.url}/api/income`,
-      });
-
-      if (
-        responseE.status === (200 || 304) ||
-        responseI.status === (200 || 304)
-      ) {
-        let expense = responseE.data.expenses as IExpense[];
-        console.log("responseI", responseI.data);
-        let income = responseI.data.incomes as IIncome[];
+      if (response.status === (200 || 304)) {
+        let expense = response.data.user.expense as IExpense[];
+        console.log("responseI", response.data.user.expense);
+        let income = response.data.user.income as IIncome[];
         let list = expense.concat(income);
-        expense.sort((x, y) => y.updatedAt.localeCompare(x.updatedAt));
-        income.sort((x, y) => y.updatedAt.localeCompare(x.updatedAt));
+        //expense.sort((x, y) => y.updatedAt.localeCompare(x.updatedAt));
+        //income.sort((x, y) => y.updatedAt.localeCompare(x.updatedAt));
         list.sort((x, y) => y.updatedAt.localeCompare(x.updatedAt));
 
         setExpense(expense);
@@ -62,7 +61,13 @@ export const HomePage: React.FC<IPageProps> = (props) => {
     <div>
       <p>Welcome to this page that is protected by Friebase auth!</p>
       <p>
-        Change your password <Link to="/edit">here</Link>.
+        Add expense <Link to="/expense">here</Link>.
+      </p>
+      <p>
+        Add income <Link to="/income">here</Link>.
+      </p>
+      <p>
+        Add subscriptions <Link to="/subscription">here</Link>.
       </p>
       <p>
         Click <Link to="/logout">here</Link> to logout.

@@ -1,24 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
-import { RouteComponentProps, withRouter } from "react-router";
+import { RouteComponentProps } from "react-router";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { ErrorText } from "components";
-import { FormControl, Container, TextField, Button } from "@mui/material";
+import { Container, TextField, Button } from "@mui/material";
 import config from "config/config";
-import logging from "config/logging";
 import UserContext from "../../contexts/user";
 import { IExpense } from "interfaces";
 
-export const EditPage: React.FunctionComponent<RouteComponentProps<any>> = (
-  props
-) => {
+export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
   const [_id, setId] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
-  const [balance, setBalance] = useState<string>("");
   const [expense, setExpense] = useState<IExpense>();
-
   const [saving, setSaving] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [success, setSuccess] = useState<string>("");
@@ -26,39 +21,14 @@ export const EditPage: React.FunctionComponent<RouteComponentProps<any>> = (
 
   const { user } = useContext(UserContext).userState;
 
-  console.log("user is ", user);
-
   useEffect(() => {
     let expenseID = props.match.params.expenseID;
     if (expenseID) {
       setId(expenseID);
-      getExpense(expenseID);
     } else {
       setLoading(false);
     }
   }, []);
-
-  const getExpense = async (id: string) => {
-    try {
-      const response = await axios({
-        method: "GET",
-        url: `${config.server.url}/expense/read/${id}`,
-      });
-
-      if (response.status === (200 || 304)) {
-        setCategory(response.data.expense.category);
-        setDescription(response.data.expense.description);
-        setAmount(response.data.expense.amount);
-        setBalance(response.data.expense.balance);
-      } else {
-        setError(`Unable to retrieve expense ${_id}`);
-      }
-    } catch (error) {
-      setError(`Unable to retrieve expense ${_id}`);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const createExpense = async () => {
     if (category === "" || description === "" || amount === "") {
@@ -73,71 +43,21 @@ export const EditPage: React.FunctionComponent<RouteComponentProps<any>> = (
 
     try {
       const response = await axios({
-        method: "POST",
-        url: `${config.server.url}/api/expense/create`,
+        method: "PATCH",
+        url: `${config.server.url}/api/expense/updateExpense/${user._id}`,
         data: {
           category,
           description,
           amount,
-          balance,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
         },
       });
-      console.log("response.data.expense._id: is ", response.data.expense);
-      const responseU = await axios({
-        method: "PATCH",
-        url: `${config.server.url}/users/update/${user._id}`,
-        data: {
-          expense: response.data.expense,
-        },
-      });
-
       if (response.status === 201) {
-        setId(response.data.expense._id);
-        setSuccess("Blog posted.  You can continue to edit on this page.");
-      } else {
-        setError(`Unable to save expense.`);
-      }
-      if (responseU.status === 201) {
-        setExpense(responseU.data.expense);
+        setExpense(response.data.expense);
         setSuccess("Succesfully posted to user");
       } else {
         setError("Unable to save data to user");
-      }
-    } catch (error) {
-      setError(`Unable to save expense.`);
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const editExpense = async () => {
-    if (category === "" || description === "" || amount === "") {
-      setError("Please fill out all fields.");
-      setSuccess("");
-      return null;
-    }
-
-    setError("");
-    setSuccess("");
-    setSaving(true);
-
-    try {
-      const response = await axios({
-        method: "PATCH",
-        url: `${config.server.url}/api/expense/update/${_id}`,
-        data: {
-          category,
-          description,
-          amount,
-          balance,
-          user: user._id,
-        },
-      });
-
-      if (response.status === 201) {
-        setSuccess("expense updated.");
-      } else {
-        setError(`Unable to save expense.`);
       }
     } catch (error) {
       setError(`Unable to save expense.`);
@@ -187,7 +107,7 @@ export const EditPage: React.FunctionComponent<RouteComponentProps<any>> = (
               setAmount(event.target.value);
             }}
           ></TextField>
-          <TextField
+          {/* <TextField
             label="balance"
             type="text"
             name="balance"
@@ -198,27 +118,20 @@ export const EditPage: React.FunctionComponent<RouteComponentProps<any>> = (
             onChange={(event) => {
               setBalance(event.target.value);
             }}
-          ></TextField>
+          ></TextField> */}
 
           <div>
             <Button
               onClick={() => {
-                if (_id !== "") {
-                  editExpense();
-                } else {
-                  createExpense();
-                }
+                createExpense();
               }}
               disabled={saving}
             >
-              <i className="fas fa-save mr-1"></i>
-              {_id !== "" ? "Update" : "Post"}
+              Update
             </Button>
-            {_id !== "" && (
-              <Link to="/home">
-                <Button>Go to home</Button>
-              </Link>
-            )}
+            <Link to="/home">
+              <Button>Home</Button>
+            </Link>
           </div>
         </div>
         <ErrorText error={error} />
