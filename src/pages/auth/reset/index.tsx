@@ -84,7 +84,7 @@ export const ResetPasswordPage: React.FunctionComponent<
   };
 
   return (
-    <AppWrapper>
+    <AppWrapper title="Reset Password">
       <div>Reset Password</div>
 
       {verifying ? (

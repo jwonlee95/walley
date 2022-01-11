@@ -17,7 +17,7 @@ export const LogoutPage: React.FunctionComponent<IPageProps> = (props) => {
   };
 
   return (
-    <AppWrapper>
+    <AppWrapper title="Log out">
       <div>Logout</div>
 
       <p className="text-center">Are you sure you want to logout?</p>

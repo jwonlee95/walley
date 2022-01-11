@@ -83,7 +83,7 @@ export const LoginPage: React.FunctionComponent<IPageProps> = (props) => {
   };
 
   return (
-    <AppWrapper>
+    <AppWrapper title="Login">
       <div className="form-wrapper">
         <div className="heading">Get's Started</div>
 

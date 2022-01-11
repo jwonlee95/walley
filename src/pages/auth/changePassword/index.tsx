@@ -44,7 +44,7 @@ export const ChangePasswordPage: React.FunctionComponent<IPageProps> = (
     return <Redirect to="/home" />;
 
   return (
-    <AppWrapper>
+    <AppWrapper title="Change Password">
       <div>Change Password</div>
       <form>
         <input
