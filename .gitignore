@@ -104,4 +104,3 @@ dist
 .tern-port
 
 # firebase config keys
-src/config/config.ts

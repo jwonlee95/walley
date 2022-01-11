@@ -70,7 +70,7 @@ export const AddIncomePage: React.FC<RouteComponentProps<any>> = (props) => {
             id="category"
             placeholder="Enter a category"
             disabled={saving}
-            onChange={(event) => {
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               setCategory(event.target.value);
             }}
           ></TextField>
@@ -82,7 +82,7 @@ export const AddIncomePage: React.FC<RouteComponentProps<any>> = (props) => {
             id="description"
             placeholder="description"
             disabled={saving}
-            onChange={(event) => {
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               setDescription(event.target.value);
             }}
           ></TextField>
@@ -94,7 +94,7 @@ export const AddIncomePage: React.FC<RouteComponentProps<any>> = (props) => {
             id="amount"
             placeholder="Enter a amount"
             disabled={saving}
-            onChange={(event) => {
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               setAmount(event.target.value);
             }}
           ></TextField>

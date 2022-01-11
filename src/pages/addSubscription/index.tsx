@@ -69,7 +69,7 @@ export const AddSubscriptionPage: React.FC<RouteComponentProps<any>> = (
             id="description"
             placeholder="description"
             disabled={saving}
-            onChange={(event) => {
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               setDescription(event.target.value);
             }}
           ></TextField>
@@ -81,7 +81,7 @@ export const AddSubscriptionPage: React.FC<RouteComponentProps<any>> = (
             id="amount"
             placeholder="Enter a amount"
             disabled={saving}
-            onChange={(event) => {
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               setAmount(event.target.value);
             }}
           ></TextField>
