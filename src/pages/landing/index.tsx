@@ -10,7 +10,9 @@ const {
   BudgetPlannerIMG,
   LargeRectangle,
   SmallRectangle,
-  Create,
+  SummarySketch,
+  SpendingSketch,
+  CategorySketch,
 } = Images.landing;
 const MainSection: React.FC<{}> = () => {
   return (
@@ -92,7 +94,7 @@ const FunctionalityComp: React.FC<FunctionalityCompProps> = (props) => {
 };
 
 const FunctionalitySection: React.FC<{}> = () => {
-  const imgList = [Create, Create, Create];
+  const imgList = [SummarySketch, SpendingSketch, CategorySketch];
   const titleList = ["Summary", "Add Spendings", "Category"];
   const contentList = [
     "See your spending at a glance",

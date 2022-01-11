@@ -3,13 +3,16 @@ import BoardGraph from "./board-graph.png";
 import BrushTouch from "./brush-touch.svg";
 import BudgetPlannerIMG from "./budget-planner.png";
 import BudgetPlannerSVG from "./budget-planner.svg";
-import Create from "./create.png";
 import LargeRectangle from "./large-rectangle.svg";
 import Logo from "./logo.png";
 import SmallRectangle from "./small-rectangle.svg";
 import StackedRectangle from "./stacked-rectangle.svg";
 import GoogleIcon from "./google-icon.svg";
 import AppleIcon from "./apple-icon.svg";
+import CategorySketch from "./category-sketch.png";
+import SpendingSketch from "./spending-sketch.png";
+import SummarySketch from "./summary-sketch.png";
+
 const IMAGES = {
   logo: Logo,
   landing: {
@@ -18,10 +21,12 @@ const IMAGES = {
     BrushTouch: BrushTouch,
     BudgetPlannerIMG: BudgetPlannerIMG,
     BudgetPlannerSVG: BudgetPlannerSVG,
-    Create: Create,
     LargeRectangle: LargeRectangle,
     SmallRectangle: SmallRectangle,
     StackedRectangle: StackedRectangle,
+    CategorySketch: CategorySketch,
+    SpendingSketch: SpendingSketch,
+    SummarySketch: SummarySketch,
   },
   login: {
     GoogleIcon: GoogleIcon,
