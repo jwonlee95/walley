@@ -31,7 +31,6 @@ export const HomePage: React.FC<IPageProps> = (props) => {
 
         if (response.status === (200 || 304)) {
           let expense = response.data.user.expense as IExpense[];
-          console.log("responseI", response.data.user.expense);
           let income = response.data.user.income as IIncome[];
           let list = expense.concat(income);
           //expense.sort((x, y) => y.updatedAt.localeCompare(x.updatedAt));
@@ -52,7 +51,7 @@ export const HomePage: React.FC<IPageProps> = (props) => {
       }
     };
     listExpenseIncome();
-  }, []);
+  }, [expense, income, user._id]);
 
   if (loading) return <CircularProgress color="inherit" />;
 
