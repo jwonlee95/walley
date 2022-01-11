@@ -7,6 +7,7 @@ import { FormControl, Container, TextField, Button } from "@mui/material";
 import config from "config/config";
 import logging from "config/logging";
 import UserContext from "../../contexts/user";
+import { IExpense } from "interfaces";
 
 export const EditPage: React.FunctionComponent<RouteComponentProps<any>> = (
   props
@@ -16,6 +17,7 @@ export const EditPage: React.FunctionComponent<RouteComponentProps<any>> = (
   const [description, setDescription] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [balance, setBalance] = useState<string>("");
+  const [expense, setExpense] = useState<IExpense>();
 
   const [saving, setSaving] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
@@ -23,6 +25,8 @@ export const EditPage: React.FunctionComponent<RouteComponentProps<any>> = (
   const [error, setError] = useState<string>("");
 
   const { user } = useContext(UserContext).userState;
+
+  console.log("user is ", user);
 
   useEffect(() => {
     let expenseID = props.match.params.expenseID;
@@ -42,15 +46,10 @@ export const EditPage: React.FunctionComponent<RouteComponentProps<any>> = (
       });
 
       if (response.status === (200 || 304)) {
-        if (user._id !== response.data.expense.user._id) {
-          logging.warn(`This expense is owned by someone else.`);
-          setId("");
-        } else {
-          setCategory(response.data.expense.category);
-          setDescription(response.data.expense.description);
-          setAmount(response.data.expense.amount);
-          setBalance(response.data.expense.balance);
-        }
+        setCategory(response.data.expense.category);
+        setDescription(response.data.expense.description);
+        setAmount(response.data.expense.amount);
+        setBalance(response.data.expense.balance);
       } else {
         setError(`Unable to retrieve expense ${_id}`);
       }
@@ -81,7 +80,14 @@ export const EditPage: React.FunctionComponent<RouteComponentProps<any>> = (
           description,
           amount,
           balance,
-          user: user._id,
+        },
+      });
+      console.log("response.data.expense._id: is ", response.data.expense);
+      const responseU = await axios({
+        method: "PATCH",
+        url: `${config.server.url}/users/update/${user._id}`,
+        data: {
+          expense: response.data.expense,
         },
       });
 
@@ -90,6 +96,12 @@ export const EditPage: React.FunctionComponent<RouteComponentProps<any>> = (
         setSuccess("Blog posted.  You can continue to edit on this page.");
       } else {
         setError(`Unable to save expense.`);
+      }
+      if (responseU.status === 201) {
+        setExpense(responseU.data.expense);
+        setSuccess("Succesfully posted to user");
+      } else {
+        setError("Unable to save data to user");
       }
     } catch (error) {
       setError(`Unable to save expense.`);
@@ -204,7 +216,7 @@ export const EditPage: React.FunctionComponent<RouteComponentProps<any>> = (
             </Button>
             {_id !== "" && (
               <Link to="/home">
-                <Button>Go to your expense post!</Button>
+                <Button>Go to home</Button>
               </Link>
             )}
           </div>

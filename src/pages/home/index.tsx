@@ -62,7 +62,7 @@ export const HomePage: React.FC<IPageProps> = (props) => {
     <div>
       <p>Welcome to this page that is protected by Friebase auth!</p>
       <p>
-        Change your password <Link to="/change">here</Link>.
+        Change your password <Link to="/edit">here</Link>.
       </p>
       <p>
         Click <Link to="/logout">here</Link> to logout.
