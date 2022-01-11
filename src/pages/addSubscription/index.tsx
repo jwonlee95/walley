@@ -22,15 +22,6 @@ export const AddSubscriptionPage: React.FC<RouteComponentProps<any>> = (
 
   const { user } = useContext(UserContext).userState;
 
-  useEffect(() => {
-    let subscriptionID = props.match.params.subscriptionID;
-    if (subscriptionID) {
-      setId(subscriptionID);
-    } else {
-      setLoading(false);
-    }
-  }, []);
-
   const createSubscription = async () => {
     if (amount === "") {
       setError("Please fill out all fields.");

@@ -21,15 +21,6 @@ export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
 
   const { user } = useContext(UserContext).userState;
 
-  useEffect(() => {
-    let expenseID = props.match.params.expenseID;
-    if (expenseID) {
-      setId(expenseID);
-    } else {
-      setLoading(false);
-    }
-  }, []);
-
   const createExpense = async () => {
     if (category === "" || description === "" || amount === "") {
       setError("Please fill out all fields.");

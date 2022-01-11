@@ -21,15 +21,6 @@ export const AddIncomePage: React.FC<RouteComponentProps<any>> = (props) => {
 
   const { user } = useContext(UserContext).userState;
 
-  useEffect(() => {
-    let incomeID = props.match.params.incomeID;
-    if (incomeID) {
-      setId(incomeID);
-    } else {
-      setLoading(false);
-    }
-  }, []);
-
   const createIncome = async () => {
     if (category === "" || description === "" || amount === "") {
       setError("Please fill out all fields.");
