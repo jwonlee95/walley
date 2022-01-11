@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import IUser, { DEFAULT_FIRE_TOKEN, DEFAULT_USER } from "../interfaces/user";
+import { IUser, DEFAULT_FIRE_TOKEN, DEFAULT_USER } from "interfaces";
 
 export interface IUserState {
   user: IUser;
