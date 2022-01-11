@@ -1,0 +1,69 @@
+@import "../abstracts/mixins";
+@import "../abstracts/variables";
+
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: $inter;
+  .heading {
+    font-size: 50px;
+    margin-top: 12vh;
+    font-weight: 700;
+    margin-bottom: 15px;
+    text-align: center;
+    line-height: 1.1;
+  }
+
+  .login-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 320px;
+    margin-bottom: 40px;
+  }
+
+  .text-wrapper {
+    width: 500px;
+    text-align: center;
+    font-size: 12px;
+    color: $light-gray;
+    line-height: 1.51;
+    a {
+      color: inherit;
+    }
+  }
+}
+
+.btn-wrapper {
+  @include flex-center();
+  flex-direction: column;
+  .login-btn {
+    font-size: 14px;
+    width: 320px;
+    height: 36px;
+    font-family: $inter;
+    font-weight: 400;
+    text-transform: none;
+    margin: 5px 0px;
+
+    img {
+      margin-right: 6px;
+    }
+  }
+  .google {
+    color: white;
+    background-color: #e16259;
+    &:hover {
+      background-color: #e16259;
+    }
+  }
+  .apple {
+    color: #000;
+    background-color: #fff;
+    &:hover {
+      background-color: #fff;
+    }
+  }
+}

@@ -4,8 +4,12 @@
 
 //components
 @import "./components/navbar";
+@import "./components/footer";
+
+//pages
 @import "./pages/landing";
 @import "./pages/account";
+@import "./pages/login";
 html,
 body {
   margin: 0;
@@ -13,4 +17,13 @@ body {
 }
 .link {
   text-decoration: none;
+}
+
+.appWrapper {
+  max-width: 1260px;
+  margin: auto;
+}
+
+.text-center {
+  text-align: center;
 }

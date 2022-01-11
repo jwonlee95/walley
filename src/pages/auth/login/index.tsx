@@ -1,19 +1,23 @@
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { ErrorText } from "components";
+import { AppWrapper } from "components";
 import { Providers } from "config/firebase";
 import logging from "config/logging";
 import { IPageProps } from "interfaces";
 import firebase from "firebase/compat/app";
 import { Authenticate, SignInWithSocialMedia } from "modules/auth/auth";
 import UserContext from "contexts/user";
+import { Button } from "@mui/material";
+import IMAGES from "assets";
 
+const { GoogleIcon, AppleIcon } = IMAGES.login;
 export const LoginPage: React.FunctionComponent<IPageProps> = (props) => {
   const [authenticating, setAuthenticating] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
   const userContext = useContext(UserContext);
   const history = useHistory();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isLogin = window.location.pathname.includes("login");
 
   const signInWithSocialMedia = (provider: firebase.auth.AuthProvider) => {
@@ -79,22 +83,42 @@ export const LoginPage: React.FunctionComponent<IPageProps> = (props) => {
   };
 
   return (
-    <div>
-      <div>
-        <div>{isLogin ? "Login" : "Sign Up"}</div>
-        <div>
-          <ErrorText error={error} />
-          <button
-            disabled={authenticating}
-            onClick={() => signInWithSocialMedia(Providers.google)}
-            style={{ backgroundColor: "#ea4335", borderColor: "#ea4335" }}
-          >
-            <i className="fab fa-google mr-2"></i> Sign {isLogin ? "in" : "up"}{" "}
-            with Google
-          </button>
-          {authenticating}
+    <AppWrapper>
+      <div className="form-wrapper">
+        <div className="heading">Get's Started</div>
+
+        <div className="login-wrapper">
+          <div className="btn-wrapper">
+            <img src={GoogleIcon} alt="google-icon" />
+            <Button
+              className="login-btn google"
+              variant="contained"
+              disabled={authenticating}
+              onClick={() => signInWithSocialMedia(Providers.google)}
+            >
+              <img src={GoogleIcon} alt="google-icon" />
+              Sign in with Google
+            </Button>
+            <Button
+              className="login-btn apple"
+              variant="contained"
+              disabled={authenticating}
+              onClick={() => signInWithSocialMedia(Providers.google)}
+            >
+              <img src={AppleIcon} alt="apple-icon" />
+              Sign in with Apple
+            </Button>
+          </div>
+        </div>
+        <div className="text-wrapper">
+          <p>
+            By signing in with “Sign in with Google and Apple” above, you
+            acknowledge that you have read and understood, and agree to Walley’s{" "}
+            <a href="/walley">Term’s Condition</a> and{" "}
+            <a href="/walley">Privacy Policy</a>.
+          </p>
         </div>
       </div>
-    </div>
+    </AppWrapper>
   );
 };

@@ -7,7 +7,6 @@ import {
   RegisterPage,
   ResetPasswordPage,
   HomePage,
-  SignUpPage,
   AccountPage,
   LandingPage,
   AboutPage,
@@ -65,17 +64,17 @@ const routes: IRoute[] = [
     protected: false,
   },
   {
+    path: "/",
+    exact: true,
+    component: LandingPage,
+    name: "Production Landing Page",
+    protected: false,
+  },
+  {
     path: "/walley",
     exact: true,
     component: LandingPage,
     name: "Landing Page",
-    protected: false,
-  },
-  {
-    path: "/signup",
-    exact: true,
-    component: SignUpPage,
-    name: "Sign Up Page",
     protected: false,
   },
   {
