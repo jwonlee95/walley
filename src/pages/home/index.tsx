@@ -23,12 +23,8 @@ export const HomePage: React.FC<IPageProps> = (props) => {
         const response = await axios({
           method: "GET",
           url: `${config.server.url}/users/${user._id}`,
-          data: {
-            expense,
-            income,
-          },
         });
-
+        console.log(response);
         if (response.status === (200 || 304)) {
           let expense = response.data.user.expense as IExpense[];
           let income = response.data.user.income as IIncome[];
@@ -51,7 +47,7 @@ export const HomePage: React.FC<IPageProps> = (props) => {
       }
     };
     listExpenseIncome();
-  }, [expense, income, user._id]);
+  }, []);
 
   if (loading) return <CircularProgress color="inherit" />;
 
