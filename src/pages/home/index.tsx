@@ -1,14 +1,27 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { ErrorText, AppWrapper } from "components";
 import CircularProgress from "@mui/material/CircularProgress";
 import { IPageProps, IExpense, IIncome } from "interfaces";
 import UserContext from "contexts/user";
 import config from "config/config";
 import logging from "config/logging";
+import { reducerState } from "common/store";
+import { GetExampleData } from "common/action";
 
 export const HomePage: React.FC<IPageProps> = (props) => {
+  const dispatch = useDispatch();
+  const exampleSelector = useSelector((state: reducerState) => state.example);
+  useEffect(() => {
+    dispatch(GetExampleData("/get"));
+  });
+  useEffect(() => {
+    if (exampleSelector.exampleData) {
+      console.log(exampleSelector.exampleData);
+    }
+  }, [exampleSelector.exampleData]);
   const [expense, setExpense] = useState<IExpense[]>([]);
   const [income, setIncome] = useState<IExpense[]>([]);
   const [list, setList] = useState<IExpense[]>([]);
@@ -24,7 +37,6 @@ export const HomePage: React.FC<IPageProps> = (props) => {
           method: "GET",
           url: `${config.server.url}/users/${user._id}`,
         });
-        console.log(response);
         if (response.status === (200 || 304)) {
           let expense = response.data.user.expense as IExpense[];
           let income = response.data.user.income as IIncome[];
