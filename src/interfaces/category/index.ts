@@ -5,4 +5,5 @@ export interface ICategory {
   spent: number;
   createdAt: string;
   updatedAt: string;
+  remain: number;
 }

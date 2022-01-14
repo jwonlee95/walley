@@ -79,7 +79,16 @@ export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
           updatedAt: Date.now(),
         },
       });
+      const responseS = await axios({
+        method: "PATCH",
+        url: `${config.server.url}/api/types/updateSpent/${user._id}`,
+        data: {
+          category,
+          amount,
+        },
+      });
       if (response.status === 201) {
+        setSpent(response.data.amount);
         setExpense(response.data.expense);
         setSuccess("Succesfully posted to user");
       } else {
@@ -89,6 +98,26 @@ export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
       setError(`Unable to save expense.`);
     } finally {
       setSaving(false);
+    }
+  };
+
+  const addSpent = async () => {
+    try {
+      const response = await axios({
+        method: "PATCH",
+        url: `${config.server.url}/api/types/updateSpent/${user._id}`,
+        data: {
+          name,
+          spent,
+        },
+      });
+      if (response.status === 201) {
+        setSpent(response.data.spent);
+      } else {
+        setError("Unable to set spent");
+      }
+    } catch (error) {
+      setError("Unable to set spent");
     }
   };
 
