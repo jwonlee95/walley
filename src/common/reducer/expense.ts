@@ -2,11 +2,11 @@ import { AnyAction } from "redux";
 import { GET_EXPENSE_DATA } from "common/action";
 
 export type ExpenseDataState = {
-  expenseData: object;
+  expenseData: any;
 };
 
 const initialState: ExpenseDataState = {
-  expenseData: {},
+  expenseData: undefined,
 };
 
 export const expense = (

@@ -9,57 +9,40 @@ import UserContext from "contexts/user";
 import config from "config/config";
 import logging from "config/logging";
 import { reducerState } from "common/store";
-import { GetExampleData } from "common/action";
+import { GetUserData } from "common/action";
 
 export const HomePage: React.FC<IPageProps> = (props) => {
   const dispatch = useDispatch();
-  const exampleSelector = useSelector((state: reducerState) => state.example);
-  useEffect(() => {
-    dispatch(GetExampleData("/get"));
-  });
-  useEffect(() => {
-    if (exampleSelector.exampleData) {
-      console.log(exampleSelector.exampleData);
-    }
-  }, [exampleSelector.exampleData]);
+  const userSelector = useSelector((state: reducerState) => state.user);
+
   const [expense, setExpense] = useState<IExpense[]>([]);
-  const [income, setIncome] = useState<IExpense[]>([]);
+  const [income, setIncome] = useState<IIncome[]>([]);
   const [list, setList] = useState<IExpense[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
 
   const { user } = useContext(UserContext).userState;
-
   useEffect(() => {
-    const listExpenseIncome = async () => {
-      try {
-        const response = await axios({
-          method: "GET",
-          url: `${config.server.url}/users/${user._id}`,
-        });
-        if (response.status === (200 || 304)) {
-          let expense = response.data.user.expense as IExpense[];
-          let income = response.data.user.income as IIncome[];
-          let list = expense.concat(income);
-          //expense.sort((x, y) => y.updatedAt.localeCompare(x.updatedAt));
-          //income.sort((x, y) => y.updatedAt.localeCompare(x.updatedAt));
-          list.sort((x, y) => y.updatedAt.localeCompare(x.updatedAt));
-
-          setExpense(expense);
-          setIncome(income);
-          setList(list);
-        }
-      } catch (error) {
-        logging.info(error);
-        setError("Unable to retrieve expense");
-      } finally {
-        setTimeout(() => {
-          setLoading(false);
-        }, 500);
-      }
-    };
-    listExpenseIncome();
+    dispatch(GetUserData(user._id));
   }, []);
+  useEffect(() => {
+    if (userSelector.userData) {
+      let _expense = userSelector.userData.expense as IExpense[];
+      let _income = userSelector.userData.income as IIncome[];
+      setExpense(_expense);
+      setIncome(_income);
+
+      let _list = _expense.concat(_income);
+      _expense.sort((x, y) => y.updatedAt.localeCompare(x.updatedAt));
+      _income.sort((x, y) => y.updatedAt.localeCompare(x.updatedAt));
+      _list.sort((x, y) => y.updatedAt.localeCompare(x.updatedAt));
+
+      setExpense(_expense);
+      setIncome(_income);
+      setList(_list);
+      setLoading(false);
+    }
+  }, [userSelector.userData]);
 
   if (loading) return <CircularProgress color="inherit" />;
 
@@ -97,6 +80,7 @@ export const HomePage: React.FC<IPageProps> = (props) => {
           );
         })}
         <ErrorText error={error} />
+        {/* <button onClick={}>Test</button> */}
       </div>
     </AppWrapper>
   );
