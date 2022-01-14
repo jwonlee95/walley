@@ -55,6 +55,7 @@ export const HomePage: React.FC<IPageProps> = (props) => {
       }
     };
     listExpenseIncome();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) return <CircularProgress color="inherit" />;

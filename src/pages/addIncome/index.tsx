@@ -30,6 +30,7 @@ export const AddIncomePage: React.FC<RouteComponentProps<any>> = (props) => {
 
   useEffect(() => {
     getTypes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getTypes = async () => {
