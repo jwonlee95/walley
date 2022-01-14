@@ -8,7 +8,9 @@ import config from "config/config";
 import UserContext from "../../contexts/user";
 import { ICategory } from "interfaces";
 
-export const AddCategoryPage: React.FC<RouteComponentProps<any>> = (props) => {
+export const IncomeCategoryPage: React.FC<RouteComponentProps<any>> = (
+  props
+) => {
   const [_id, setId] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [budget, setBudget] = useState<string>("");
@@ -55,7 +57,7 @@ export const AddCategoryPage: React.FC<RouteComponentProps<any>> = (props) => {
   };
 
   const createCategory = async () => {
-    if (name === "" || budget === "") {
+    if (name === "") {
       setError("Please fill out all fields.");
       setSuccess("");
       return null;
@@ -68,12 +70,9 @@ export const AddCategoryPage: React.FC<RouteComponentProps<any>> = (props) => {
     try {
       const response = await axios({
         method: "PATCH",
-        url: `${config.server.url}/api/types/updateTypes/${user._id}`,
+        url: `${config.server.url}/api/types/updateIncomeTypes/${user._id}`,
         data: {
           name,
-          budget,
-          createdAt: Date.now(),
-          updatedAt: Date.now(),
         },
       });
       if (response.status === 201) {
@@ -104,18 +103,6 @@ export const AddCategoryPage: React.FC<RouteComponentProps<any>> = (props) => {
             disabled={saving}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               setName(event.target.value);
-            }}
-          ></TextField>
-          <TextField
-            label="budget"
-            type="text"
-            name="budget"
-            value={budget}
-            id="budget"
-            placeholder="budget"
-            disabled={saving}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setBudget(event.target.value);
             }}
           ></TextField>
           <div>

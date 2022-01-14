@@ -32,7 +32,7 @@ export const HomePage: React.FC<IPageProps> = (props) => {
 
         if (response.status === (200 || 304)) {
           console.log(response.data.user);
-          let category = response.data.user.types as ICategory[];
+          let category = response.data.user.expenseTypes as ICategory[];
           let expense = response.data.user.expense as IExpense[];
           let income = response.data.user.income as IIncome[];
           let list = expense.concat(income);
