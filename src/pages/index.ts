@@ -6,3 +6,4 @@ export * from "./account";
 export * from "./addExpense";
 export * from "./addIncome";
 export * from "./addSubscription";
+export * from "./addCategory";

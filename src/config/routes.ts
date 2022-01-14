@@ -13,6 +13,7 @@ import {
   AddExpensePage,
   AddIncomePage,
   AddSubscriptionPage,
+  AddCategoryPage,
 } from "pages";
 
 const routes: IRoute[] = [
@@ -112,6 +113,13 @@ const routes: IRoute[] = [
     exact: true,
     component: AddSubscriptionPage,
     name: "Add Subscription Page",
+    protected: false,
+  },
+  {
+    path: "/category",
+    exact: true,
+    component: AddCategoryPage,
+    name: "Add Category Page",
     protected: false,
   },
 ];

@@ -3,12 +3,13 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { ErrorText, AppWrapper } from "components";
 import CircularProgress from "@mui/material/CircularProgress";
-import { IPageProps, IExpense, IIncome } from "interfaces";
+import { IPageProps, IExpense, IIncome, ICategory } from "interfaces";
 import UserContext from "contexts/user";
 import config from "config/config";
 import logging from "config/logging";
 
 export const HomePage: React.FC<IPageProps> = (props) => {
+  const [category, setCategory] = useState<ICategory[]>([]);
   const [expense, setExpense] = useState<IExpense[]>([]);
   const [income, setIncome] = useState<IExpense[]>([]);
   const [list, setList] = useState<IExpense[]>([]);
@@ -30,6 +31,8 @@ export const HomePage: React.FC<IPageProps> = (props) => {
         });
 
         if (response.status === (200 || 304)) {
+          console.log(response.data.user);
+          let category = response.data.user.types as ICategory[];
           let expense = response.data.user.expense as IExpense[];
           let income = response.data.user.income as IIncome[];
           let list = expense.concat(income);
@@ -37,6 +40,7 @@ export const HomePage: React.FC<IPageProps> = (props) => {
           //income.sort((x, y) => y.updatedAt.localeCompare(x.updatedAt));
           list.sort((x, y) => y.updatedAt.localeCompare(x.updatedAt));
 
+          setCategory(category);
           setExpense(expense);
           setIncome(income);
           setList(list);
@@ -51,7 +55,7 @@ export const HomePage: React.FC<IPageProps> = (props) => {
       }
     };
     listExpenseIncome();
-  }, [expense, income, user._id]);
+  }, []);
 
   if (loading) return <CircularProgress color="inherit" />;
 
@@ -68,12 +72,29 @@ export const HomePage: React.FC<IPageProps> = (props) => {
         Add subscriptions <Link to="/subscription">here</Link>.
       </p>
       <p>
+        Add category <Link to="/category">here</Link>.
+      </p>
+      <p>
         Click <Link to="/logout">here</Link> to logout.
       </p>
+
       <div>
-        {list.length === 0 && (
-          <p>There are no blogs yet. You should post one 😊.</p>
-        )}
+        {category.length === 0 && <p>There are no category 😊.</p>}
+        {category.map((category, index) => {
+          return (
+            <div key={index}>
+              category={category.name}
+              budget={category.budget}
+              spent={category.spent}
+              <hr />
+            </div>
+          );
+        })}
+        <ErrorText error={error} />
+      </div>
+
+      <div>
+        {list.length === 0 && <p>There are no use history 😊.</p>}
         {list.map((list, index) => {
           return (
             <div key={index}>
