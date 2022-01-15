@@ -4,9 +4,12 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { ErrorText } from "components";
 import { Container, TextField, Button } from "@mui/material";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import config from "config/config";
 import UserContext from "../../contexts/user";
 import { IExpense } from "interfaces";
+import { ICategory } from "interfaces";
 
 export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
   const [_id, setId] = useState<string>("");
@@ -14,12 +17,45 @@ export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
   const [description, setDescription] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [expense, setExpense] = useState<IExpense>();
+  const [types, setTypes] = useState<ICategory[]>([]);
+  const [name, setName] = useState<string>("");
+  const [budget, setBudget] = useState<string>("");
+  const [spent, setSpent] = useState<string>("");
   const [saving, setSaving] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [success, setSuccess] = useState<string>("");
   const [error, setError] = useState<string>("");
 
   const { user } = useContext(UserContext).userState;
+
+  useEffect(() => {
+    getTypes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getTypes = async () => {
+    try {
+      const response = await axios({
+        method: "GET",
+        url: `${config.server.url}/users/${user._id}`,
+      });
+
+      if (response.status === (200 || 304)) {
+        console.log("user is ", user);
+        let types = response.data.user.expenseTypes as ICategory[];
+        setTypes(types);
+        console.log("types are ", types);
+        setName(response.data.user.expenseTypes.name);
+        setBudget(response.data.user.expenseTypes.budget);
+      } else {
+        setError(`Unable to retrieve types ${_id}`);
+      }
+    } catch (error) {
+      setError(`Unable to retrieve types ${_id}`);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const createExpense = async () => {
     if (category === "" || description === "" || amount === "") {
@@ -44,7 +80,16 @@ export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
           updatedAt: Date.now(),
         },
       });
+      const responseS = await axios({
+        method: "PATCH",
+        url: `${config.server.url}/api/types/updateSpent/${user._id}`,
+        data: {
+          category,
+          amount,
+        },
+      });
       if (response.status === 201) {
+        setSpent(response.data.amount);
         setExpense(response.data.expense);
         setSuccess("Succesfully posted to user");
       } else {
@@ -57,23 +102,53 @@ export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
     }
   };
 
+  const addSpent = async () => {
+    try {
+      const response = await axios({
+        method: "PATCH",
+        url: `${config.server.url}/api/types/updateSpent/${user._id}`,
+        data: {
+          name,
+          spent,
+        },
+      });
+      if (response.status === 201) {
+        setSpent(response.data.spent);
+      } else {
+        setError("Unable to set spent");
+      }
+    } catch (error) {
+      setError("Unable to set spent");
+    }
+  };
+
+  const handleChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newCategory: string
+  ) => {
+    setCategory(newCategory);
+  };
+
   return (
     <Container>
       <Container>
         <ErrorText error={error} />
         <div>
-          <TextField
-            label="Category"
-            type="text"
-            name="category"
+          <Link to="/excategory">Add Category</Link>
+          <ToggleButtonGroup
             value={category}
             id="category"
-            placeholder="Enter a category"
-            disabled={saving}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setCategory(event.target.value);
-            }}
-          ></TextField>
+            exclusive
+            onChange={handleChange}
+          >
+            {types.map((expenseTypes) => {
+              return (
+                <ToggleButton value={expenseTypes.name}>
+                  {expenseTypes.name}
+                </ToggleButton>
+              );
+            })}
+          </ToggleButtonGroup>
           <TextField
             label="description"
             type="text"
@@ -98,18 +173,6 @@ export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
               setAmount(event.target.value);
             }}
           ></TextField>
-          {/* <TextField
-            label="balance"
-            type="text"
-            name="balance"
-            value={balance}
-            id="balance"
-            placeholder="Enter a balance"
-            disabled={saving}
-            onChange={(event) => {
-              setBalance(event.target.value);
-            }}
-          ></TextField> */}
 
           <div>
             <Button

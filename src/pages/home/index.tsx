@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ErrorText, AppWrapper } from "components";
 import CircularProgress from "@mui/material/CircularProgress";
-import { IPageProps, IExpense, IIncome } from "interfaces";
+import { IPageProps, IExpense, IIncome, ICategory } from "interfaces";
 import UserContext from "contexts/user";
 import config from "config/config";
 import logging from "config/logging";
@@ -15,6 +15,7 @@ export const HomePage: React.FC<IPageProps> = (props) => {
   const dispatch = useDispatch();
   const userSelector = useSelector((state: reducerState) => state.user);
 
+  const [category, setCategory] = useState<ICategory[]>([]);
   const [expense, setExpense] = useState<IExpense[]>([]);
   const [income, setIncome] = useState<IIncome[]>([]);
   const [list, setList] = useState<IExpense[]>([]);
@@ -59,12 +60,30 @@ export const HomePage: React.FC<IPageProps> = (props) => {
         Add subscriptions <Link to="/subscription">here</Link>.
       </p>
       <p>
+        Add category <Link to="/category">here</Link>.
+      </p>
+      <p>
         Click <Link to="/logout">here</Link> to logout.
       </p>
+
       <div>
-        {list.length === 0 && (
-          <p>There are no blogs yet. You should post one 😊.</p>
-        )}
+        {category.length === 0 && <p>There are no category 😊.</p>}
+        {category.map((category, index) => {
+          return (
+            <div key={index}>
+              category={category.name}
+              budget={category.budget}
+              spent={category.spent}
+              remain={category.remain}
+              <hr />
+            </div>
+          );
+        })}
+        <ErrorText error={error} />
+      </div>
+
+      <div>
+        {list.length === 0 && <p>There are no use history 😊.</p>}
         {list.map((list, index) => {
           return (
             <div key={index}>
