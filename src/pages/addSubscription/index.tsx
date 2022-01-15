@@ -44,10 +44,11 @@ export const AddSubscriptionPage: React.FC<RouteComponentProps<any>> = (
         data: {
           description,
           amount,
-          recurDate: Date.now(),
+          recurDate,
         },
       });
       if (response.status === 201) {
+        console.log(response.data.subscription);
         setSubscription(response.data.subscription);
         setSuccess("Succesfully posted to user");
       } else {

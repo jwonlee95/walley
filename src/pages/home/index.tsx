@@ -3,7 +3,13 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { ErrorText, AppWrapper } from "components";
 import CircularProgress from "@mui/material/CircularProgress";
-import { IPageProps, IExpense, IIncome, ICategory } from "interfaces";
+import {
+  IPageProps,
+  IExpense,
+  IIncome,
+  ICategory,
+  ISubscription,
+} from "interfaces";
 import UserContext from "contexts/user";
 import config from "config/config";
 import logging from "config/logging";
@@ -13,6 +19,7 @@ export const HomePage: React.FC<IPageProps> = (props) => {
   const [expense, setExpense] = useState<IExpense[]>([]);
   const [income, setIncome] = useState<IExpense[]>([]);
   const [list, setList] = useState<IExpense[]>([]);
+  const [subscription, setSubscription] = useState<ISubscription[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
 
@@ -33,6 +40,7 @@ export const HomePage: React.FC<IPageProps> = (props) => {
         if (response.status === (200 || 304)) {
           console.log(response.data.user);
           let category = response.data.user.expenseTypes as ICategory[];
+          let subscription = response.data.user.subscription as ISubscription[];
           let expense = response.data.user.expense as IExpense[];
           let income = response.data.user.income as IIncome[];
           let list = expense.concat(income);
@@ -40,6 +48,7 @@ export const HomePage: React.FC<IPageProps> = (props) => {
           //income.sort((x, y) => y.updatedAt.localeCompare(x.updatedAt));
           list.sort((x, y) => y.updatedAt.localeCompare(x.updatedAt));
 
+          setSubscription(subscription);
           setCategory(category);
           setExpense(expense);
           setIncome(income);
@@ -81,6 +90,7 @@ export const HomePage: React.FC<IPageProps> = (props) => {
 
       <div>
         {category.length === 0 && <p>There are no category 😊.</p>}
+        {category.length != 0 && <b>These are category 😊.</b>}
         {category.map((category, index) => {
           return (
             <div key={index}>
@@ -96,7 +106,24 @@ export const HomePage: React.FC<IPageProps> = (props) => {
       </div>
 
       <div>
+        {subscription.length === 0 && <p>There are no subscriptions 😊.</p>}
+        {subscription.length != 0 && <b>These are Subscriptions 😊.</b>}
+        {subscription.map((subscription, index) => {
+          return (
+            <div key={index}>
+              amount={subscription.amount}
+              name={subscription.description}
+              recurDate={subscription.recurDate}
+              <hr />
+            </div>
+          );
+        })}
+        <ErrorText error={error} />
+      </div>
+
+      <div>
         {list.length === 0 && <p>There are no use history 😊.</p>}
+        {list.length != 0 && <b>These are use history 😊.</b>}
         {list.map((list, index) => {
           return (
             <div key={index}>

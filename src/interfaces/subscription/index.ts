@@ -1,5 +1,5 @@
 export interface ISubscription {
   description?: string;
-  amount: string;
+  amount: number;
   recurDate: Date;
 }
