@@ -69,7 +69,7 @@ export const ExpenseCategoryPage: React.FC<RouteComponentProps<any>> = (
 
     try {
       const response = await axios({
-        method: "PATCH",
+        method: "POST",
         url: `${config.server.url}/api/types/updateExpenseTypes/${user._id}`,
         data: {
           name,

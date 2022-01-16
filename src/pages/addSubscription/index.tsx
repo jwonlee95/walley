@@ -35,7 +35,7 @@ export const AddSubscriptionPage: React.FC<RouteComponentProps<any>> = (
 
     try {
       const response = await axios({
-        method: "PATCH",
+        method: "POST",
         url: `${config.server.url}/api/subscription/updateSubscription/${user._id}`,
         data: {
           description,
