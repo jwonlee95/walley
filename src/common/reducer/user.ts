@@ -1,12 +1,14 @@
-import { GET_USER_DATA } from "common/action";
+import { GET_USER_DATA, GET_TYPES } from "common/action";
 import { AnyAction } from "redux";
 
 export type UserDataState = {
   userData: any;
+  userTypes: any;
 };
 
 const initialState: UserDataState = {
   userData: undefined,
+  userTypes: undefined,
 };
 
 export const user = (
@@ -18,6 +20,11 @@ export const user = (
       return {
         ...state,
         userData: payload.data,
+      };
+    case GET_TYPES:
+      return {
+        ...state,
+        userTypes: payload.data,
       };
     default:
       return state;
