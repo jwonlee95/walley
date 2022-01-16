@@ -97,7 +97,7 @@ export const HomePage: React.FC<IPageProps> = (props) => {
               category={category.name}
               budget={category.budget}
               spent={category.spent}
-              remain={category.remain}
+              remain={category.budget - category.spent}
               <hr />
             </div>
           );
