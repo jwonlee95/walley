@@ -70,7 +70,7 @@ export const AddIncomePage: React.FC<RouteComponentProps<any>> = (props) => {
 
     try {
       const response = await axios({
-        method: "PATCH",
+        method: "POST",
         url: `${config.server.url}/api/income/updateIncome/${user._id}`,
         data: {
           category,
