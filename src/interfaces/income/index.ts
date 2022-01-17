@@ -4,7 +4,7 @@ export interface IIncome {
   _id: string;
   category: string;
   user: string | IUser;
-  description?: string;
+  description: string;
   amount: string;
   balance: string;
   createdAt: string;

@@ -11,8 +11,11 @@ import UserContext from "../../contexts/user";
 import { IExpense } from "interfaces";
 import { ICategory } from "interfaces";
 
-export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
+export const EditExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
   const [_id, setId] = useState<string>("");
+  const [oldCategory, setOldCategory] = useState<string>("");
+  const [OldDescription, setOldDescription] = useState<string>("");
+  const [oldAmount, setOldAmount] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
@@ -27,6 +30,7 @@ export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
   const [error, setError] = useState<string>("");
 
   const { user } = useContext(UserContext).userState;
+  const expenseId = props.match.params.id;
 
   useEffect(() => {
     getTypes();
@@ -39,7 +43,6 @@ export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
         method: "GET",
         url: `${config.server.url}/users/${user._id}`,
       });
-
       if (response.status === (200 || 304)) {
         console.log("user is ", user);
         let types = response.data.user.expenseTypes as ICategory[];
@@ -55,7 +58,7 @@ export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
     }
   };
 
-  const createExpense = async () => {
+  const updateExpense = async () => {
     if (category === "" || description === "" || amount === "") {
       setError("Please fill out all fields.");
       setSuccess("");
@@ -69,23 +72,22 @@ export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
     try {
       const response = await axios({
         method: "PATCH",
-        url: `${config.server.url}/api/expense/updateExpense/${user._id}`,
+        url: `${config.server.url}/api/expense/editExpense/${user._id}/${expenseId}`,
         data: {
           category,
           description,
           amount,
-          createdAt: Date.now(),
           updatedAt: Date.now(),
         },
       });
-      const responseS = await axios({
-        method: "PATCH",
-        url: `${config.server.url}/api/types/updateSpent/${user._id}`,
-        data: {
-          category,
-          amount,
-        },
-      });
+      //   const responseS = await axios({
+      //     method: "PATCH",
+      //     url: `${config.server.url}/api/types/updateSpent/${user._id}`,
+      //     data: {
+      //       category,
+      //       amount,
+      //     },
+      //   });
       if (response.status === 201) {
         setSpent(response.data.amount);
         setExpense(response.data.expense);
@@ -97,6 +99,26 @@ export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
       setError(`Unable to save expense.`);
     } finally {
       setSaving(false);
+    }
+  };
+
+  const addSpent = async () => {
+    try {
+      const response = await axios({
+        method: "PATCH",
+        url: `${config.server.url}/api/types/updateSpent/${user._id}`,
+        data: {
+          category,
+          amount,
+        },
+      });
+      if (response.status === 201) {
+        setSpent(response.data.spent);
+      } else {
+        setError("Unable to set spent");
+      }
+    } catch (error) {
+      setError("Unable to set spent");
     }
   };
 
@@ -155,7 +177,8 @@ export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
           <div>
             <Button
               onClick={() => {
-                createExpense();
+                updateExpense();
+                addSpent();
               }}
               disabled={saving}
             >

@@ -90,7 +90,7 @@ export const HomePage: React.FC<IPageProps> = (props) => {
 
       <div>
         {category.length === 0 && <p>There are no category 😊.</p>}
-        {category.length != 0 && <b>These are category 😊.</b>}
+        {category.length !== 0 && <b>These are category 😊.</b>}
         {category.map((category, index) => {
           return (
             <div key={index}>
@@ -107,7 +107,7 @@ export const HomePage: React.FC<IPageProps> = (props) => {
 
       <div>
         {subscription.length === 0 && <p>There are no subscriptions 😊.</p>}
-        {subscription.length != 0 && <b>These are Subscriptions 😊.</b>}
+        {subscription.length !== 0 && <b>These are Subscriptions 😊.</b>}
         {subscription.map((subscription, index) => {
           return (
             <div key={index}>
@@ -123,19 +123,18 @@ export const HomePage: React.FC<IPageProps> = (props) => {
 
       <div>
         {list.length === 0 && <p>There are no use history 😊.</p>}
-        {list.length != 0 && <b>These are use history 😊.</b>}
+        {list.length !== 0 && <b>These are use history 😊.</b>}
         {list.map((list, index) => {
           return (
-            <div key={index}>
+            <Link to={`/${list._id}`} key={index}>
               {/* _id={expense._id} */}
               category={list.category}
-              {/* user={(expense.user as IUser).name} */}
               description={list.description}
               amount={list.amount}
               createdAt={list.createdAt}
               updatedAt={list.updatedAt}
               <hr />
-            </div>
+            </Link>
           );
         })}
         <ErrorText error={error} />

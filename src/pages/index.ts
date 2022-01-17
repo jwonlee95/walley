@@ -8,3 +8,4 @@ export * from "./addIncome";
 export * from "./addSubscription";
 export * from "./expenseCategory";
 export * from "./incomeCategory";
+export * from "./editExpense";
