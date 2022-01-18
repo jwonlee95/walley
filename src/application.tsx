@@ -60,28 +60,38 @@ const Application: React.FunctionComponent<IApplicationProps> = (props) => {
     userDispatch,
   };
 
-  // if (loading) return { authStage } && <CircularProgress color="inherit" />;
+  if (loading) return { authStage } && <CircularProgress color="inherit" />;
 
   return (
     <UserContextProvider value={userContextValues}>
       <Switch>
-        {routes.map((route, index) => (
-          <Route
-            key={index}
-            path={route.path}
-            exact={route.exact}
-            render={(routeProps: RouteComponentProps<any>) => {
-              if (route.protected)
-                return (
+        {routes.map((route, index) => {
+          if (route.protected) {
+            return (
+              <Route
+                path={route.path}
+                exact={route.exact}
+                key={index}
+                render={(routeProps: RouteComponentProps) => (
                   <AuthRoute>
                     <route.component {...routeProps} />
                   </AuthRoute>
-                );
+                )}
+              />
+            );
+          }
 
-              return <route.component {...routeProps} />;
-            }}
-          />
-        ))}
+          return (
+            <Route
+              path={route.path}
+              exact={route.exact}
+              key={index}
+              render={(routeProps: RouteComponentProps) => (
+                <route.component {...routeProps} />
+              )}
+            />
+          );
+        })}
       </Switch>
     </UserContextProvider>
   );

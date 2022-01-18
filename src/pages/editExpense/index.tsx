@@ -10,15 +10,12 @@ import config from "config/config";
 import UserContext from "../../contexts/user";
 import { IExpense } from "interfaces";
 import { ICategory } from "interfaces";
-import { useDispatch, useSelector } from "react-redux";
-import { GetTypes, CreateExpenseData } from "common/action";
-import { reducerState } from "common/store";
 
-export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
-  const dispatch = useDispatch();
-  const userSelector = useSelector((state: reducerState) => state.user);
-  const expenseSelector = useSelector((state: reducerState) => state.expense);
+export const EditExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
   const [_id, setId] = useState<string>("");
+  const [oldCategory, setOldCategory] = useState<string>("");
+  const [OldDescription, setOldDescription] = useState<string>("");
+  const [oldAmount, setOldAmount] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
@@ -33,33 +30,35 @@ export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
   const [error, setError] = useState<string>("");
 
   const { user } = useContext(UserContext).userState;
+  const expenseId = props.match.params.id;
 
   useEffect(() => {
-    dispatch(GetTypes(user._id));
+    getTypes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (userSelector.userTypes) {
-      console.log(userSelector.userTypes);
-      let _types = userSelector.userTypes.expenseTypes as ICategory[];
-      setTypes(_types);
-      console.log("types are ", _types);
-      setName(userSelector.userTypes.expenseTypes.name);
-      setBudget(userSelector.userTypes.expenseTypes.budget);
+  const getTypes = async () => {
+    try {
+      const response = await axios({
+        method: "GET",
+        url: `${config.server.url}/users/${user._id}`,
+      });
+      if (response.status === (200 || 304)) {
+        console.log("user is ", user);
+        let types = response.data.user.expenseTypes as ICategory[];
+        setTypes(types);
+        console.log("types are ", types);
+      } else {
+        setError(`Unable to retrieve types ${_id}`);
+      }
+    } catch (error) {
+      setError(`Unable to retrieve types ${_id}`);
+    } finally {
       setLoading(false);
     }
-  }, [userSelector.userTypes]);
+  };
 
-  useEffect(() => {
-    if (expenseSelector.createExpenseData) {
-      setSpent(expenseSelector.createExpenseData.amount);
-      setExpense(expenseSelector.createExpenseData.expense);
-      setSuccess("Succesfully posted to user");
-      setSaving(false);
-    }
-  });
-
-  const createExpense = () => {
+  const updateExpense = async () => {
     if (category === "" || description === "" || amount === "") {
       setError("Please fill out all fields.");
       setSuccess("");
@@ -70,40 +69,57 @@ export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
     setSuccess("");
     setSaving(true);
 
-    const data = {
-      category,
-      description,
-      amount,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-    };
-    dispatch(CreateExpenseData(user._id, data));
+    try {
+      const response = await axios({
+        method: "PATCH",
+        url: `${config.server.url}/api/expense/editExpense/${user._id}/${expenseId}`,
+        data: {
+          category,
+          description,
+          amount,
+          updatedAt: Date.now(),
+        },
+      });
+      //   const responseS = await axios({
+      //     method: "PATCH",
+      //     url: `${config.server.url}/api/types/updateSpent/${user._id}`,
+      //     data: {
+      //       category,
+      //       amount,
+      //     },
+      //   });
+      if (response.status === 201) {
+        setSpent(response.data.amount);
+        setExpense(response.data.expense);
+        setSuccess("Succesfully posted to user");
+      } else {
+        setError("Unable to save data to user");
+      }
+    } catch (error) {
+      setError(`Unable to save expense.`);
+    } finally {
+      setSaving(false);
+    }
+  };
 
-    // try {
-    //   const response = await axios({
-    //     method: "POST",
-    //     url: `${config.server.url}/api/expense/updateExpense/${user._id}`,
-    //     data: {
-    //       category,
-    //       description,
-    //       amount,
-    //       createdAt: Date.now(),
-    //       updatedAt: Date.now(),
-    //     },
-    //   });
-
-    //   if (response.status === 201) {
-    //     setSpent(response.data.amount);
-    //     setExpense(response.data.expense);
-    //     setSuccess("Succesfully posted to user");
-    //   } else {
-    //     setError("Unable to save data to user");
-    //   }
-    // } catch (error) {
-    //   setError(`Unable to save expense.`);
-    // } finally {
-    //   setSaving(false);
-    // }
+  const addSpent = async () => {
+    try {
+      const response = await axios({
+        method: "PATCH",
+        url: `${config.server.url}/api/types/updateSpent/${user._id}`,
+        data: {
+          category,
+          amount,
+        },
+      });
+      if (response.status === 201) {
+        setSpent(response.data.spent);
+      } else {
+        setError("Unable to set spent");
+      }
+    } catch (error) {
+      setError("Unable to set spent");
+    }
   };
 
   const handleChange = (
@@ -161,7 +177,8 @@ export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
           <div>
             <Button
               onClick={() => {
-                createExpense();
+                updateExpense();
+                addSpent();
               }}
               disabled={saving}
             >

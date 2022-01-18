@@ -1,9 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext, useState } from "react";
 import { RouteComponentProps } from "react-router";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { ErrorText } from "components";
 import { Container, TextField, Button } from "@mui/material";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import config from "config/config";
 import UserContext from "../../contexts/user";
 import { ISubscription } from "interfaces";
@@ -14,6 +17,7 @@ export const AddSubscriptionPage: React.FC<RouteComponentProps<any>> = (
   const [_id, setId] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
+  const [recurDate, setRecurDate] = React.useState<Date | null>(new Date());
   const [subscription, setSubscription] = useState<ISubscription>();
   const [saving, setSaving] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
@@ -40,10 +44,11 @@ export const AddSubscriptionPage: React.FC<RouteComponentProps<any>> = (
         data: {
           description,
           amount,
-          recurDate: Date.now(),
+          recurDate,
         },
       });
       if (response.status === 201) {
+        console.log(response.data.subscription);
         setSubscription(response.data.subscription);
         setSuccess("Succesfully posted to user");
       } else {
@@ -54,6 +59,10 @@ export const AddSubscriptionPage: React.FC<RouteComponentProps<any>> = (
     } finally {
       setSaving(false);
     }
+  };
+
+  const handleChange = (newValue: Date | null) => {
+    setRecurDate(newValue);
   };
 
   return (
@@ -85,18 +94,17 @@ export const AddSubscriptionPage: React.FC<RouteComponentProps<any>> = (
               setAmount(event.target.value);
             }}
           ></TextField>
-          {/* <TextField
-            label="balance"
-            type="text"
-            name="balance"
-            value={balance}
-            id="balance"
-            placeholder="Enter a balance"
-            disabled={saving}
-            onChange={(event) => {
-              setBalance(event.target.value);
-            }}
-          ></TextField> */}
+          {
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DesktopDatePicker
+                label="Recur Date"
+                value={recurDate}
+                onChange={handleChange}
+                inputFormat="MM/dd/yyyy"
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          }
 
           <div>
             <Button
