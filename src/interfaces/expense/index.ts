@@ -1,12 +1,8 @@
-import { IUser } from "../user";
-
 export interface IExpense {
   _id: string;
   category: string;
-  user: string | IUser;
   description: string;
-  amount: string;
-  balance: string;
+  amount: number;
   createdAt: string;
   updatedAt: string;
 }

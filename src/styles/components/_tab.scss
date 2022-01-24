@@ -36,9 +36,6 @@
       white-space: nowrap;
       text-overflow: ellipsis;
       font-weight: 500;
-      .category-icon {
-        margin-right: 7px;
-      }
     }
     .card-content-wrapper {
       width: 100%;
@@ -67,4 +64,13 @@
   .cards-wrapper::-webkit-scrollbar {
     display: none;
   }
+}
+
+.icon {
+  margin-right: 7px;
+}
+
+.finance-table-category {
+  display: flex;
+  align-items: center;
 }

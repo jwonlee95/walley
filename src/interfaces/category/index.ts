@@ -1,9 +1,9 @@
 export interface ICategory {
   _id: string;
+  icon: string;
+  color: string;
   name: string;
   budget: number;
   spent: number;
-  createdAt: string;
-  updatedAt: string;
   remain: number;
 }

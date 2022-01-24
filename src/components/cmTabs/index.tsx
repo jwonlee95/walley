@@ -10,9 +10,9 @@ const TabIcon: React.FC<{ _label: string; _clicked: boolean }> = (props) => {
   return (
     <img
       src={
-        props._label === "Expense" && props._clicked
+        props._label === "Accounts" && props._clicked
           ? DollarIconClicked
-          : props._label === "Expense" && !props._clicked
+          : props._label === "Accounts" && !props._clicked
           ? DollarIcon
           : props._label === "Summary" && props._clicked
           ? ChartIconClicked
