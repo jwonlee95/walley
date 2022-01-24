@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/walley/static/css/main.827167a4.css",
-    "main.js": "/walley/static/js/main.cbf5f654.js",
+    "main.css": "/walley/static/css/main.ee2b5578.css",
+    "main.js": "/walley/static/js/main.ac625c29.js",
     "static/js/787.6e463f98.chunk.js": "/walley/static/js/787.6e463f98.chunk.js",
     "static/media/logo.png": "/walley/static/media/logo.7199efc6756e2050e48d.png",
     "static/media/budget-planner.svg": "/walley/static/media/budget-planner.d39e85096b50903728ed9e0e69e174a4.svg",
@@ -13,17 +13,21 @@
     "static/media/BE.svg": "/walley/static/media/BE.b32bb51b2413751b41f3e3ca0fbd363f.svg",
     "static/media/google-icon.svg": "/walley/static/media/google-icon.d7b28877129388d91ce99f7b0fc9519a.svg",
     "static/media/apple-icon.svg": "/walley/static/media/apple-icon.80023a4c88de2be38da262a55f1a920b.svg",
+    "static/media/dollar-icon.svg": "/walley/static/media/dollar-icon.426bb6700c2f4242d27ecea849a77342.svg",
+    "static/media/dollar-icon-clicked.svg": "/walley/static/media/dollar-icon-clicked.ef3a9d39e4f1e0e197c3d560de4068f2.svg",
     "index.html": "/walley/index.html",
+    "static/media/chart-icon.svg": "/walley/static/media/chart-icon.95a74cdc7c556628d753ff42d486b2db.svg",
     "static/media/brush-touch.svg": "/walley/static/media/brush-touch.888e53e75cb0f0939d4473479e8dea63.svg",
+    "static/media/chart-icon-clicked.svg": "/walley/static/media/chart-icon-clicked.a569130fda8bf3ad016f145f6cb1bb06.svg",
     "static/media/stacked-rectangle.svg": "/walley/static/media/stacked-rectangle.859b39ddd8928ce2fe9b464659e4ff5f.svg",
     "static/media/large-rectangle.svg": "/walley/static/media/large-rectangle.911c3035797a32ea55b7e0303e015f27.svg",
     "static/media/small-rectangle.svg": "/walley/static/media/small-rectangle.bdbe8ca6a3a382c26d5bdb94c976b39e.svg",
-    "main.827167a4.css.map": "/walley/static/css/main.827167a4.css.map",
-    "main.cbf5f654.js.map": "/walley/static/js/main.cbf5f654.js.map",
+    "main.ee2b5578.css.map": "/walley/static/css/main.ee2b5578.css.map",
+    "main.ac625c29.js.map": "/walley/static/js/main.ac625c29.js.map",
     "787.6e463f98.chunk.js.map": "/walley/static/js/787.6e463f98.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.827167a4.css",
-    "static/js/main.cbf5f654.js"
+    "static/css/main.ee2b5578.css",
+    "static/js/main.ac625c29.js"
   ]
 }
