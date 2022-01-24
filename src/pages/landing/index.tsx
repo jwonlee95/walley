@@ -1,7 +1,7 @@
 import React from "react";
 import { AppWrapper, Footer } from "components";
 import { Button } from "@mui/material";
-import Images from "assets";
+import { IMAGES } from "assets";
 
 const {
   BE,
@@ -13,7 +13,7 @@ const {
   SummarySketch,
   SpendingSketch,
   CategorySketch,
-} = Images.landing;
+} = IMAGES.landing;
 const MainSection: React.FC<{}> = () => {
   return (
     <section className="landing-section">

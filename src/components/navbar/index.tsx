@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useHistory } from "react-router-dom";
 
 import { Stack, Button } from "@mui/material";
-import IMAGES from "assets";
+import { IMAGES } from "assets";
 
 export const NavBar: React.FC<{}> = () => {
   const history = useHistory();
