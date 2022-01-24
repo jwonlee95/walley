@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Paper,
   Table,
@@ -8,8 +8,11 @@ import {
   TableHead,
   styled,
   TableRow,
+  Icon,
 } from "@mui/material";
 import moment from "moment";
+import produce from "immer";
+import { StateContext } from "contexts";
 interface Column {
   id: "category" | "date" | "description" | "amount" | "balance";
   label: string;
@@ -25,6 +28,8 @@ const columns: readonly Column[] = [
   { id: "balance", label: "Balance", minWidth: 100 },
 ];
 interface TableData {
+  icon: string;
+  color: string;
   category: string;
   date: string;
   description: string;
@@ -32,94 +37,16 @@ interface TableData {
   balance: number;
 }
 const createData = (
+  icon: string,
+  color: string,
   category: string,
   date: string,
   description: string,
   amount: number,
   balance: number
 ): TableData => {
-  return { category, date, description, amount, balance };
+  return { icon, color, category, date, description, amount, balance };
 };
-
-const rows = [
-  createData(
-    "India",
-    moment(new Date().toString()).format("ll"),
-    "1",
-    263,
-    4343
-  ),
-  createData(
-    "India",
-    moment(new Date().toString()).format("ll"),
-    "2",
-    263,
-    4343
-  ),
-  createData(
-    "India",
-    moment(new Date().toString()).format("ll"),
-    "3",
-    263,
-    4343
-  ),
-  createData(
-    "India",
-    moment(new Date().toString()).format("ll"),
-    "1354",
-    263,
-    4343
-  ),
-  createData(
-    "India",
-    moment(new Date().toString()).format("ll"),
-    "1354",
-    263,
-    4343
-  ),
-  createData(
-    "India",
-    moment(new Date().toString()).format("ll"),
-    "1354",
-    263,
-    4343
-  ),
-  createData(
-    "India",
-    moment(new Date().toString()).format("ll"),
-    "1354",
-    263,
-    4343
-  ),
-  createData(
-    "India",
-    moment(new Date().toString()).format("ll"),
-    "1354",
-    263,
-    4343
-  ),
-  createData(
-    "India",
-    moment(new Date().toString()).format("ll"),
-    "1354",
-    263,
-    4343
-  ),
-  createData(
-    "India",
-    moment(new Date().toString()).format("ll"),
-    "1354",
-    263,
-    4343
-  ),
-  createData(
-    "India",
-    moment(new Date().toString()).format("ll"),
-    "1354",
-    263,
-    4343
-  ),
-];
 
 const cellStyle = {
   fontFamily: "Inter, -apple-system, sans-serif",
@@ -136,6 +63,34 @@ const dataCellStyle = {
 };
 
 export const FinanceTable = () => {
+  const { expense, category } = useContext(StateContext);
+  const [rows, setRows] = useState<TableData[]>([]);
+
+  useEffect(() => {
+    for (const ele of expense) {
+      const _category = ele.category;
+      for (const cate of category) {
+        if (cate.name === _category) {
+          setRows(
+            produce((draft) => {
+              draft.push(
+                createData(
+                  cate.icon,
+                  cate.color,
+                  _category,
+                  moment(ele.createdAt).format("ll"),
+                  ele.description,
+                  ele.amount,
+                  0
+                )
+              );
+            })
+          );
+        }
+      }
+    }
+  }, []);
+
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
       <TableContainer sx={{ maxHeight: 500 }}>
@@ -169,7 +124,20 @@ export const FinanceTable = () => {
                           ...dataCellStyle,
                         }}
                       >
-                        {value}
+                        {col.id === "category" ? (
+                          <div className="finance-table-category">
+                            <Icon
+                              className="icon"
+                              fontSize="medium"
+                              sx={{ color: row.color }}
+                            >
+                              {row.icon}
+                            </Icon>
+                            {row.category}
+                          </div>
+                        ) : (
+                          `${value}`
+                        )}
                       </TableCell>
                     );
                   })}

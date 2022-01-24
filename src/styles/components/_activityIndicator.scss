@@ -1,0 +1,7 @@
+@import "../abstracts/mixins";
+
+.activity-indicator-wrapper {
+  width: 100%;
+  height: 100vh;
+  @include flex-center();
+}

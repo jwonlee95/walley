@@ -20,7 +20,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
   return (
     <Card variant="outlined" className="card">
       <div className="card-heading">
-        <Icon className="category-icon" fontSize="medium" sx={{ color: color }}>
+        <Icon className="icon" fontSize="medium" sx={{ color: color }}>
           {icon}
         </Icon>
         {name}

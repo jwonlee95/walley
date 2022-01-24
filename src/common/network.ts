@@ -38,7 +38,7 @@ export const FetchApiPost = async (url: string, data?: any) => {
   try {
     const response = await axios({
       method: "POST",
-      url: domain + url,
+      url: url,
       headers: {
         "Access-Control-Allow-Origin": "http://localhost:1337",
       },

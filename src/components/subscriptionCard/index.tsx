@@ -15,7 +15,9 @@ export const SubscriptionCard: React.FC<SubscriptionCarddProps> = ({
     <Card variant="outlined" className="card">
       <div className="card-heading">{name}</div>
       <div className="sub-amount">{`$ ${amount}`}</div>
-      <div className="sub-remaining">{`D-${remainingDay}`}</div>
+      <div className="sub-remaining">
+        {remainingDay === 0 ? "D-Day" : `D-${remainingDay}`}
+      </div>
     </Card>
   );
 };

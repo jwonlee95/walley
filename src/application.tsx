@@ -1,7 +1,6 @@
 import React, { useEffect, useReducer, useState } from "react";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
-import { AuthRoute } from "components";
-import CircularProgress from "@mui/material/CircularProgress";
+import { ActivityIndicator, AuthRoute } from "components";
 import logging from "config/logging";
 import routes from "config/routes";
 
@@ -60,7 +59,7 @@ const Application: React.FunctionComponent<IApplicationProps> = (props) => {
     userDispatch,
   };
 
-  if (loading) return { authStage } && <CircularProgress color="inherit" />;
+  if (loading) return { authStage } && <ActivityIndicator />;
 
   return (
     <UserContextProvider value={userContextValues}>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { RouteComponentProps, useHistory } from "react-router-dom";
-import { ErrorText, AppWrapper } from "components";
-import CircularProgress from "@mui/material/CircularProgress";
+import { ErrorText, AppWrapper, ActivityIndicator } from "components";
+
 import { auth } from "config/firebase";
 import logging from "config/logging";
 import { IPageProps } from "interfaces/page";
@@ -88,7 +88,7 @@ export const ResetPasswordPage: React.FunctionComponent<
       <div>Reset Password</div>
 
       {verifying ? (
-        <CircularProgress color="inherit" />
+        <ActivityIndicator />
       ) : (
         <>
           {verified ? (

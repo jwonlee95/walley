@@ -1,5 +1,6 @@
 export interface ISubscription {
-  description?: string;
+  name: string;
   amount: number;
   recurDate: Date;
+  _id: string;
 }

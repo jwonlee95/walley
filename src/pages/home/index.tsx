@@ -1,15 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
-import axios from "axios";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  ErrorText,
-  AppWrapper,
-  HomeTab,
-  ExpenseTab,
-  SummaryTab,
-} from "components";
-import CircularProgress from "@mui/material/CircularProgress";
+import { StateContext } from "contexts/state";
+import { AppWrapper, HomeTab, ActivityIndicator } from "components";
+
 import {
   IPageProps,
   IExpense,
@@ -18,38 +11,61 @@ import {
   ISubscription,
 } from "interfaces";
 import UserContext from "contexts/user";
-import config from "config/config";
-import logging from "config/logging";
 import { reducerState } from "common/store";
 import { GetUserData } from "common/action";
+import { SetterContext } from "contexts";
 
 export const HomePage: React.FC<IPageProps> = (props) => {
   const dispatch = useDispatch();
   const userSelector = useSelector((state: reducerState) => state.user);
 
+  const [loading, setLoading] = useState<boolean>(true);
+  const [balance, setBalance] = useState<number>(0);
   const [category, setCategory] = useState<ICategory[]>([]);
   const [expense, setExpense] = useState<IExpense[]>([]);
   const [income, setIncome] = useState<IIncome[]>([]);
-  const [list, setList] = useState<IExpense[]>([]);
   const [subscription, setSubscription] = useState<ISubscription[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>("");
-
   const { user } = useContext(UserContext).userState;
+
+  const setterContext = {
+    setBalance,
+    setCategory,
+    setExpense,
+    setIncome,
+    setSubscription,
+  };
+  const stateContext = {
+    balance,
+    category,
+    expense,
+    income,
+    subscription,
+  };
+
   useEffect(() => {
     dispatch(GetUserData(user._id));
   }, []);
+
   useEffect(() => {
     if (userSelector.userData) {
+      setBalance(userSelector.userData.balance);
+      setCategory(userSelector.userData.category);
+      setExpense(userSelector.userData.expense);
+      setIncome(userSelector.userData.income);
+      setSubscription(userSelector.userData.subscription);
       setLoading(false);
     }
   }, [userSelector.userData]);
 
-  if (loading) return <CircularProgress color="inherit" />;
+  if (loading) return <ActivityIndicator />;
 
   return (
     <AppWrapper title="Home">
-      <HomeTab></HomeTab>
+      <SetterContext.Provider value={setterContext}>
+        <StateContext.Provider value={stateContext}>
+          <HomeTab></HomeTab>
+        </StateContext.Provider>
+      </SetterContext.Provider>
     </AppWrapper>
   );
 };
