@@ -41,11 +41,11 @@ export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
   useEffect(() => {
     if (userSelector.userTypes) {
       console.log(userSelector.userTypes);
-      let _types = userSelector.userTypes.expenseTypes as ICategory[];
+      let _types = userSelector.userTypes.category as ICategory[];
       setTypes(_types);
       console.log("types are ", _types);
-      setName(userSelector.userTypes.expenseTypes.name);
-      setBudget(userSelector.userTypes.expenseTypes.budget);
+      setName(userSelector.userTypes.category.name);
+      setBudget(userSelector.userTypes.category.budget);
       setLoading(false);
     }
   }, [userSelector.userTypes]);
@@ -125,10 +125,10 @@ export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
             exclusive
             onChange={handleChange}
           >
-            {types.map((expenseTypes) => {
+            {types.map((category) => {
               return (
-                <ToggleButton value={expenseTypes.name}>
-                  {expenseTypes.name}
+                <ToggleButton value={category.name}>
+                  {category.name}
                 </ToggleButton>
               );
             })}

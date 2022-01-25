@@ -1,5 +1,8 @@
 import { AnyAction } from "redux";
-import { GET_CATEGORY_DATA } from "common/action/category";
+import {
+  GET_CATEGORY_DATA,
+  CREATE_CATEGORY_DATA,
+} from "common/action/category";
 
 export type CategoryDataState = {
   categoryData: any;
@@ -18,6 +21,12 @@ export const category = (
       return {
         ...state,
         categoryData: payload.data,
+      };
+
+    case CREATE_CATEGORY_DATA:
+      return {
+        ...state,
+        createCategoryData: payload.data,
       };
 
     default:

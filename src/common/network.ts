@@ -101,3 +101,25 @@ export const FetchApiPut = async (url: string, data?: any) => {
     };
   }
 };
+
+export const FetchApiPatch = async (url: string, data?: any) => {
+  try {
+    const response = await axios({
+      method: "PATCH",
+      url: url,
+      data: data,
+      headers: {
+        "Access-Control-Allow-Origin": "http://localhost:1337",
+      },
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    logging.info(error);
+    console.error(error);
+    return {
+      resultCode: 404,
+      errorMessage: error,
+    };
+  }
+};
