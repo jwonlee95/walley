@@ -1,12 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { ErrorText } from "components";
 import { Container, TextField, Button } from "@mui/material";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import config from "config/config";
 import UserContext from "../../contexts/user";
 import { IExpense } from "interfaces";
 import { ICategory } from "interfaces";
@@ -44,8 +42,6 @@ export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
       let _types = userSelector.userTypes.category as ICategory[];
       setTypes(_types);
       console.log("types are ", _types);
-      setName(userSelector.userTypes.category.name);
-      setBudget(userSelector.userTypes.category.budget);
       setLoading(false);
     }
   }, [userSelector.userTypes]);
@@ -78,32 +74,6 @@ export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
       updatedAt: Date.now(),
     };
     dispatch(CreateExpenseData(user._id, data));
-
-    // try {
-    //   const response = await axios({
-    //     method: "POST",
-    //     url: `${config.server.url}/api/expense/updateExpense/${user._id}`,
-    //     data: {
-    //       category,
-    //       description,
-    //       amount,
-    //       createdAt: Date.now(),
-    //       updatedAt: Date.now(),
-    //     },
-    //   });
-
-    //   if (response.status === 201) {
-    //     setSpent(response.data.amount);
-    //     setExpense(response.data.expense);
-    //     setSuccess("Succesfully posted to user");
-    //   } else {
-    //     setError("Unable to save data to user");
-    //   }
-    // } catch (error) {
-    //   setError(`Unable to save expense.`);
-    // } finally {
-    //   setSaving(false);
-    // }
   };
 
   const handleChange = (

@@ -1,4 +1,4 @@
-import { GET_INCOME_DATA } from "common/action";
+import { GET_INCOME_DATA, CREATE_INCOME_DATA } from "common/action";
 import { AnyAction } from "redux";
 
 export type IncomeDataState = {
@@ -18,6 +18,11 @@ export const income = (
       return {
         ...state,
         incomeData: payload.data,
+      };
+    case CREATE_INCOME_DATA:
+      return {
+        ...state,
+        createExpenseData: payload.data,
       };
     default:
       return state;
