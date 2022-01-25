@@ -28,7 +28,6 @@ export const ExpenseCategoryPage: React.FC<RouteComponentProps<any>> = (
   const [error, setError] = useState<string>("");
 
   const { user } = useContext(UserContext).userState;
-  console.log(user._id);
 
   const createCategory = () => {
     if (name === "" || budget === "") {
@@ -49,74 +48,6 @@ export const ExpenseCategoryPage: React.FC<RouteComponentProps<any>> = (
     };
     dispatch(CreateCategoryData(user._id, data));
   };
-
-  // useEffect(() => {
-  //   let categoryID = props.match.params.categoryID;
-
-  //   if (categoryID) {
-  //     setId(categoryID);
-  //     getCategory(categoryID);
-  //   } else {
-  //     setLoading(false);
-  //   }
-
-  //   // eslint-disable-next-line
-  // }, []);
-
-  // const getCategory = async (id: string) => {
-  //   try {
-  //     const response = await axios({
-  //       method: "GET",
-  //       url: `${config.server.url}/api/category/read/${id}`,
-  //     });
-
-  //     if (response.status === (200 || 304)) {
-  //       setName(response.data.category.name);
-  //       setBudget(response.data.category.budget);
-  //     } else {
-  //       setError(`Unable to retrieve category ${_id}`);
-  //     }
-  //   } catch (error) {
-  //     setError(`Unable to retrieve category ${_id}`);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // const createCategory = async () => {
-  //   if (name === "" || budget === "") {
-  //     setError("Please fill out all fields.");
-  //     setSuccess("");
-  //     return null;
-  //   }
-
-  //   setError("");
-  //   setSuccess("");
-  //   setSaving(true);
-
-  //   try {
-  //     const response = await axios({
-  //       method: "POST",
-  //       url: `${config.server.url}/api/category/updateExpenseCategory/${user._id}`,
-  //       data: {
-  //         name,
-  //         budget,
-  //         createdAt: Date.now(),
-  //         updatedAt: Date.now(),
-  //       },
-  //     });
-  //     if (response.status === 201) {
-  //       setCategory(response.data.category);
-  //       setSuccess("Succesfully posted to user");
-  //     } else {
-  //       setError("Unable to save data to user");
-  //     }
-  //   } catch (error) {
-  //     setError(`Unable to save category.`);
-  //   } finally {
-  //     setSaving(false);
-  //   }
-  // };
 
   return (
     <Container>

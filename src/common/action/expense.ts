@@ -1,4 +1,4 @@
-import { FetchApiGet, FetchApiPost } from "../network";
+import { FetchApiGet, FetchApiPatch } from "../network";
 import actions from "../creator";
 import config from "config/config";
 import { Config } from "firebase/auth";
@@ -13,6 +13,6 @@ export const CREATE_EXPENSE_DATA = "CREATE_EXPENSE_DATA";
 export const CreateExpenseData = actions(
   CREATE_EXPENSE_DATA,
   async (id: string, data: object) => {
-    await FetchApiPost(expensePath + `/create/${id}`, data);
+    await FetchApiPatch(expensePath + `/updateExpense/${id}`, data);
   }
 );
