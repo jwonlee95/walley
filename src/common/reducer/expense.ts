@@ -1,5 +1,9 @@
 import { AnyAction } from "redux";
-import { GET_EXPENSE_DATA, CREATE_EXPENSE_DATA } from "common/action";
+import {
+  GET_EXPENSE_DATA,
+  CREATE_EXPENSE_DATA,
+  EDIT_EXPENSE_DATA,
+} from "common/action";
 
 export type ExpenseDataState = {
   expenseData: any;
@@ -23,6 +27,12 @@ export const expense = (
       };
 
     case CREATE_EXPENSE_DATA:
+      return {
+        ...state,
+        createExpenseData: payload.data,
+      };
+
+    case EDIT_EXPENSE_DATA:
       return {
         ...state,
         createExpenseData: payload.data,
