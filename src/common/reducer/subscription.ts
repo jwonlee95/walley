@@ -1,11 +1,14 @@
 import { AnyAction } from "redux";
 import { POST_NEW_RECUR_DATE, CREATE_SUBSCRIPTION_DATA } from "common/action";
+import { ISubscription } from "interfaces";
 
 export type SubscriptionDataState = {
   postNewRecurDate: any;
+  createSubscriptionData: ISubscription | undefined;
 };
 const initialState: SubscriptionDataState = {
   postNewRecurDate: undefined,
+  createSubscriptionData: undefined,
 };
 
 export const subscription = (
@@ -21,7 +24,7 @@ export const subscription = (
     case CREATE_SUBSCRIPTION_DATA:
       return {
         ...state,
-        createExpenseData: payload.data,
+        createSubscriptionData: payload.data,
       };
     default:
       return state;

@@ -6,6 +6,7 @@ import {
   SubscriptionCard,
   FinanceTable,
   CategoryModal,
+  SubscriptionModal,
 } from "components";
 
 import { StateContext, UserContext } from "contexts";
@@ -57,16 +58,22 @@ const CategorySection = () => {
 
 const SubscriptionSection = () => {
   const { subscription } = useContext(StateContext);
+  const [open, setOpen] = useState<boolean>(false);
 
   const dispatch = useDispatch();
   const { user } = useContext(UserContext).userState;
 
   const handleAddClick = () => {
-    console.log("add subscription");
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
     <div className="tab-wrapper">
+      <SubscriptionModal open={open} onClose={handleClose} />
+
       <TabSectionHeading title="Subscription" onClick={handleAddClick} />
       <div className="cards-wrapper">
         {subscription.map((ele, idx) => {
