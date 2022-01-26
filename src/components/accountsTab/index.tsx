@@ -6,6 +6,8 @@ import {
   SubscriptionCard,
   FinanceTable,
   CategoryModal,
+  SubscriptionModal,
+  TransactionModal,
 } from "components";
 
 import { StateContext, UserContext } from "contexts";
@@ -45,7 +47,7 @@ const CategorySection = () => {
             icon={ele.icon}
             name={ele.name}
             budget={ele.budget}
-            remain={ele.remain}
+            remain={ele.budget - ele.spent}
             color={ele.color}
             key={`${ele.name}-${idx}`}
           />
@@ -57,16 +59,22 @@ const CategorySection = () => {
 
 const SubscriptionSection = () => {
   const { subscription } = useContext(StateContext);
+  const [open, setOpen] = useState<boolean>(false);
 
   const dispatch = useDispatch();
   const { user } = useContext(UserContext).userState;
 
   const handleAddClick = () => {
-    console.log("add subscription");
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
     <div className="tab-wrapper">
+      <SubscriptionModal open={open} onClose={handleClose} />
+
       <TabSectionHeading title="Subscription" onClick={handleAddClick} />
       <div className="cards-wrapper">
         {subscription.map((ele, idx) => {
@@ -97,12 +105,19 @@ const SubscriptionSection = () => {
 };
 
 const FinanceSection = () => {
+  const [open, setOpen] = useState<boolean>(false);
+
   const handleAddClick = () => {
-    console.log("add expense / income");
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
     <div className="tab-wrapper">
+      <TransactionModal open={open} onClose={handleClose} />
+
       <TabSectionHeading title="Income/Expense" onClick={handleAddClick} />
       <FinanceTable />
     </div>

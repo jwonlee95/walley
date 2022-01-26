@@ -15,3 +15,11 @@ export const CreateCategoryData = actions(
     return await FetchApiPatch(categoryPath + `/create/${id}`, data);
   }
 );
+
+export const ADD_SPENT_DATA = "ADD_SPENT_DATA";
+export const AddSpentData = actions(
+  ADD_SPENT_DATA,
+  async (id: string, data: object) => {
+    await FetchApiPatch(categoryPath + `/addSpent/${id}`, data);
+  }
+);
