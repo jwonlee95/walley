@@ -1,0 +1,35 @@
+@import "../abstracts/mixins";
+@import "../abstracts/variables";
+
+.add-modal-title {
+  font-size: 20px;
+  font-family: $raleway;
+  font-weight: 600;
+  color: $theme-color;
+}
+.dialog-content > *:not(:first-child) {
+  margin-top: 10px;
+}
+.modal-content-comp {
+  padding-top: 3px;
+}
+
+.content-title {
+  &.red {
+    color: $red;
+  }
+  color: $light-gray;
+  font-family: $inter;
+  margin-bottom: 5px;
+  margin-top: 8px;
+  margin-right: 20px;
+}
+
+.btns-wrapper {
+  padding-top: 20px;
+  justify-content: center;
+  align-items: center;
+}
+.btns-wrapper:first-child {
+  margin-right: 20px;
+}

@@ -1,40 +1,53 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   TabPanelProps,
   PlusButton,
   CategoryCard,
   SubscriptionCard,
   FinanceTable,
+  CategoryModal,
 } from "components";
-import { StateContext } from "contexts";
+
+import { StateContext, UserContext } from "contexts";
 import moment from "moment";
 import { useDispatch } from "react-redux";
 import { PostNewRecurDate } from "common/action";
-import UserContext from "contexts/user";
 
-const TabSectionHeading: React.FC<{ title: string }> = (props) => {
+const TabSectionHeading: React.FC<{ title: string; onClick: () => void }> = (
+  props
+) => {
   return (
     <div className="tab-section-heading">
       {props.title}
-      <PlusButton />
+      <PlusButton onClick={props.onClick} />
     </div>
   );
 };
 
 const CategorySection = () => {
   const { category } = useContext(StateContext);
+  const [open, setOpen] = useState<boolean>(false);
+
+  const handleAddClick = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <div className="tab-wrapper">
-      <TabSectionHeading title="Category" />
+      <CategoryModal open={open} onClose={handleClose} />
+      <TabSectionHeading title="Category" onClick={handleAddClick} />
       <div className="cards-wrapper">
-        {category.map((ele) => (
+        {category.map((ele, idx) => (
           <CategoryCard
             icon={ele.icon}
             name={ele.name}
             budget={ele.budget}
             remain={ele.remain}
             color={ele.color}
+            key={`${ele.name}-${idx}`}
           />
         ))}
       </div>
@@ -48,11 +61,15 @@ const SubscriptionSection = () => {
   const dispatch = useDispatch();
   const { user } = useContext(UserContext).userState;
 
+  const handleAddClick = () => {
+    console.log("add subscription");
+  };
+
   return (
     <div className="tab-wrapper">
-      <TabSectionHeading title="Subscription" />
+      <TabSectionHeading title="Subscription" onClick={handleAddClick} />
       <div className="cards-wrapper">
-        {subscription.map((ele) => {
+        {subscription.map((ele, idx) => {
           const today = new Date();
           let remainingDay = moment(ele.recurDate).diff(today, "days");
           if (remainingDay < 0) {
@@ -70,6 +87,7 @@ const SubscriptionSection = () => {
               name={ele.name}
               amount={ele.amount}
               remainingDay={remainingDay}
+              key={`${ele.name}-${idx}`}
             />
           );
         })}
@@ -79,9 +97,13 @@ const SubscriptionSection = () => {
 };
 
 const FinanceSection = () => {
+  const handleAddClick = () => {
+    console.log("add expense / income");
+  };
+
   return (
     <div className="tab-wrapper">
-      <TabSectionHeading title="Income/Expense" />
+      <TabSectionHeading title="Income/Expense" onClick={handleAddClick} />
       <FinanceTable />
     </div>
   );

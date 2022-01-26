@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { ErrorText } from "components";
 import { Container, TextField, Button } from "@mui/material";
 import config from "config/config";
-import UserContext from "../../contexts/user";
+import { UserContext } from "contexts";
 import { ICategory } from "interfaces";
 
 export const IncomeCategoryPage: React.FC<RouteComponentProps<any>> = (

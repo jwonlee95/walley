@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Redirect } from "react-router-dom";
 import logging from "config/logging";
-import UserContext from "contexts/user";
+import { UserContext } from "contexts";
 
 interface IAuthRouteProps {}
 

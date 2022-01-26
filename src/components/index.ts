@@ -15,3 +15,7 @@ export * from "./subscriptionCard";
 export * from "./financeTable";
 export * from "./categoryTable";
 export * from "./activityIndicator";
+export * from "./transactionModal";
+export * from "./categoryModal";
+export * from "./subscriptionModal";
+export * from "./modalComponents";

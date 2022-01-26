@@ -3,13 +3,16 @@ import {
   GET_CATEGORY_DATA,
   CREATE_CATEGORY_DATA,
 } from "common/action/category";
+import { ICategory } from "interfaces/category";
 
 export type CategoryDataState = {
   categoryData: any;
+  createCategoryData: ICategory | undefined;
 };
 
 const initialState: CategoryDataState = {
   categoryData: undefined,
+  createCategoryData: undefined,
 };
 
 export const category = (

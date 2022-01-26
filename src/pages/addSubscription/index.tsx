@@ -8,7 +8,7 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import config from "config/config";
-import UserContext from "../../contexts/user";
+import { UserContext } from "contexts";
 import { ISubscription } from "interfaces";
 
 export const AddSubscriptionPage: React.FC<RouteComponentProps<any>> = (
