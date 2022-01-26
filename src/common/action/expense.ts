@@ -16,3 +16,11 @@ export const CreateExpenseData = actions(
     await FetchApiPatch(expensePath + `/updateExpense/${id}`, data);
   }
 );
+
+export const EDIT_EXPENSE_DATA = "EDIT_EXPENSE_DATA";
+export const EditExpenseData = actions(
+  EDIT_EXPENSE_DATA,
+  async (uid: string, eid: string, data: object) => {
+    await FetchApiPatch(expensePath + `/editExpense/${uid}/${eid}`, data);
+  }
+);

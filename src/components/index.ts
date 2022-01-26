@@ -19,3 +19,4 @@ export * from "./transactionModal";
 export * from "./categoryModal";
 export * from "./subscriptionModal";
 export * from "./modalComponents";
+export * from "./editExpenseModal";
