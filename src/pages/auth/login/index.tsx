@@ -6,7 +6,7 @@ import logging from "config/logging";
 import { IPageProps } from "interfaces";
 import firebase from "firebase/compat/app";
 import { Authenticate, SignInWithSocialMedia } from "modules/auth/auth";
-import UserContext from "contexts/user";
+import { UserContext } from "contexts";
 import { Button } from "@mui/material";
 import { IMAGES } from "assets";
 

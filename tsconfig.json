@@ -27,7 +27,8 @@
       "interfaces/*": ["interfaces/*"],
       "auth/*": ["auth/*"],
       "assets/*": ["assets/*"],
-      "common/*": ["common/*"]
+      "common/*": ["common/*"],
+      "context/*": ["context/*"]
     },
 
   },

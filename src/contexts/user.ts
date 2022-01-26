@@ -42,11 +42,10 @@ export interface IUserContextProps {
   userDispatch: React.Dispatch<IUserActions>;
 }
 
-const UserContext = createContext<IUserContextProps>({
+export const UserContext = createContext<IUserContextProps>({
   userState: initialUserState,
   userDispatch: () => {},
 });
 
 export const UserContextConsumer = UserContext.Consumer;
 export const UserContextProvider = UserContext.Provider;
-export default UserContext;

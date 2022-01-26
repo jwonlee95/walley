@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { StateContext } from "contexts/state";
+import { StateContext, UserContext, SetterContext } from "contexts";
 import { AppWrapper, HomeTab, ActivityIndicator } from "components";
 
 import {
@@ -10,10 +10,8 @@ import {
   ICategory,
   ISubscription,
 } from "interfaces";
-import UserContext from "contexts/user";
 import { reducerState } from "common/store";
 import { GetUserData } from "common/action";
-import { SetterContext } from "contexts";
 
 export const HomePage: React.FC<IPageProps> = (props) => {
   const dispatch = useDispatch();

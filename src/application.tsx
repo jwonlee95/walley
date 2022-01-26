@@ -4,11 +4,7 @@ import { ActivityIndicator, AuthRoute } from "components";
 import logging from "config/logging";
 import routes from "config/routes";
 
-import {
-  initialUserState,
-  UserContextProvider,
-  userReducer,
-} from "./contexts/user";
+import { initialUserState, UserContextProvider, userReducer } from "contexts";
 import { Validate } from "modules/auth/auth";
 
 export interface IApplicationProps {}

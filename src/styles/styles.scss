@@ -8,6 +8,7 @@
 @import "./components/footer";
 @import "./components/tab";
 @import "./components/activityIndicator";
+@import "./components/modal";
 
 //pages
 @import "./pages/landing";
@@ -35,4 +36,8 @@ body {
 th {
   font-family: $inter;
   color: $theme-color;
+}
+
+.flex {
+  display: flex;
 }

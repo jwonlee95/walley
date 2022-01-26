@@ -62,7 +62,7 @@ export const FetchApiDelete = async (url: string, data?: any) => {
   try {
     const response = await axios({
       method: "DELETE",
-      url: domain + url,
+      url: url,
       data: data,
       headers: {
         "Access-Control-Allow-Origin": "http://localhost:1337",
@@ -84,7 +84,7 @@ export const FetchApiPut = async (url: string, data?: any) => {
   try {
     const response = await axios({
       method: "PUT",
-      url: domain + url,
+      url: url,
       data: data,
       headers: {
         "Access-Control-Allow-Origin": "http://localhost:1337",
