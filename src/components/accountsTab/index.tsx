@@ -7,6 +7,7 @@ import {
   FinanceTable,
   CategoryModal,
   SubscriptionModal,
+  TransactionModal,
 } from "components";
 
 import { StateContext, UserContext } from "contexts";
@@ -46,7 +47,7 @@ const CategorySection = () => {
             icon={ele.icon}
             name={ele.name}
             budget={ele.budget}
-            remain={ele.remain}
+            remain={ele.budget - ele.spent}
             color={ele.color}
             key={`${ele.name}-${idx}`}
           />
@@ -104,12 +105,19 @@ const SubscriptionSection = () => {
 };
 
 const FinanceSection = () => {
+  const [open, setOpen] = useState<boolean>(false);
+
   const handleAddClick = () => {
-    console.log("add expense / income");
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
     <div className="tab-wrapper">
+      <TransactionModal open={open} onClose={handleClose} />
+
       <TabSectionHeading title="Income/Expense" onClick={handleAddClick} />
       <FinanceTable />
     </div>
