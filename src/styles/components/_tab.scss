@@ -1,0 +1,76 @@
+@import "../abstracts/mixins";
+@import "../abstracts/variables";
+
+.tab-wrapper {
+  @include flex-row-center();
+  margin: 30px;
+  flex-wrap: wrap;
+  .tab-section-heading {
+    width: 100%;
+    text-align: left;
+    color: $theme-color;
+    font-family: $inter;
+    font-size: 30px;
+    font-weight: 700;
+  }
+  .cards-wrapper {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    overflow-x: scroll;
+
+    .card {
+      min-width: 160px;
+      min-height: 100px;
+      margin: 10px 20px 10px 0px;
+      padding: 20px;
+      font-family: $inter;
+    }
+    .card-heading {
+      display: flex;
+      color: $light-gray;
+      margin-bottom: 5px;
+      width: 100%;
+      font-size: 20px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      font-weight: 500;
+    }
+    .card-content-wrapper {
+      width: 100%;
+      margin-top: 10px;
+    }
+    .card-content {
+      font-size: 20px;
+      font-weight: 500;
+      height: 30px;
+      color: $theme-color;
+    }
+    .sub-amount {
+      color: $theme-color;
+      font-size: 25px;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+    .sub-remaining {
+      font-size: 20px;
+      color: $light-gray;
+      text-align: right;
+      font-family: $raleway;
+      font-weight: 600;
+    }
+  }
+  .cards-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.icon {
+  margin-right: 7px;
+}
+
+.finance-table-category {
+  display: flex;
+  align-items: center;
+}

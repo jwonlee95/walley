@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AppWrapper, Footer } from "components";
 import { Button } from "@mui/material";
-import Images from "assets";
+import { IMAGES } from "assets";
+import { UserContext } from "contexts";
+import { useHistory } from "react-router-dom";
 
 const {
   BE,
@@ -13,8 +15,22 @@ const {
   SummarySketch,
   SpendingSketch,
   CategorySketch,
-} = Images.landing;
+} = IMAGES.landing;
 const MainSection: React.FC<{}> = () => {
+  const history = useHistory();
+  const [redirect, setRedirect] = useState<boolean>(false);
+  const { user } = useContext(UserContext).userState;
+
+  useEffect(() => {
+    if (user) {
+      setRedirect(true);
+    }
+  }, []);
+  useEffect(() => {
+    if (redirect) {
+      history.push("/home");
+    }
+  }, [redirect]);
   return (
     <section className="landing-section">
       {/* <div className="test"></div> */}

@@ -1,15 +1,10 @@
 import React, { useEffect, useReducer, useState } from "react";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
-import { AuthRoute } from "components";
-import CircularProgress from "@mui/material/CircularProgress";
+import { ActivityIndicator, AuthRoute } from "components";
 import logging from "config/logging";
 import routes from "config/routes";
 
-import {
-  initialUserState,
-  UserContextProvider,
-  userReducer,
-} from "./contexts/user";
+import { initialUserState, UserContextProvider, userReducer } from "contexts";
 import { Validate } from "modules/auth/auth";
 
 export interface IApplicationProps {}
@@ -60,28 +55,38 @@ const Application: React.FunctionComponent<IApplicationProps> = (props) => {
     userDispatch,
   };
 
-  // if (loading) return { authStage } && <CircularProgress color="inherit" />;
+  if (loading) return { authStage } && <ActivityIndicator />;
 
   return (
     <UserContextProvider value={userContextValues}>
       <Switch>
-        {routes.map((route, index) => (
-          <Route
-            key={index}
-            path={route.path}
-            exact={route.exact}
-            render={(routeProps: RouteComponentProps<any>) => {
-              if (route.protected)
-                return (
+        {routes.map((route, index) => {
+          if (route.protected) {
+            return (
+              <Route
+                path={route.path}
+                exact={route.exact}
+                key={index}
+                render={(routeProps: RouteComponentProps) => (
                   <AuthRoute>
                     <route.component {...routeProps} />
                   </AuthRoute>
-                );
+                )}
+              />
+            );
+          }
 
-              return <route.component {...routeProps} />;
-            }}
-          />
-        ))}
+          return (
+            <Route
+              path={route.path}
+              exact={route.exact}
+              key={index}
+              render={(routeProps: RouteComponentProps) => (
+                <route.component {...routeProps} />
+              )}
+            />
+          );
+        })}
       </Switch>
     </UserContextProvider>
   );

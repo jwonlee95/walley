@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 // abstracts
 @import "./abstracts/mixins";
 @import "./abstracts/variables";
@@ -5,11 +6,16 @@
 //components
 @import "./components/navbar";
 @import "./components/footer";
+@import "./components/tab";
+@import "./components/activityIndicator";
+@import "./components/modal";
 
 //pages
 @import "./pages/landing";
 @import "./pages/account";
 @import "./pages/login";
+@import "./pages/home";
+
 html,
 body {
   margin: 0;
@@ -26,4 +32,12 @@ body {
 
 .text-center {
   text-align: center;
+}
+th {
+  font-family: $inter;
+  color: $theme-color;
+}
+
+.flex {
+  display: flex;
 }
