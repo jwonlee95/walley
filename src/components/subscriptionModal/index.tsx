@@ -41,9 +41,6 @@ export const SubscriptionModal: React.FC<ISubscriptionModalProps> = (props) => {
   const [name, setName] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [recurDate, setRecurDate] = React.useState<Date | null>(new Date());
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null
-  );
   const [isNameEmpty, setIsNameEmpty] = useState<boolean>(false);
   const [isAmountEmpty, setIsAmountEmpty] = useState<boolean>(false);
   const [isRecurDateEmpty, setIsRecurDateEmpty] = useState<boolean>(false);
@@ -82,6 +79,7 @@ export const SubscriptionModal: React.FC<ISubscriptionModalProps> = (props) => {
       // );
     }
   }, [subscriptionSelector.createSubscriptionData]);
+
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
   };
@@ -93,12 +91,6 @@ export const SubscriptionModal: React.FC<ISubscriptionModalProps> = (props) => {
   const handleChangeRecurDate = (newValue: Date | null) => {
     setRecurDate(newValue);
   };
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
-
-  const openPopover = Boolean(anchorEl);
 
   const handleSaveSubscription = () => {
     if (name === "" || amount === "" || recurDate === null) {
@@ -160,17 +152,15 @@ export const SubscriptionModal: React.FC<ISubscriptionModalProps> = (props) => {
             value={amount}
             onChange={handleChangeAmount}
           />
-          {
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DesktopDatePicker
-                label="Recur Date"
-                value={recurDate}
-                onChange={handleChangeRecurDate}
-                inputFormat="MM/dd/yyyy"
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </LocalizationProvider>
-          }
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DesktopDatePicker
+              label="Recur Date"
+              value={recurDate}
+              onChange={handleChangeRecurDate}
+              inputFormat="MM/dd/yyyy"
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
           <div className="modal-content-comp btns-wrapper flex">
             <CMButton
               text="Save"

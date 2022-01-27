@@ -1,6 +1,5 @@
 import React from "react";
 import { Card, Icon } from "@mui/material";
-import { CategoryIcons } from "assets";
 
 interface CategoryCardProps {
   icon: string;

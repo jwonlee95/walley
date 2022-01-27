@@ -63,7 +63,7 @@ export const TransactionModal: React.FC<ITransactionModalProps> = (props) => {
       console.log(userSelector.userTypes);
       let _types = userSelector.userTypes.category as ICategory[];
       setTypes(_types);
-      console.log("types are ", _types);
+      // console.log("types are ", _types);
     }
   }, [userSelector.userTypes]);
 

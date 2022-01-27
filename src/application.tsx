@@ -20,8 +20,6 @@ const Application: React.FunctionComponent<IApplicationProps> = (props) => {
     setTimeout(() => {
       CheckLocalStorageForCredentials();
     }, 1000);
-
-    // eslint-disable-next-line
   }, []);
 
   const CheckLocalStorageForCredentials = () => {

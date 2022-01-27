@@ -77,7 +77,7 @@ export const EditExpenseModal: React.FC<IEditExpenseModalProps<MatchParams>> = (
       console.log(userSelector.userTypes);
       let _types = userSelector.userTypes.category as ICategory[];
       setTypes(_types);
-      console.log("types are ", _types);
+      // console.log("types are ", _types);
     }
   }, [userSelector.userTypes]);
 

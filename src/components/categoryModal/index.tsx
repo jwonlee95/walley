@@ -76,11 +76,11 @@ export const CategoryModal: React.FC<ICategoryModalProps> = (props) => {
   }, [icon]);
   useEffect(() => {
     if (categorySelector.createCategoryData) {
-      // setCategory(
-      //   produce((draft) => {
-      //     draft.push(categorySelector.createCategoryData);
-      //   })
-      // );
+      setCategory(
+        produce((draft) => {
+          draft.push(categorySelector.createCategoryData);
+        })
+      );
     }
   }, [categorySelector.createCategoryData]);
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -134,7 +134,7 @@ export const CategoryModal: React.FC<ICategoryModalProps> = (props) => {
       color: colors[selectedColor],
       name: name,
       budget: _budget,
-      remain: _budget,
+      spent: 0,
     };
 
     dispatch(CreateCategoryData(user._id, data));
@@ -218,7 +218,6 @@ export const CategoryModal: React.FC<ICategoryModalProps> = (props) => {
                   horizontal: "left",
                 }}
               >
-                {/* <Box> */}
                 <Paper variant="elevation" sx={{ p: 2, maxWidth: "250px" }}>
                   {Object.keys(CategoryIcons).map((key) => {
                     return (
@@ -233,7 +232,6 @@ export const CategoryModal: React.FC<ICategoryModalProps> = (props) => {
                     );
                   })}
                 </Paper>
-                {/* </Box> */}
               </Popover>
             </Card>
           </div>
