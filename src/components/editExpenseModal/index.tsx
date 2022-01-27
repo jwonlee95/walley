@@ -21,27 +21,14 @@ import { reducerState } from "common/store";
 import { GetTypes, CreateExpenseData, AddSpentData } from "common/action";
 import { SetterContext, UserContext } from "contexts";
 
-interface match<P> {
-  params: P;
-  isExact: boolean;
-  path: string;
-  url: string;
-}
-interface IEditExpenseModalProps<P> {
+interface IEditExpenseModalProps {
   open: boolean;
   onClose: () => void;
-  match: match<P>;
-}
-interface MatchParams {
-  eid: string;
+  selectedId: string;
 }
 
-export const EditExpenseModal: React.FC<IEditExpenseModalProps<MatchParams>> = (
-  props
-) => {
+export const EditExpenseModal: React.FC<IEditExpenseModalProps> = (props) => {
   let history = useHistory();
-  const expenseId = props.match.params.eid;
-  console.log(expenseId);
   const { user } = useContext(UserContext).userState;
   const { setExpense } = useContext(SetterContext);
   const dispatch = useDispatch();
@@ -57,7 +44,7 @@ export const EditExpenseModal: React.FC<IEditExpenseModalProps<MatchParams>> = (
   const [isCategoryEmpty, setIsCategoryEmpty] = useState<boolean>(false);
   const [isAmountEmpty, setIsAmountEmpty] = useState<boolean>(false);
   const [isDescriptionEmpty, setIsDescriptionEmpty] = useState<boolean>(false);
-
+  console.log(props.selectedId);
   useEffect(() => {
     if (!props.open) {
       setTimeout(() => {
@@ -77,7 +64,7 @@ export const EditExpenseModal: React.FC<IEditExpenseModalProps<MatchParams>> = (
       console.log(userSelector.userTypes);
       let _types = userSelector.userTypes.category as ICategory[];
       setTypes(_types);
-      console.log("types are ", _types);
+      // console.log("types are ", _types);
     }
   }, [userSelector.userTypes]);
 

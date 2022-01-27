@@ -1,23 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
-import {
-  Card,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Icon,
-  IconButton,
-  Paper,
-  Popover,
-  TextField,
-} from "@mui/material";
-import {
-  CMButton,
-  CMNumberFormat,
-  CMRadioGroup,
-  colors,
-  ModalCloseButton,
-  PlusButton,
-} from "components";
+import { Dialog, DialogContent, DialogTitle, TextField } from "@mui/material";
+import { CMButton, CMNumberFormat, colors, ModalCloseButton } from "components";
 import { useDispatch, useSelector } from "react-redux";
 import { reducerState } from "common/store";
 import { CreateSubscriptionData } from "common/action";
@@ -25,6 +8,7 @@ import { SetterContext, UserContext } from "contexts";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
+import produce from "immer";
 interface ISubscriptionModalProps {
   open: boolean;
   onClose: () => void;
@@ -41,9 +25,6 @@ export const SubscriptionModal: React.FC<ISubscriptionModalProps> = (props) => {
   const [name, setName] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [recurDate, setRecurDate] = React.useState<Date | null>(new Date());
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null
-  );
   const [isNameEmpty, setIsNameEmpty] = useState<boolean>(false);
   const [isAmountEmpty, setIsAmountEmpty] = useState<boolean>(false);
   const [isRecurDateEmpty, setIsRecurDateEmpty] = useState<boolean>(false);
@@ -75,13 +56,14 @@ export const SubscriptionModal: React.FC<ISubscriptionModalProps> = (props) => {
   }, [recurDate]);
   useEffect(() => {
     if (subscriptionSelector.createSubscriptionData) {
-      // setSubscription(
-      //   produce((draft) => {
-      //     draft.push(subscriptionSelector.createSubscriptionData);
-      //   })
-      // );
+      setSubscription(
+        produce((draft) => {
+          draft.push(subscriptionSelector.createSubscriptionData);
+        })
+      );
     }
   }, [subscriptionSelector.createSubscriptionData]);
+
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
   };
@@ -93,12 +75,6 @@ export const SubscriptionModal: React.FC<ISubscriptionModalProps> = (props) => {
   const handleChangeRecurDate = (newValue: Date | null) => {
     setRecurDate(newValue);
   };
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
-
-  const openPopover = Boolean(anchorEl);
 
   const handleSaveSubscription = () => {
     if (name === "" || amount === "" || recurDate === null) {
@@ -159,18 +135,24 @@ export const SubscriptionModal: React.FC<ISubscriptionModalProps> = (props) => {
             error={isAmountEmpty}
             value={amount}
             onChange={handleChangeAmount}
+            sx={{ mb: 3 }}
           />
-          {
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DesktopDatePicker
-                label="Recur Date"
-                value={recurDate}
-                onChange={handleChangeRecurDate}
-                inputFormat="MM/dd/yyyy"
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </LocalizationProvider>
-          }
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DesktopDatePicker
+              label="Recurring Date"
+              value={recurDate}
+              onChange={handleChangeRecurDate}
+              inputFormat="MM/dd/yyyy"
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  fullWidth
+                  error={isRecurDateEmpty}
+                  autoComplete="off"
+                />
+              )}
+            />
+          </LocalizationProvider>
           <div className="modal-content-comp btns-wrapper flex">
             <CMButton
               text="Save"

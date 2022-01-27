@@ -7,6 +7,8 @@ import {
   Button,
   IconProps,
   Icon,
+  SxProps,
+  Theme,
 } from "@mui/material";
 import React from "react";
 import CloseIcon from "@mui/icons-material/Close";
@@ -51,16 +53,20 @@ interface INumberFormatProps {
   value: string;
   label: string;
   error?: boolean;
+  sx?: SxProps<Theme>;
+
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 export const CMNumberFormat: React.FC<INumberFormatProps> = ({
   value,
   label,
   error,
+  sx,
   onChange,
 }) => {
   return (
     <NumberFormat
+      sx={sx}
       value={value}
       prefix="USD "
       error={error}

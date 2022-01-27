@@ -16,6 +16,9 @@ export const CREATE_SUBSCRIPTION_DATA = "CREATE_SUBSCRIPTION_DATA";
 export const CreateSubscriptionData = actions(
   CREATE_SUBSCRIPTION_DATA,
   async (id: string, data: object) => {
-    await FetchApiPatch(subscriptionPath + `/updateSubscription/${id}`, data);
+    return await FetchApiPatch(
+      subscriptionPath + `/updateSubscription/${id}`,
+      data
+    );
   }
 );

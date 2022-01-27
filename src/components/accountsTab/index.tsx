@@ -36,22 +36,23 @@ const CategorySection = () => {
   const handleClose = () => {
     setOpen(false);
   };
-
   return (
     <div className="tab-wrapper">
       <CategoryModal open={open} onClose={handleClose} />
       <TabSectionHeading title="Category" onClick={handleAddClick} />
       <div className="cards-wrapper">
-        {category.map((ele, idx) => (
-          <CategoryCard
-            icon={ele.icon}
-            name={ele.name}
-            budget={ele.budget}
-            remain={ele.budget - ele.spent}
-            color={ele.color}
-            key={`${ele.name}-${idx}`}
-          />
-        ))}
+        {category.map((ele, idx) => {
+          return (
+            <CategoryCard
+              icon={ele.icon}
+              name={ele.name}
+              budget={ele.budget}
+              remain={ele.budget - ele.spent}
+              color={ele.color}
+              key={`${ele.name}-${idx}`}
+            />
+          );
+        })}
       </div>
     </div>
   );

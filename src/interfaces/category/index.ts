@@ -5,5 +5,4 @@ export interface ICategory {
   name: string;
   budget: number;
   spent: number;
-  remain: number;
 }

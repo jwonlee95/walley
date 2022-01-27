@@ -47,7 +47,7 @@ export const EditExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
         console.log("user is ", user);
         let types = response.data.user.expenseTypes as ICategory[];
         setTypes(types);
-        console.log("types are ", types);
+        // console.log("types are ", types);
       } else {
         setError(`Unable to retrieve types ${_id}`);
       }

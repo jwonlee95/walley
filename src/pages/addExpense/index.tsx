@@ -42,7 +42,7 @@ export const AddExpensePage: React.FC<RouteComponentProps<any>> = (props) => {
       console.log(userSelector.userTypes);
       let _types = userSelector.userTypes.category as ICategory[];
       setTypes(_types);
-      console.log("types are ", _types);
+      // console.log("types are ", _types);
       setLoading(false);
     }
   }, [userSelector.userTypes]);
