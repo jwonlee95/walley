@@ -21,12 +21,14 @@ import { reducerState } from "common/store";
 import { GetTypes, CreateExpenseData, AddSpentData } from "common/action";
 import { SetterContext, UserContext } from "contexts";
 
-interface ITransactionModalProps {
+interface ICreateTransactionModalProps {
   open: boolean;
   onClose: () => void;
 }
 
-export const TransactionModal: React.FC<ITransactionModalProps> = (props) => {
+export const CreateTransactionModal: React.FC<ICreateTransactionModalProps> = (
+  props
+) => {
   let history = useHistory();
   const { user } = useContext(UserContext).userState;
   const { setExpense } = useContext(SetterContext);
@@ -37,9 +39,7 @@ export const TransactionModal: React.FC<ITransactionModalProps> = (props) => {
   const [category, setCategory] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null
-  );
+
   const [isCategoryEmpty, setIsCategoryEmpty] = useState<boolean>(false);
   const [isAmountEmpty, setIsAmountEmpty] = useState<boolean>(false);
   const [isDescriptionEmpty, setIsDescriptionEmpty] = useState<boolean>(false);
@@ -102,15 +102,9 @@ export const TransactionModal: React.FC<ITransactionModalProps> = (props) => {
     setDescription(e.target.value);
   };
 
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
-
   const handlePlusButtonClick = () => {
     history.push("/excategory");
   };
-
-  const openPopover = Boolean(anchorEl);
 
   const handleSaveTransaction = () => {
     if (category === "" || amount === "" || description === null) {
@@ -170,7 +164,6 @@ export const TransactionModal: React.FC<ITransactionModalProps> = (props) => {
       <DialogContent>
         <div className="dialog-content">
           <PlusButton onClick={handlePlusButtonClick} />
-          {/* <Link to="/excategory">Add Category</Link> */}
           <ToggleButtonGroup
             value={category}
             id="category"

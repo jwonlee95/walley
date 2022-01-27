@@ -13,7 +13,7 @@ import {
 import moment from "moment";
 import produce from "immer";
 import { StateContext } from "contexts";
-import { EditExpenseModal } from "..";
+import { TransactionDetailModal } from "..";
 import { IExpense } from "interfaces/expense";
 interface Column {
   id: "category" | "date" | "description" | "amount" | "balance";
@@ -110,10 +110,9 @@ export const FinanceTable = () => {
   };
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      <EditExpenseModal
+      <TransactionDetailModal
         open={open}
         onClose={handleClose}
-        //selectedId={selectedId}
         selectedExpense={selectedExpense}
       />
       <TableContainer sx={{ maxHeight: 500 }}>

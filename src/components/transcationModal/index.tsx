@@ -26,16 +26,16 @@ import {
   UpdateSpentData,
 } from "common/action";
 import { StateContext, SetterContext, UserContext } from "contexts";
-import { type } from "os";
 
-interface IEditExpenseModalProps {
+interface ITransactionDetailModalProps {
   open: boolean;
   onClose: () => void;
-  //selectedId: string;
   selectedExpense: IExpense | undefined;
 }
 
-export const EditExpenseModal: React.FC<IEditExpenseModalProps> = (props) => {
+export const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = (
+  props
+) => {
   let history = useHistory();
   const { user } = useContext(UserContext).userState;
   const { category } = useContext(StateContext);

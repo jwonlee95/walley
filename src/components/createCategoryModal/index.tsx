@@ -24,13 +24,14 @@ import { reducerState } from "common/store";
 import { CreateCategoryData } from "common/action";
 import { SetterContext, UserContext } from "contexts";
 import produce from "immer";
-import { ICategory } from "interfaces";
-interface ICategoryModalProps {
+interface ICreateCategoryModalProps {
   open: boolean;
   onClose: () => void;
 }
 
-export const CategoryModal: React.FC<ICategoryModalProps> = (props) => {
+export const CreateCategoryModal: React.FC<ICreateCategoryModalProps> = (
+  props
+) => {
   const { user } = useContext(UserContext).userState;
   const { setCategory } = useContext(SetterContext);
   const dispatch = useDispatch();

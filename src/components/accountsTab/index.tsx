@@ -5,9 +5,9 @@ import {
   CategoryCard,
   SubscriptionCard,
   FinanceTable,
-  CategoryModal,
-  SubscriptionModal,
-  TransactionModal,
+  CreateCategoryModal,
+  CreateSubscriptionModal,
+  CreateTransactionModal,
 } from "components";
 
 import { StateContext, UserContext } from "contexts";
@@ -38,7 +38,7 @@ const CategorySection = () => {
   };
   return (
     <div className="tab-wrapper">
-      <CategoryModal open={open} onClose={handleClose} />
+      <CreateCategoryModal open={open} onClose={handleClose} />
       <TabSectionHeading title="Category" onClick={handleAddClick} />
       <div className="cards-wrapper">
         {category.map((ele, idx) => {
@@ -74,7 +74,7 @@ const SubscriptionSection = () => {
 
   return (
     <div className="tab-wrapper">
-      <SubscriptionModal open={open} onClose={handleClose} />
+      <CreateSubscriptionModal open={open} onClose={handleClose} />
 
       <TabSectionHeading title="Subscription" onClick={handleAddClick} />
       <div className="cards-wrapper">
@@ -117,7 +117,7 @@ const FinanceSection = () => {
 
   return (
     <div className="tab-wrapper">
-      <TransactionModal open={open} onClose={handleClose} />
+      <CreateTransactionModal open={open} onClose={handleClose} />
 
       <TabSectionHeading title="Income/Expense" onClick={handleAddClick} />
       <FinanceTable />
