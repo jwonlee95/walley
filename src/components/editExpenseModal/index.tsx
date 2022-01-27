@@ -14,29 +14,41 @@ import {
   ModalCloseButton,
   PlusButton,
 } from "components";
-import { Link, useHistory } from "react-router-dom";
-import { ICategory } from "interfaces";
+import { useHistory } from "react-router-dom";
+import { ICategory, IExpense } from "interfaces";
 import { useDispatch, useSelector } from "react-redux";
 import { reducerState } from "common/store";
-import { GetTypes, CreateExpenseData, AddSpentData } from "common/action";
-import { SetterContext, UserContext } from "contexts";
+import {
+  GetTypes,
+  EditExpenseData,
+  AddSpentData,
+  ReadCategoryData,
+  UpdateSpentData,
+} from "common/action";
+import { StateContext, SetterContext, UserContext } from "contexts";
+import { type } from "os";
 
 interface IEditExpenseModalProps {
   open: boolean;
   onClose: () => void;
-  selectedId: string;
+  //selectedId: string;
+  selectedExpense: IExpense | undefined;
 }
 
 export const EditExpenseModal: React.FC<IEditExpenseModalProps> = (props) => {
   let history = useHistory();
   const { user } = useContext(UserContext).userState;
+  const { category } = useContext(StateContext);
   const { setExpense } = useContext(SetterContext);
   const dispatch = useDispatch();
   const expenseSelector = useSelector((state: reducerState) => state.expense);
   const userSelector = useSelector((state: reducerState) => state.user);
+  const [oldCategorySpent, setOldCategorySpent] = useState<number>();
   const [types, setTypes] = useState<ICategory[]>([]);
-  const [category, setCategory] = useState<string>("");
+  const [oldCategoryName, setOldCategoryName] = useState<string>("");
+  const [newCategory, setNewCategory] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
+  const [oldAmount, setOldAmount] = useState<number>();
   const [description, setDescription] = useState<string>("");
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
@@ -44,11 +56,12 @@ export const EditExpenseModal: React.FC<IEditExpenseModalProps> = (props) => {
   const [isCategoryEmpty, setIsCategoryEmpty] = useState<boolean>(false);
   const [isAmountEmpty, setIsAmountEmpty] = useState<boolean>(false);
   const [isDescriptionEmpty, setIsDescriptionEmpty] = useState<boolean>(false);
-  console.log(props.selectedId);
+  const expense = props.selectedExpense;
+
   useEffect(() => {
     if (!props.open) {
       setTimeout(() => {
-        setCategory("");
+        setNewCategory("");
         setAmount("");
         setDescription("");
       }, 500);
@@ -61,10 +74,8 @@ export const EditExpenseModal: React.FC<IEditExpenseModalProps> = (props) => {
 
   useEffect(() => {
     if (userSelector.userTypes) {
-      console.log(userSelector.userTypes);
       let _types = userSelector.userTypes.category as ICategory[];
       setTypes(_types);
-      // console.log("types are ", _types);
     }
   }, [userSelector.userTypes]);
 
@@ -72,7 +83,7 @@ export const EditExpenseModal: React.FC<IEditExpenseModalProps> = (props) => {
     if (isCategoryEmpty) {
       setIsCategoryEmpty(false);
     }
-  }, [category]);
+  }, [newCategory]);
   useEffect(() => {
     if (isAmountEmpty) {
       setIsAmountEmpty(false);
@@ -92,11 +103,18 @@ export const EditExpenseModal: React.FC<IEditExpenseModalProps> = (props) => {
     event: React.MouseEvent<HTMLElement>,
     newCategory: string
   ) => {
-    setCategory(newCategory);
+    setNewCategory(newCategory);
   };
 
   const handleChangeAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(e.target.value);
+    setOldAmount(expense?.amount);
+    for (const cate of category) {
+      if (cate.name === expense?.category) {
+        setOldCategorySpent(cate.spent);
+        setOldCategoryName(cate.name);
+      }
+    }
   };
 
   const handleChangeDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -114,8 +132,8 @@ export const EditExpenseModal: React.FC<IEditExpenseModalProps> = (props) => {
   const openPopover = Boolean(anchorEl);
 
   const handleSaveTransaction = () => {
-    if (category === "" || amount === "" || description === null) {
-      if (category === "") {
+    if (newCategory === "" || amount === "" || description === null) {
+      if (newCategory === "") {
         setIsCategoryEmpty(true);
       }
       if (amount === "") {
@@ -130,21 +148,24 @@ export const EditExpenseModal: React.FC<IEditExpenseModalProps> = (props) => {
     //Api
     const _amount = parseFloat(amount.slice(4).replace(/,/g, ""));
     const data = {
-      category: category,
+      category: newCategory,
       amount: _amount,
       description: description,
     };
 
-    dispatch(CreateExpenseData(user._id, data));
+    dispatch(EditExpenseData(user._id, expense?._id, data));
   };
 
   const handleAddSpent = () => {
     const _amount = parseFloat(amount.slice(4).replace(/,/g, ""));
     const dataSpent = {
-      name: category,
+      name: newCategory,
       spent: _amount,
+      oldSpent: oldCategorySpent,
+      oldAmount: oldAmount,
+      oldName: oldCategoryName,
     };
-    dispatch(AddSpentData(user._id, dataSpent));
+    dispatch(UpdateSpentData(user._id, dataSpent));
   };
 
   const handleOnClick = () => {
@@ -173,7 +194,7 @@ export const EditExpenseModal: React.FC<IEditExpenseModalProps> = (props) => {
           <PlusButton onClick={handlePlusButtonClick} />
           {/* <Link to="/excategory">Add Category</Link> */}
           <ToggleButtonGroup
-            value={category}
+            value={newCategory}
             id="category"
             exclusive
             onChange={handleChangeCategory}

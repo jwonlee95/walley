@@ -14,6 +14,7 @@ import moment from "moment";
 import produce from "immer";
 import { StateContext } from "contexts";
 import { EditExpenseModal } from "..";
+import { IExpense } from "interfaces/expense";
 interface Column {
   id: "category" | "date" | "description" | "amount" | "balance";
   label: string;
@@ -67,7 +68,8 @@ export const FinanceTable = () => {
   const { expense, category } = useContext(StateContext);
   const [rows, setRows] = useState<TableData[]>([]);
   const [open, setOpen] = useState<boolean>(false);
-  const [selectedId, setSelectedId] = useState<string>("");
+  //const [selectedId, setSelectedId] = useState<string>("");
+  const [selectedExpense, setSelectedExpense] = useState<IExpense>();
 
   useEffect(() => {
     for (const ele of expense) {
@@ -96,10 +98,12 @@ export const FinanceTable = () => {
 
   const handleClick = (
     e: React.MouseEvent<HTMLTableRowElement>,
-    _id: string
+    // _id: string
+    expense: IExpense | undefined
   ) => {
     setOpen(true);
-    setSelectedId(_id);
+    //setSelectedId(_id);
+    setSelectedExpense(expense);
   };
   const handleClose = () => {
     setOpen(false);
@@ -109,7 +113,8 @@ export const FinanceTable = () => {
       <EditExpenseModal
         open={open}
         onClose={handleClose}
-        selectedId={selectedId}
+        //selectedId={selectedId}
+        selectedExpense={selectedExpense}
       />
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table stickyHeader aria-label="finance-table">
@@ -136,7 +141,8 @@ export const FinanceTable = () => {
                   hover
                   tabIndex={-1}
                   key={`${row.category}-${idx}`}
-                  onClick={(e) => handleClick(e, expense[idx]._id)}
+                  // onClick={(e) => handleClick(e, expense[idx]._id)}
+                  onClick={(e) => handleClick(e, expense[idx])}
                 >
                   {columns.map((col, idx) => {
                     const value = row[col.id];
