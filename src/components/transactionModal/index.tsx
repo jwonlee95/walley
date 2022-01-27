@@ -177,9 +177,12 @@ export const TransactionModal: React.FC<ITransactionModalProps> = (props) => {
             exclusive
             onChange={handleChangeCategory}
           >
-            {types.map((category) => {
+            {types.map((category, idx) => {
               return (
-                <ToggleButton value={category.name}>
+                <ToggleButton
+                  value={category.name}
+                  key={`${category.name}-${idx}`}
+                >
                   {category.name}
                 </ToggleButton>
               );

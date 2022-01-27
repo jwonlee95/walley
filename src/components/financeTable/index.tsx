@@ -13,6 +13,7 @@ import {
 import moment from "moment";
 import produce from "immer";
 import { StateContext } from "contexts";
+import { EditExpenseModal } from "..";
 interface Column {
   id: "category" | "date" | "description" | "amount" | "balance";
   label: string;
@@ -65,6 +66,8 @@ const dataCellStyle = {
 export const FinanceTable = () => {
   const { expense, category } = useContext(StateContext);
   const [rows, setRows] = useState<TableData[]>([]);
+  const [open, setOpen] = useState<boolean>(false);
+  const [selectedId, setSelectedId] = useState<string>("");
 
   useEffect(() => {
     for (const ele of expense) {
@@ -91,8 +94,23 @@ export const FinanceTable = () => {
     }
   }, []);
 
+  const handleClick = (
+    e: React.MouseEvent<HTMLTableRowElement>,
+    _id: string
+  ) => {
+    setOpen(true);
+    setSelectedId(_id);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      <EditExpenseModal
+        open={open}
+        onClose={handleClose}
+        selectedId={selectedId}
+      />
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table stickyHeader aria-label="finance-table">
           <TableHead>
@@ -114,7 +132,12 @@ export const FinanceTable = () => {
           <TableBody>
             {rows.map((row, idx) => {
               return (
-                <TableRow hover tabIndex={-1} key={`${row.category}-${idx}`}>
+                <TableRow
+                  hover
+                  tabIndex={-1}
+                  key={`${row.category}-${idx}`}
+                  onClick={(e) => handleClick(e, expense[idx]._id)}
+                >
                   {columns.map((col, idx) => {
                     const value = row[col.id];
                     return (

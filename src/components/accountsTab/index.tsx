@@ -36,7 +36,6 @@ const CategorySection = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  console.log(category);
   return (
     <div className="tab-wrapper">
       <CategoryModal open={open} onClose={handleClose} />

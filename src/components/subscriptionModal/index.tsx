@@ -1,23 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
-import {
-  Card,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Icon,
-  IconButton,
-  Paper,
-  Popover,
-  TextField,
-} from "@mui/material";
-import {
-  CMButton,
-  CMNumberFormat,
-  CMRadioGroup,
-  colors,
-  ModalCloseButton,
-  PlusButton,
-} from "components";
+import { Dialog, DialogContent, DialogTitle, TextField } from "@mui/material";
+import { CMButton, CMNumberFormat, colors, ModalCloseButton } from "components";
 import { useDispatch, useSelector } from "react-redux";
 import { reducerState } from "common/store";
 import { CreateSubscriptionData } from "common/action";
@@ -25,6 +8,7 @@ import { SetterContext, UserContext } from "contexts";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
+import produce from "immer";
 interface ISubscriptionModalProps {
   open: boolean;
   onClose: () => void;
@@ -72,11 +56,11 @@ export const SubscriptionModal: React.FC<ISubscriptionModalProps> = (props) => {
   }, [recurDate]);
   useEffect(() => {
     if (subscriptionSelector.createSubscriptionData) {
-      // setSubscription(
-      //   produce((draft) => {
-      //     draft.push(subscriptionSelector.createSubscriptionData);
-      //   })
-      // );
+      setSubscription(
+        produce((draft) => {
+          draft.push(subscriptionSelector.createSubscriptionData);
+        })
+      );
     }
   }, [subscriptionSelector.createSubscriptionData]);
 
@@ -151,14 +135,22 @@ export const SubscriptionModal: React.FC<ISubscriptionModalProps> = (props) => {
             error={isAmountEmpty}
             value={amount}
             onChange={handleChangeAmount}
+            sx={{ mb: 3 }}
           />
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DesktopDatePicker
-              label="Recur Date"
+              label="Recurring Date"
               value={recurDate}
               onChange={handleChangeRecurDate}
               inputFormat="MM/dd/yyyy"
-              renderInput={(params) => <TextField {...params} />}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  fullWidth
+                  error={isRecurDateEmpty}
+                  autoComplete="off"
+                />
+              )}
             />
           </LocalizationProvider>
           <div className="modal-content-comp btns-wrapper flex">
