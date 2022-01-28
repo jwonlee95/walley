@@ -1,9 +1,2 @@
 @import "../abstracts/mixins";
 @import "../abstracts/variables";
-
-.test-para {
-  font-family: $raleway;
-  font-size: 50px;
-  color: black;
-  @include flex-center();
-}

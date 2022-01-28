@@ -1,22 +1,35 @@
 import React from "react";
 import { Card, Icon } from "@mui/material";
+import { PlusButton } from "components";
 
 interface CategoryCardProps {
-  icon: string;
-  name: string;
-  budget: number;
-  remain: number;
-  color: string;
+  empty: boolean;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  icon?: string;
+  name?: string;
+  budget?: number;
+  remain?: number;
+  color?: string;
 }
 
 export const CategoryCard: React.FC<CategoryCardProps> = ({
+  empty,
+  onClick,
   icon,
   name,
   budget,
   remain,
   color,
 }) => {
-  return (
+  return empty ? (
+    <Card
+      variant="outlined"
+      className="card"
+      sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+    >
+      <PlusButton fontSize="70px" onClick={onClick} />
+    </Card>
+  ) : (
     <Card variant="outlined" className="card">
       <div className="card-heading">
         <Icon className="icon" fontSize="medium" sx={{ color: color }}>

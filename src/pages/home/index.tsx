@@ -3,9 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { StateContext, UserContext, SetterContext } from "contexts";
 import { AppWrapper, HomeTab, ActivityIndicator } from "components";
 
-import { IPageProps, ITransaction, ICategory, ISubscription } from "interfaces";
+import {
+  IPageProps,
+  ITransaction,
+  ICategory,
+  ISubscription,
+  IIdToCategory,
+} from "interfaces";
 import { reducerState } from "common/store";
 import { GetUserData } from "common/action";
+import produce from "immer";
 
 export const HomePage: React.FC<IPageProps> = (props) => {
   const dispatch = useDispatch();
@@ -16,6 +23,12 @@ export const HomePage: React.FC<IPageProps> = (props) => {
   const [category, setCategory] = useState<ICategory[]>([]);
   const [transaction, setTransaction] = useState<ITransaction[]>([]);
   const [subscription, setSubscription] = useState<ISubscription[]>([]);
+
+  //TODO: idToCategory = { key = category's object_id : value = category}
+  //      for now, key = category's name
+  const [idToCategory, setIdToCategory] = useState<IIdToCategory>({});
+  const [addTransaction, setAddTransaction] = useState<boolean>(false);
+
   const { user } = useContext(UserContext).userState;
 
   const setterContext = {
@@ -23,12 +36,16 @@ export const HomePage: React.FC<IPageProps> = (props) => {
     setCategory,
     setTransaction,
     setSubscription,
+    setIdToCategory,
+    setAddTransaction,
   };
   const stateContext = {
     balance,
     category,
     transaction,
     subscription,
+    idToCategory,
+    addTransaction,
   };
 
   useEffect(() => {
@@ -41,6 +58,13 @@ export const HomePage: React.FC<IPageProps> = (props) => {
       setCategory(userSelector.userData.category);
       setTransaction(userSelector.userData.transaction);
       setSubscription(userSelector.userData.subscription);
+      for (const cat of userSelector.userData.category) {
+        setIdToCategory(
+          produce((draft) => {
+            draft[cat.name] = cat;
+          })
+        );
+      }
       setLoading(false);
     }
   }, [userSelector.userData]);

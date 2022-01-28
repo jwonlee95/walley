@@ -7,13 +7,23 @@ import styled from "@emotion/styled";
 interface CMButtonProps {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   fontSize?: string;
+  disabled?: boolean;
 }
 const CMIconButton = styled(IconButton)({
   color: "#83b0f3",
 });
-export const PlusButton: React.FC<CMButtonProps> = ({ onClick, fontSize }) => {
+export const PlusButton: React.FC<CMButtonProps> = ({
+  onClick,
+  fontSize,
+  disabled,
+}) => {
   return (
-    <CMIconButton className="plus-button" onClick={onClick} disableRipple>
+    <CMIconButton
+      className="plus-button"
+      onClick={onClick}
+      disableRipple
+      disabled={disabled}
+    >
       <AddCircleIcon fontSize="large" sx={{ fontSize: fontSize }} />
     </CMIconButton>
   );

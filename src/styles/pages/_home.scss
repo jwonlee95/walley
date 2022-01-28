@@ -1,2 +1,12 @@
 @import "../abstracts/mixins";
 @import "../abstracts/variables";
+
+.empty-transaction-wrapper {
+  width: 100%;
+  height: 300px;
+  .add-category-warning {
+    font-size: 30px;
+    font-family: $inter;
+    color: $light-gray;
+  }
+}

@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import moment from "moment";
 import produce from "immer";
-import { StateContext } from "contexts";
+import { SetterContext, StateContext } from "contexts";
 import { TransactionDetailModal } from "components";
 import { ITransaction } from "interfaces/transaction";
 interface Column {
@@ -23,9 +23,9 @@ interface Column {
 }
 
 const columns: readonly Column[] = [
-  { id: "category", label: "Category", minWidth: 140 },
-  { id: "date", label: "Date", minWidth: 170 },
-  { id: "description", label: "Description", minWidth: 200 },
+  { id: "category", label: "Category", minWidth: 100 },
+  { id: "date", label: "Date", minWidth: 100 },
+  { id: "description", label: "Description", minWidth: 100 },
   { id: "amount", label: "Amount", minWidth: 100 },
   { id: "balance", label: "Balance", minWidth: 100 },
 ];
@@ -67,40 +67,70 @@ const dataCellStyle = {
 };
 
 export const FinanceTable = () => {
-  const { transaction, category } = useContext(StateContext);
+  const { transaction, idToCategory, addTransaction } =
+    useContext(StateContext);
+  const { setAddTransaction } = useContext(SetterContext);
   const [rows, setRows] = useState<TableData[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [selectedTransaction, setSelectedTransaction] =
     useState<ITransaction>();
-  const [categoryMapping, setCategoryMapping] = useState<object>({});
-  useEffect(() => {}, []);
-  // useEffect(() => {
-  //   for (const ele of transaction) {
-  //     const _category = ele.category;
-  //     for (const cate of category) {
-  //       if (cate.name === _category) {
-  //         console.log("SET ROWS");
-  //         setRows(
-  //           produce((draft) => {
-  //             draft.push(
-  //               createData(
-  //                 cate.icon,
-  //                 cate.color,
-  //                 _category,
-  //                 moment(ele.date).format("ll"),
-  //                 ele.description,
-  //                 ele.amount,
-  //                 0,
-  //                 ele.type
-  //               )
-  //             );
-  //           })
-  //         );
-  //       }
-  //     }
-  //   }
-  // }, [transaction]);
 
+  useEffect(() => {
+    for (const ele of transaction) {
+      const _category =
+        idToCategory[ele.category] === undefined
+          ? { icon: "paid_money", color: "#ffd60a", name: "Income" }
+          : idToCategory[ele.category];
+
+      setRows(
+        produce((draft) => {
+          draft.push(
+            createData(
+              _category.icon,
+              _category.color,
+              _category.name,
+              moment(ele.date).format("ll"),
+              ele.description,
+              ele.amount,
+              0,
+              ele.type
+            )
+          );
+        })
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    if (addTransaction) {
+      const newTrans = transaction[transaction.length - 1];
+      console.log(newTrans);
+      // console.log(idToCategory[newTrans.category]);
+      const _category =
+        idToCategory[newTrans.category] === undefined
+          ? { icon: "paid_money", color: "#ffd60a", name: "Income" }
+          : idToCategory[newTrans.category];
+      setRows(
+        produce((draft) => {
+          draft.push(
+            createData(
+              _category.icon,
+              _category.color,
+              _category.name,
+              moment(newTrans.date).format("ll"),
+              newTrans.description,
+              newTrans.amount,
+              0,
+              newTrans.type
+            )
+          );
+        })
+      );
+    }
+    return () => {
+      setAddTransaction(false);
+    };
+  }, [addTransaction]);
   const handleClick = (
     e: React.MouseEvent<HTMLTableRowElement>,
     // _id: string
@@ -140,15 +170,21 @@ export const FinanceTable = () => {
           </TableHead>
           <TableBody>
             {rows.map((row, idx) => {
+              if (row.type === "income") {
+              }
               return (
                 <TableRow
                   hover
                   tabIndex={-1}
                   key={`${row.category}-${idx}`}
                   onClick={(e) => handleClick(e, transaction[idx])}
+                  sx={{
+                    backgroundColor: row.type === "income" ? "#83b0f32d" : "",
+                  }}
                 >
                   {columns.map((col, idx) => {
                     const value = row[col.id];
+
                     return (
                       <TableCell
                         key={`${col.id}-${idx}`}
@@ -167,6 +203,8 @@ export const FinanceTable = () => {
                             </Icon>
                             {row.category}
                           </div>
+                        ) : col.id === "amount" ? (
+                          `$ ${value}`
                         ) : (
                           `${value}`
                         )}

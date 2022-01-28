@@ -48,14 +48,12 @@ export const CreateTransactionModal: React.FC<ICreateTransactionModalProps> = (
   };
 
   const { user } = useContext(UserContext).userState;
-  const { setTransaction } = useContext(SetterContext);
+  const { setTransaction, setAddTransaction } = useContext(SetterContext);
   const { category } = useContext(StateContext);
   const dispatch = useDispatch();
   const transactionSelector = useSelector(
     (state: reducerState) => state.transaction
   );
-  const userSelector = useSelector((state: reducerState) => state.user);
-
   const [description, setDescription] = useState<string>("");
   const [date, setDate] = useState<Date | null>(null);
   const [amount, setAmount] = useState<string>("");
@@ -122,6 +120,7 @@ export const CreateTransactionModal: React.FC<ICreateTransactionModalProps> = (
       setTransaction(
         produce((draft) => {
           draft.push(transactionSelector.createTransactionData);
+          setAddTransaction(true);
         })
       );
     }
@@ -344,17 +343,14 @@ export const CreateTransactionModal: React.FC<ICreateTransactionModalProps> = (
                           direction="row"
                           flexWrap="wrap"
                           justifyContent="space-evenly"
+                          key={`stack-row-${ele.name}-${idx}`}
                         >
                           <Stack alignItems="center">
                             {/* FIXME: It needs to pass object id, not name */}
                             <IconButton
                               onClick={(e) => handleSelectCategory(e, ele)}
-                              key={`${ele.name}-${idx}`}
                             >
-                              <Icon
-                                sx={{ color: ele.color, fontSize: "30px" }}
-                                key={`${ele.name}-${idx}-icon`}
-                              >
+                              <Icon sx={{ color: ele.color, fontSize: "30px" }}>
                                 {ele.icon}
                               </Icon>
                             </IconButton>
