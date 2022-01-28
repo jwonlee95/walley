@@ -146,9 +146,7 @@ export const CreateTransactionModal: React.FC<ICreateTransactionModalProps> = (
     setAnchorEl(null);
   };
 
-  {
-    /* FIXME: It needs to get object id, not name */
-  }
+  /* FIXME: It needs to get object id, not name */
   const handleSelectCategory = (
     e: React.MouseEvent<HTMLButtonElement>,
     category: ICategory
