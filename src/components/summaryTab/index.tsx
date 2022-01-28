@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { TabPanelProps } from "components";
 import {
   Chart as ChartJS,
@@ -11,7 +11,10 @@ import {
   ArcElement,
 } from "chart.js";
 import { Bar, Doughnut, Chart } from "react-chartjs-2";
-import { yellow } from "@mui/material/colors";
+import { useDispatch, useSelector } from "react-redux";
+import { StateContext, UserContext } from "contexts";
+import { ITransaction } from "interfaces";
+import { reducerState } from "common/store";
 
 const TabSectionHeading: React.FC<{ title: string }> = (props) => {
   return <div className="tab-section-heading">{props.title}</div>;
@@ -39,23 +42,87 @@ const barOptions = {
   },
 };
 
-const barData = {
-  labels: ["January", "February", "March", "April", "May", "June", "July"],
-  datasets: [
-    {
-      label: "Budget",
-      data: [1, 2, 3, 4, 5, 6, 7],
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
-    },
-    {
-      label: "Spent",
-      data: [7, 6, 5, 4, 3, 2, 1],
-      backgroundColor: "rgba(53, 162, 235, 0.5)",
-    },
-  ],
-};
+// const barData = {
+//   labels: ["January", "February", "March", "April", "May", "June", "July"],
+//   datasets: [
+//     {
+//       label: "Budget",
+//       data: [1, 2, 3, 4, 5, 6, 7],
+//       backgroundColor: "rgba(255, 99, 132, 0.5)",
+//     },
+//     {
+//       label: "Spent",
+//       data: [7, 6, 5, 4, 3, 2, 1],
+//       backgroundColor: "rgba(53, 162, 235, 0.5)",
+//     },
+//   ],
+// };
+
+interface IParseData {
+  value: number;
+}
 
 const BarChartSection = () => {
+  const dispatch = useDispatch();
+  const { user } = useContext(UserContext).userState;
+  const { transaction } = useContext(StateContext);
+  const userSelector = useSelector((state: reducerState) => state.user);
+
+  const now = Date.now();
+  const nowYear = new Date(now).getFullYear(); //2022
+  const nowMonth = new Date(now).getMonth(); //1월 = 0, 2월 = 1....
+  const nowDay = new Date(now).getUTCDate(); //일요일 = 0, 월요일 = 1....
+  console.log("Now is", nowDay);
+  const monthData: number[] = [];
+
+  var temp = 0;
+  const sortedTransaction = transaction.sort((x, y) =>
+    y.date.toLocaleString().localeCompare(x.date.toLocaleString())
+  );
+
+  for (var i = 0, max = sortedTransaction.length; i < max; i++) {
+    if (sortedTransaction[i].type === "expense") {
+      if (i === 0) {
+        const ele = sortedTransaction[i];
+        var dt = new Date(ele.date);
+        const month = dt.getMonth();
+        monthData[month] = temp + ele.amount;
+        temp = monthData[month];
+      } else {
+        const ele = sortedTransaction[i];
+        const previous = sortedTransaction[i - 1];
+        var dt = new Date(ele.date);
+        var pdt = new Date(previous.date);
+        const previousMonth = pdt.getMonth();
+        const month = dt.getMonth();
+        if (month === previousMonth) {
+          monthData[month] = temp + ele.amount;
+          temp = monthData[month];
+        } else {
+          temp = 0;
+          monthData[month] = temp + ele.amount;
+          temp = monthData[month];
+        }
+      }
+    }
+  }
+
+  const barData = {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
+    datasets: [
+      {
+        label: "Budget",
+        data: [100, 200, 300, 400, 500, 600, 700, 800],
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+      },
+      {
+        label: "Spent",
+        data: monthData,
+        backgroundColor: "rgba(53, 162, 235, 0.5)",
+      },
+    ],
+  };
+  console.log("Not UseEffect", monthData);
   return (
     <div style={{ width: 1523 }}>
       <Bar options={barOptions} data={barData} />
