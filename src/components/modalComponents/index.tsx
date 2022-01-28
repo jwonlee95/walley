@@ -9,6 +9,7 @@ import {
   Icon,
   SxProps,
   Theme,
+  ToggleButton,
 } from "@mui/material";
 import React from "react";
 import CloseIcon from "@mui/icons-material/Close";
@@ -197,3 +198,16 @@ export const CMButton: React.FC<ICMButtonProps> = (props) => {
     </Button>
   );
 };
+
+export const CMToggleButton = styled(ToggleButton)({
+  "&.Mui-selected": {
+    backgroundColor: "#83b0f3",
+    color: "white",
+    "&:hover": {
+      backgroundColor: "#83b0f3",
+    },
+  },
+  fontFamily: "Inter, -apple-system, sans-serif",
+  color: "#83b0f3",
+  fontWeight: "500",
+});

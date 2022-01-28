@@ -18,8 +18,12 @@
   &.red {
     color: $red;
   }
+  &.small {
+    font-size: 13px;
+  }
   color: $light-gray;
   font-family: $inter;
+
   margin-bottom: 5px;
   margin-top: 8px;
   margin-right: 20px;
@@ -32,4 +36,14 @@
 }
 .btns-wrapper:first-child {
   margin-right: 20px;
+}
+
+.cm-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.popover-icon-name {
+  font-size: 14px;
+  font-family: $inter;
 }

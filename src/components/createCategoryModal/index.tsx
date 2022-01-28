@@ -24,13 +24,14 @@ import { reducerState } from "common/store";
 import { CreateCategoryData } from "common/action";
 import { SetterContext, UserContext } from "contexts";
 import produce from "immer";
-import { ICategory } from "interfaces";
-interface ICategoryModalProps {
+interface ICreateCategoryModalProps {
   open: boolean;
   onClose: () => void;
 }
 
-export const CategoryModal: React.FC<ICategoryModalProps> = (props) => {
+export const CreateCategoryModal: React.FC<ICreateCategoryModalProps> = (
+  props
+) => {
   const { user } = useContext(UserContext).userState;
   const { setCategory } = useContext(SetterContext);
   const dispatch = useDispatch();
@@ -47,6 +48,7 @@ export const CategoryModal: React.FC<ICategoryModalProps> = (props) => {
   const [isNameEmpty, setIsNameEmpty] = useState<boolean>(false);
   const [isBudgetEmpty, setIsBudgetEmpty] = useState<boolean>(false);
   const [isIconEmpty, setIsIconEmpty] = useState<boolean>(false);
+  const openPopover = Boolean(anchorEl);
 
   useEffect(() => {
     if (!props.open) {
@@ -110,8 +112,6 @@ export const CategoryModal: React.FC<ICategoryModalProps> = (props) => {
   const handlePopoverClose = () => {
     setAnchorEl(null);
   };
-
-  const openPopover = Boolean(anchorEl);
 
   const handleSaveCategory = () => {
     if (name === "" || budget === "" || icon === null) {
@@ -183,13 +183,11 @@ export const CategoryModal: React.FC<ICategoryModalProps> = (props) => {
             </div>
             <Card
               variant="outlined"
+              className="cm-card"
               sx={{
-                width: "100%",
                 height: "68px",
-                display: "flex",
-                alignItems: "center",
                 fontSize: "50px",
-                color: `${colors[selectedColor]}`,
+
                 border: isIconEmpty ? `1px solid ${colors["red"]}` : "",
               }}
             >
@@ -198,7 +196,11 @@ export const CategoryModal: React.FC<ICategoryModalProps> = (props) => {
                   fontSize="inherit"
                   color="inherit"
                   onClick={handleClickIcon}
-                  sx={{ ml: 1, cursor: "pointer" }}
+                  sx={{
+                    ml: 1,
+                    cursor: "pointer",
+                    color: colors[selectedColor],
+                  }}
                 >
                   {CategoryIcons[icon]}
                 </Icon>

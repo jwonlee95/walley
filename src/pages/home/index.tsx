@@ -5,13 +5,14 @@ import { AppWrapper, HomeTab, ActivityIndicator } from "components";
 
 import {
   IPageProps,
-  IExpense,
-  IIncome,
+  ITransaction,
   ICategory,
   ISubscription,
+  IIdToCategory,
 } from "interfaces";
 import { reducerState } from "common/store";
 import { GetUserData } from "common/action";
+import produce from "immer";
 
 export const HomePage: React.FC<IPageProps> = (props) => {
   const dispatch = useDispatch();
@@ -20,24 +21,31 @@ export const HomePage: React.FC<IPageProps> = (props) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [balance, setBalance] = useState<number>(0);
   const [category, setCategory] = useState<ICategory[]>([]);
-  const [expense, setExpense] = useState<IExpense[]>([]);
-  const [income, setIncome] = useState<IIncome[]>([]);
+  const [transaction, setTransaction] = useState<ITransaction[]>([]);
   const [subscription, setSubscription] = useState<ISubscription[]>([]);
+
+  //TODO: idToCategory = { key = category's object_id : value = category}
+  //      for now, key = category's name
+  const [idToCategory, setIdToCategory] = useState<IIdToCategory>({});
+  const [addTransaction, setAddTransaction] = useState<boolean>(false);
+
   const { user } = useContext(UserContext).userState;
 
   const setterContext = {
     setBalance,
     setCategory,
-    setExpense,
-    setIncome,
+    setTransaction,
     setSubscription,
+    setIdToCategory,
+    setAddTransaction,
   };
   const stateContext = {
     balance,
     category,
-    expense,
-    income,
+    transaction,
     subscription,
+    idToCategory,
+    addTransaction,
   };
 
   useEffect(() => {
@@ -48,9 +56,15 @@ export const HomePage: React.FC<IPageProps> = (props) => {
     if (userSelector.userData) {
       setBalance(userSelector.userData.balance);
       setCategory(userSelector.userData.category);
-      setExpense(userSelector.userData.expense);
-      setIncome(userSelector.userData.income);
+      setTransaction(userSelector.userData.transaction);
       setSubscription(userSelector.userData.subscription);
+      for (const cat of userSelector.userData.category) {
+        setIdToCategory(
+          produce((draft) => {
+            draft[cat.name] = cat;
+          })
+        );
+      }
       setLoading(false);
     }
   }, [userSelector.userData]);

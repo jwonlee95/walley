@@ -1,18 +1,25 @@
 import React from "react";
-import { IExpense, IIncome, ICategory, ISubscription } from "interfaces";
+import {
+  ITransaction,
+  ICategory,
+  ISubscription,
+  IIdToCategory,
+} from "interfaces";
 
 interface IStateContextProps {
   balance: number;
   category: ICategory[];
-  expense: IExpense[];
-  income: IIncome[];
+  transaction: ITransaction[];
   subscription: ISubscription[];
+  idToCategory: IIdToCategory;
+  addTransaction: boolean;
 }
 
 export const StateContext = React.createContext<IStateContextProps>({
   balance: 0,
   category: [],
-  expense: [],
-  income: [],
+  transaction: [],
   subscription: [],
+  idToCategory: {},
+  addTransaction: false,
 });

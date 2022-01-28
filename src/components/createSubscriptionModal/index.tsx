@@ -9,12 +9,14 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import produce from "immer";
-interface ISubscriptionModalProps {
+interface ICreateSubscriptionModalProps {
   open: boolean;
   onClose: () => void;
 }
 
-export const SubscriptionModal: React.FC<ISubscriptionModalProps> = (props) => {
+export const CreateSubscriptionModal: React.FC<
+  ICreateSubscriptionModalProps
+> = (props) => {
   const { user } = useContext(UserContext).userState;
   const { setSubscription } = useContext(SetterContext);
   const dispatch = useDispatch();

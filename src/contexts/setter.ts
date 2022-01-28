@@ -1,18 +1,25 @@
 import React from "react";
-import { IExpense, IIncome, ICategory, ISubscription } from "interfaces";
+import {
+  ITransaction,
+  ICategory,
+  ISubscription,
+  IIdToCategory,
+} from "interfaces";
 
 interface ISetterContexteProps {
   setBalance: React.Dispatch<React.SetStateAction<number>>;
   setCategory: React.Dispatch<React.SetStateAction<ICategory[]>>;
-  setExpense: React.Dispatch<React.SetStateAction<IExpense[]>>;
-  setIncome: React.Dispatch<React.SetStateAction<IIncome[]>>;
+  setTransaction: React.Dispatch<React.SetStateAction<ITransaction[]>>;
   setSubscription: React.Dispatch<React.SetStateAction<ISubscription[]>>;
+  setIdToCategory: React.Dispatch<React.SetStateAction<IIdToCategory>>;
+  setAddTransaction: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const SetterContext = React.createContext<ISetterContexteProps>({
   setBalance: () => {},
   setCategory: () => {},
-  setExpense: () => {},
-  setIncome: () => {},
+  setTransaction: () => {},
   setSubscription: () => {},
+  setIdToCategory: () => {},
+  setAddTransaction: () => {},
 });
