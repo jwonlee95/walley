@@ -14,9 +14,7 @@ export const FetchApiGet = async (url: string, data?: any) => {
       headers: {
         "Access-Control-Allow-Origin": "http://localhost:1337",
       },
-      data: {
-        data,
-      },
+      data: data,
       withCredentials: true,
     });
     if (response.status !== 200) {
@@ -42,9 +40,7 @@ export const FetchApiPost = async (url: string, data?: any) => {
       headers: {
         "Access-Control-Allow-Origin": "http://localhost:1337",
       },
-      data: {
-        data,
-      },
+      data: data,
       withCredentials: true,
     });
     return response.data;

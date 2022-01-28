@@ -1,11 +1,10 @@
 import { createStore, applyMiddleware, combineReducers } from "redux";
 import thunkMiddleware from "redux-thunk";
 
-import { expense, income, user, category, subscription } from "./reducer";
+import { transaction, user, category, subscription } from "./reducer";
 
 const rootReducer = combineReducers({
-  expense,
-  income,
+  transaction,
   user,
   category,
   subscription,

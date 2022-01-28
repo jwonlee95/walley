@@ -13,8 +13,8 @@ import {
 import moment from "moment";
 import produce from "immer";
 import { StateContext } from "contexts";
-import { TransactionDetailModal } from "..";
-import { IExpense } from "interfaces/expense";
+import { TransactionDetailModal } from "components";
+import { ITransaction } from "interfaces/transaction";
 interface Column {
   id: "category" | "date" | "description" | "amount" | "balance";
   label: string;
@@ -37,6 +37,7 @@ interface TableData {
   description: string;
   amount: number;
   balance: number;
+  type: string;
 }
 const createData = (
   icon: string,
@@ -45,9 +46,10 @@ const createData = (
   date: string,
   description: string,
   amount: number,
-  balance: number
+  balance: number,
+  type: string
 ): TableData => {
-  return { icon, color, category, date, description, amount, balance };
+  return { icon, color, category, date, description, amount, balance, type };
 };
 
 const cellStyle = {
@@ -65,45 +67,48 @@ const dataCellStyle = {
 };
 
 export const FinanceTable = () => {
-  const { expense, category } = useContext(StateContext);
+  const { transaction, category } = useContext(StateContext);
   const [rows, setRows] = useState<TableData[]>([]);
   const [open, setOpen] = useState<boolean>(false);
-  //const [selectedId, setSelectedId] = useState<string>("");
-  const [selectedExpense, setSelectedExpense] = useState<IExpense>();
-
-  useEffect(() => {
-    for (const ele of expense) {
-      const _category = ele.category;
-      for (const cate of category) {
-        if (cate.name === _category) {
-          setRows(
-            produce((draft) => {
-              draft.push(
-                createData(
-                  cate.icon,
-                  cate.color,
-                  _category,
-                  moment(ele.createdAt).format("ll"),
-                  ele.description,
-                  ele.amount,
-                  0
-                )
-              );
-            })
-          );
-        }
-      }
-    }
-  }, []);
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<ITransaction>();
+  const [categoryMapping, setCategoryMapping] = useState<object>({});
+  useEffect(() => {}, []);
+  // useEffect(() => {
+  //   for (const ele of transaction) {
+  //     const _category = ele.category;
+  //     for (const cate of category) {
+  //       if (cate.name === _category) {
+  //         console.log("SET ROWS");
+  //         setRows(
+  //           produce((draft) => {
+  //             draft.push(
+  //               createData(
+  //                 cate.icon,
+  //                 cate.color,
+  //                 _category,
+  //                 moment(ele.date).format("ll"),
+  //                 ele.description,
+  //                 ele.amount,
+  //                 0,
+  //                 ele.type
+  //               )
+  //             );
+  //           })
+  //         );
+  //       }
+  //     }
+  //   }
+  // }, [transaction]);
 
   const handleClick = (
     e: React.MouseEvent<HTMLTableRowElement>,
     // _id: string
-    expense: IExpense | undefined
+    transaction: ITransaction | undefined
   ) => {
     setOpen(true);
     //setSelectedId(_id);
-    setSelectedExpense(expense);
+    setSelectedTransaction(transaction);
   };
   const handleClose = () => {
     setOpen(false);
@@ -113,7 +118,7 @@ export const FinanceTable = () => {
       <TransactionDetailModal
         open={open}
         onClose={handleClose}
-        selectedExpense={selectedExpense}
+        selectedTransaction={selectedTransaction}
       />
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table stickyHeader aria-label="finance-table">
@@ -140,8 +145,7 @@ export const FinanceTable = () => {
                   hover
                   tabIndex={-1}
                   key={`${row.category}-${idx}`}
-                  // onClick={(e) => handleClick(e, expense[idx]._id)}
-                  onClick={(e) => handleClick(e, expense[idx])}
+                  onClick={(e) => handleClick(e, transaction[idx])}
                 >
                   {columns.map((col, idx) => {
                     const value = row[col.id];

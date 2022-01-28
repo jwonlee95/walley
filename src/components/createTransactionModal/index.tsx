@@ -5,23 +5,33 @@ import {
   DialogTitle,
   TextField,
   ToggleButtonGroup,
-  ToggleButton,
+  Card,
+  Icon,
+  Popover,
+  IconButton,
+  Paper,
+  Stack,
 } from "@mui/material";
 import {
   CMButton,
   CMNumberFormat,
+  CMToggleButton,
   colors,
   ModalCloseButton,
   PlusButton,
 } from "components";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { ICategory } from "interfaces";
 import { useDispatch, useSelector } from "react-redux";
 import { reducerState } from "common/store";
-import { GetTypes, CreateExpenseData, AddSpentData } from "common/action";
-import { SetterContext, UserContext } from "contexts";
+import { CreateTransactionData, AddSpentData } from "common/action";
+import { SetterContext, StateContext, UserContext } from "contexts";
+import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
 
-interface ICreateTransactionModalProps {
+import produce from "immer";
+
+export interface ICreateTransactionModalProps {
   open: boolean;
   onClose: () => void;
 }
@@ -29,70 +39,93 @@ interface ICreateTransactionModalProps {
 export const CreateTransactionModal: React.FC<ICreateTransactionModalProps> = (
   props
 ) => {
-  let history = useHistory();
-  const { user } = useContext(UserContext).userState;
-  const { setExpense } = useContext(SetterContext);
-  const dispatch = useDispatch();
-  const expenseSelector = useSelector((state: reducerState) => state.expense);
-  const userSelector = useSelector((state: reducerState) => state.user);
-  const [types, setTypes] = useState<ICategory[]>([]);
-  const [category, setCategory] = useState<string>("");
-  const [amount, setAmount] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
+  const [type, setType] = useState<string>("expense");
+  const handleChangeType = (
+    event: React.MouseEvent<HTMLElement>,
+    newType: string
+  ) => {
+    setType(newType);
+  };
 
-  const [isCategoryEmpty, setIsCategoryEmpty] = useState<boolean>(false);
-  const [isAmountEmpty, setIsAmountEmpty] = useState<boolean>(false);
+  const { user } = useContext(UserContext).userState;
+  const { setTransaction } = useContext(SetterContext);
+  const { category } = useContext(StateContext);
+  const dispatch = useDispatch();
+  const transactionSelector = useSelector(
+    (state: reducerState) => state.transaction
+  );
+  const userSelector = useSelector((state: reducerState) => state.user);
+
+  const [description, setDescription] = useState<string>("");
+  const [date, setDate] = useState<Date | null>(null);
+  const [amount, setAmount] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(
+    null
+  );
+  const [memo, setMemo] = useState<string>("");
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
+  const openPopover = Boolean(anchorEl);
+
   const [isDescriptionEmpty, setIsDescriptionEmpty] = useState<boolean>(false);
+  const [isDateEmpty, setIsDateEmpty] = useState<boolean>(false);
+  const [isAmountEmpty, setIsAmountEmpty] = useState<boolean>(false);
+  const [isCategoryEmpty, setIsCategoryEmpty] = useState<boolean>(false);
 
   useEffect(() => {
     if (!props.open) {
       setTimeout(() => {
-        setCategory("");
-        setAmount("");
         setDescription("");
+        setDate(null);
+        setAmount("");
+        setSelectedCategory(null);
+        setMemo("");
       }, 500);
     }
   }, [props.open]);
 
   useEffect(() => {
-    dispatch(GetTypes(user._id));
-  }, []);
+    if (isDescriptionEmpty) {
+      setIsDescriptionEmpty(false);
+    }
+  }, [description]);
 
   useEffect(() => {
-    if (userSelector.userTypes) {
-      console.log(userSelector.userTypes);
-      let _types = userSelector.userTypes.category as ICategory[];
-      setTypes(_types);
-      // console.log("types are ", _types);
+    if (isDateEmpty) {
+      setIsDateEmpty(false);
     }
-  }, [userSelector.userTypes]);
+  }, [date]);
 
-  useEffect(() => {
-    if (isCategoryEmpty) {
-      setIsCategoryEmpty(false);
-    }
-  }, [category]);
   useEffect(() => {
     if (isAmountEmpty) {
       setIsAmountEmpty(false);
     }
   }, [amount]);
-  useEffect(() => {
-    if (isDescriptionEmpty) {
-      setIsDescriptionEmpty(false);
-    }
-  }, [description]);
-  useEffect(() => {
-    if (expenseSelector.createExpenseData) {
-    }
-  }, [expenseSelector.createExpenseData]);
 
-  const handleChangeCategory = (
-    event: React.MouseEvent<HTMLElement>,
-    newCategory: string
-  ) => {
-    setCategory(newCategory);
-  };
+  useEffect(() => {
+    if (isCategoryEmpty) {
+      setIsCategoryEmpty(false);
+    }
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    setDescription("");
+    setDate(null);
+    setAmount("");
+    setSelectedCategory(null);
+    setMemo("");
+  }, [type]);
+
+  useEffect(() => {
+    if (transactionSelector.createTransactionData) {
+      setTransaction(
+        produce((draft) => {
+          draft.push(transactionSelector.createTransactionData);
+        })
+      );
+    }
+  }, [transactionSelector.createTransactionData]);
 
   const handleChangeAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(e.target.value);
@@ -102,47 +135,68 @@ export const CreateTransactionModal: React.FC<ICreateTransactionModalProps> = (
     setDescription(e.target.value);
   };
 
-  const handlePlusButtonClick = () => {
-    history.push("/excategory");
+  const handleChangeDate = (newValue: Date | null) => {
+    setDate(newValue);
+  };
+
+  const handleClickIcon = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(e.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  {
+    /* FIXME: It needs to get object id, not name */
+  }
+  const handleSelectCategory = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    category: ICategory
+  ) => {
+    setAnchorEl(null);
+    setSelectedCategory(category);
+  };
+
+  const handleChangeMemo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMemo(e.target.value);
   };
 
   const handleSaveTransaction = () => {
-    if (category === "" || amount === "" || description === null) {
-      if (category === "") {
-        setIsCategoryEmpty(true);
+    if (
+      description === "" ||
+      date === null ||
+      amount === "" ||
+      (selectedCategory === null && type === "expense")
+    ) {
+      if (description === "") {
+        setIsDescriptionEmpty(true);
+      }
+      if (date === null) {
+        setIsDateEmpty(true);
       }
       if (amount === "") {
         setIsAmountEmpty(true);
       }
-      if (description === null) {
-        setIsDescriptionEmpty(true);
+      if (selectedCategory === null && type === "expense") {
+        setIsCategoryEmpty(true);
       }
       return;
     }
-    props.onClose();
     //Api
+
+    //FIXME: category: should pass object_id
     const _amount = parseFloat(amount.slice(4).replace(/,/g, ""));
     const data = {
-      category: category,
+      category: selectedCategory ? selectedCategory.name : "",
       amount: _amount,
       description: description,
+      type: type,
+      memo: memo,
+      date: date,
     };
-
-    dispatch(CreateExpenseData(user._id, data));
-  };
-
-  const handleAddSpent = () => {
-    const _amount = parseFloat(amount.slice(4).replace(/,/g, ""));
-    const dataSpent = {
-      name: category,
-      spent: _amount,
-    };
-    dispatch(AddSpentData(user._id, dataSpent));
-  };
-
-  const handleOnClick = () => {
-    handleSaveTransaction();
-    handleAddSpent();
+    dispatch(CreateTransactionData(user._id, data));
+    props.onClose();
   };
 
   return (
@@ -163,30 +217,42 @@ export const CreateTransactionModal: React.FC<ICreateTransactionModalProps> = (
       </DialogTitle>
       <DialogContent>
         <div className="dialog-content">
-          <PlusButton onClick={handlePlusButtonClick} />
-          <ToggleButtonGroup
-            value={category}
-            id="category"
-            exclusive
-            onChange={handleChangeCategory}
+          <Card
+            variant="outlined"
+            className="cm-card"
+            sx={{ height: "50px", justifyContent: "center" }}
           >
-            {types.map((category, idx) => {
-              return (
-                <ToggleButton
-                  value={category.name}
-                  key={`${category.name}-${idx}`}
-                >
-                  {category.name}
-                </ToggleButton>
-              );
-            })}
-          </ToggleButtonGroup>
-          <CMNumberFormat
-            label="Amount"
-            error={isAmountEmpty}
-            value={amount}
-            onChange={handleChangeAmount}
-          />
+            <ToggleButtonGroup
+              color="primary"
+              value={type}
+              onChange={handleChangeType}
+              exclusive
+            >
+              <CMToggleButton
+                value="expense"
+                sx={{
+                  height: "30px",
+                  width: "130px",
+                  textTransform: "none",
+                  whiteSpace: "nowrap",
+                }}
+                disableRipple
+              >
+                Expense
+              </CMToggleButton>
+              <CMToggleButton
+                value="income"
+                sx={{
+                  height: "30px",
+                  width: "130px",
+                  textTransform: "none",
+                }}
+                disableRipple
+              >
+                Income
+              </CMToggleButton>
+            </ToggleButtonGroup>
+          </Card>
           <TextField
             autoComplete="off"
             error={isDescriptionEmpty}
@@ -197,7 +263,132 @@ export const CreateTransactionModal: React.FC<ICreateTransactionModalProps> = (
             fullWidth
             value={description}
             onChange={handleChangeDescription}
+            sx={{ mb: 3 }}
           />
+
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DesktopDatePicker
+              label="Date"
+              value={date}
+              onChange={handleChangeDate}
+              inputFormat="MM/dd/yyyy"
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  fullWidth
+                  error={isDateEmpty}
+                  autoComplete="off"
+                />
+              )}
+            />
+          </LocalizationProvider>
+
+          <CMNumberFormat
+            label="Amount"
+            error={isAmountEmpty}
+            value={amount}
+            onChange={handleChangeAmount}
+            sx={{ mb: 1, mt: 1 }}
+          />
+          {type === "expense" ? (
+            <div className="modal-content-comp wrap">
+              <div
+                className={
+                  isCategoryEmpty
+                    ? `content-title small red`
+                    : `content-title small`
+                }
+              >
+                Category
+              </div>
+              <Card
+                variant="outlined"
+                className="cm-card"
+                sx={{
+                  height: "68px",
+                  border: isCategoryEmpty ? `1px solid ${colors["red"]}` : "",
+                }}
+              >
+                {selectedCategory ? (
+                  <Icon
+                    onClick={handleClickIcon}
+                    sx={{
+                      ml: 1,
+                      cursor: "pointer",
+                      fontSize: "50px",
+                      color: selectedCategory.color,
+                    }}
+                  >
+                    {selectedCategory.icon}
+                  </Icon>
+                ) : (
+                  <PlusButton fontSize="50px" onClick={handleClickIcon} />
+                )}
+                <Popover
+                  open={openPopover}
+                  anchorEl={anchorEl}
+                  onClose={handlePopoverClose}
+                  anchorOrigin={{
+                    vertical: "center",
+                    horizontal: "right",
+                  }}
+                  transformOrigin={{
+                    vertical: "center",
+                    horizontal: "left",
+                  }}
+                >
+                  <Paper variant="elevation" sx={{ p: 2, maxWidth: "250px" }}>
+                    {category.map((ele, idx) => {
+                      return (
+                        <Stack
+                          direction="row"
+                          flexWrap="wrap"
+                          justifyContent="space-evenly"
+                        >
+                          <Stack alignItems="center">
+                            {/* FIXME: It needs to pass object id, not name */}
+                            <IconButton
+                              onClick={(e) => handleSelectCategory(e, ele)}
+                              key={`${ele.name}-${idx}`}
+                            >
+                              <Icon
+                                sx={{ color: ele.color, fontSize: "30px" }}
+                                key={`${ele.name}-${idx}-icon`}
+                              >
+                                {ele.icon}
+                              </Icon>
+                            </IconButton>
+                            <div className="popover-icon-name">{ele.name}</div>
+                          </Stack>
+                        </Stack>
+                      );
+                    })}
+                  </Paper>
+                </Popover>
+              </Card>
+            </div>
+          ) : (
+            <></>
+          )}
+
+          <div className="modal-content-comp">
+            <div className="content-title small">Memo</div>
+            <TextField
+              autoComplete="off"
+              variant="outlined"
+              id="modal-textfield"
+              fullWidth
+              multiline
+              inputProps={{
+                style: {
+                  height: "70px",
+                  fontSize: "14px",
+                },
+              }}
+              value={memo}
+              onChange={handleChangeMemo}
+            />
+          </div>
           <div className="modal-content-comp btns-wrapper flex">
             <CMButton
               text="Save"
@@ -205,7 +396,7 @@ export const CreateTransactionModal: React.FC<ICreateTransactionModalProps> = (
               width={120}
               height={37.5}
               mr="10px"
-              onClick={handleOnClick}
+              onClick={handleSaveTransaction}
             />
 
             <CMButton
@@ -217,6 +408,11 @@ export const CreateTransactionModal: React.FC<ICreateTransactionModalProps> = (
               onClick={props.onClose}
             />
           </div>
+          {/* {type === "expense" ? (
+            <ExpenseTab {...props} />
+          ) : (
+            <IncomeTab {...props} />
+          )} */}
         </div>
       </DialogContent>
     </Dialog>

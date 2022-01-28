@@ -3,13 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { StateContext, UserContext, SetterContext } from "contexts";
 import { AppWrapper, HomeTab, ActivityIndicator } from "components";
 
-import {
-  IPageProps,
-  IExpense,
-  IIncome,
-  ICategory,
-  ISubscription,
-} from "interfaces";
+import { IPageProps, ITransaction, ICategory, ISubscription } from "interfaces";
 import { reducerState } from "common/store";
 import { GetUserData } from "common/action";
 
@@ -20,23 +14,20 @@ export const HomePage: React.FC<IPageProps> = (props) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [balance, setBalance] = useState<number>(0);
   const [category, setCategory] = useState<ICategory[]>([]);
-  const [expense, setExpense] = useState<IExpense[]>([]);
-  const [income, setIncome] = useState<IIncome[]>([]);
+  const [transaction, setTransaction] = useState<ITransaction[]>([]);
   const [subscription, setSubscription] = useState<ISubscription[]>([]);
   const { user } = useContext(UserContext).userState;
 
   const setterContext = {
     setBalance,
     setCategory,
-    setExpense,
-    setIncome,
+    setTransaction,
     setSubscription,
   };
   const stateContext = {
     balance,
     category,
-    expense,
-    income,
+    transaction,
     subscription,
   };
 
@@ -48,8 +39,7 @@ export const HomePage: React.FC<IPageProps> = (props) => {
     if (userSelector.userData) {
       setBalance(userSelector.userData.balance);
       setCategory(userSelector.userData.category);
-      setExpense(userSelector.userData.expense);
-      setIncome(userSelector.userData.income);
+      setTransaction(userSelector.userData.transaction);
       setSubscription(userSelector.userData.subscription);
       setLoading(false);
     }

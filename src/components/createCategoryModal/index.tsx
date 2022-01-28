@@ -48,6 +48,7 @@ export const CreateCategoryModal: React.FC<ICreateCategoryModalProps> = (
   const [isNameEmpty, setIsNameEmpty] = useState<boolean>(false);
   const [isBudgetEmpty, setIsBudgetEmpty] = useState<boolean>(false);
   const [isIconEmpty, setIsIconEmpty] = useState<boolean>(false);
+  const openPopover = Boolean(anchorEl);
 
   useEffect(() => {
     if (!props.open) {
@@ -111,8 +112,6 @@ export const CreateCategoryModal: React.FC<ICreateCategoryModalProps> = (
   const handlePopoverClose = () => {
     setAnchorEl(null);
   };
-
-  const openPopover = Boolean(anchorEl);
 
   const handleSaveCategory = () => {
     if (name === "" || budget === "" || icon === null) {
@@ -184,13 +183,11 @@ export const CreateCategoryModal: React.FC<ICreateCategoryModalProps> = (
             </div>
             <Card
               variant="outlined"
+              className="cm-card"
               sx={{
-                width: "100%",
                 height: "68px",
-                display: "flex",
-                alignItems: "center",
                 fontSize: "50px",
-                color: `${colors[selectedColor]}`,
+
                 border: isIconEmpty ? `1px solid ${colors["red"]}` : "",
               }}
             >
@@ -199,7 +196,11 @@ export const CreateCategoryModal: React.FC<ICreateCategoryModalProps> = (
                   fontSize="inherit"
                   color="inherit"
                   onClick={handleClickIcon}
-                  sx={{ ml: 1, cursor: "pointer" }}
+                  sx={{
+                    ml: 1,
+                    cursor: "pointer",
+                    color: colors[selectedColor],
+                  }}
                 >
                   {CategoryIcons[icon]}
                 </Icon>

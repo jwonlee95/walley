@@ -1,8 +1,9 @@
-export interface IExpense {
+export interface ITransaction {
   _id: string;
   category: string;
   description: string;
   amount: number;
-  createdAt: string;
-  updatedAt: string;
+  date: Date;
+  memo: string;
+  type: string;
 }
