@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { StateContext, UserContext } from "contexts";
 import { ITransaction } from "interfaces";
 import { reducerState } from "common/store";
+import moment from "moment";
 
 const TabSectionHeading: React.FC<{ title: string }> = (props) => {
   return <div className="tab-section-heading">{props.title}</div>;
@@ -71,7 +72,9 @@ const BarChartSection = () => {
   const now = Date.now();
   const nowYear = new Date(now).getFullYear(); //2022
   const nowMonth = new Date(now).getMonth(); //1월 = 0, 2월 = 1....
-  const nowDay = new Date(now).getUTCDate(); //일요일 = 0, 월요일 = 1....
+
+  const nowDate = new Date(now).getUTCDate(); //지금 날짜
+  const nowDay = moment(now).day(1).day();
   console.log("Now is", nowDay);
   const monthData: number[] = [];
 
