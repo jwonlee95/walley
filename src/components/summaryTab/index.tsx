@@ -94,7 +94,7 @@ const BarChartSection = () => {
       } else {
         const ele = sortedTransaction[i];
         const previous = sortedTransaction[i - 1];
-        var dt = new Date(ele.date);
+        dt = new Date(ele.date);
         var pdt = new Date(previous.date);
         const previousMonth = pdt.getMonth();
         const month = dt.getMonth();
