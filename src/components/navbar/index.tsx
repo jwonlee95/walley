@@ -10,11 +10,6 @@ export const NavBar: React.FC<{}> = () => {
   const { user } = useContext(UserContext).userState;
   const [isLogin, setIsLogin] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (user) {
-      setIsLogin(true);
-    }
-  }, []);
   const handleClickLogo = () => {
     if (isLogin) {
       history.push("/home");

@@ -153,7 +153,7 @@ export const CreateCategoryModal: React.FC<ICreateCategoryModalProps> = (
       }}
     >
       <DialogTitle id="add-category-modal-title">
-        <div className="add-modal-title">Add Category</div>
+        <div className="modal-title">Add Category</div>
         <ModalCloseButton onClose={props.onClose} />
       </DialogTitle>
       <DialogContent>
@@ -168,6 +168,7 @@ export const CreateCategoryModal: React.FC<ICreateCategoryModalProps> = (
             fullWidth
             value={name}
             onChange={handleChangeName}
+            size="small"
           />
           <CMNumberFormat
             label="Budget"
@@ -205,7 +206,7 @@ export const CreateCategoryModal: React.FC<ICreateCategoryModalProps> = (
                   {CategoryIcons[icon]}
                 </Icon>
               ) : (
-                <PlusButton fontSize="50px" onClick={handleClickIcon} />
+                <PlusButton fontSize={50} onClick={handleClickIcon} />
               )}
               <Popover
                 open={openPopover}
@@ -252,7 +253,7 @@ export const CreateCategoryModal: React.FC<ICreateCategoryModalProps> = (
               bgcolor="#28B463"
               width={120}
               height={37.5}
-              mr="10px"
+              mr={1}
               onClick={handleSaveCategory}
             />
 

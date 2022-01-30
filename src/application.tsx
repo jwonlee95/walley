@@ -6,10 +6,29 @@ import routes from "config/routes";
 
 import { initialUserState, UserContextProvider, userReducer } from "contexts";
 import { Validate } from "modules/auth/auth";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 export interface IApplicationProps {}
 
 const Application: React.FunctionComponent<IApplicationProps> = (props) => {
+  const theme = createTheme({
+    components: {
+      MuiInputBase: {
+        styleOverrides: {
+          root: {
+            fontSize: "14px",
+          },
+        },
+      },
+      MuiInputLabel: {
+        styleOverrides: {
+          root: {
+            fontSize: "14px",
+          },
+        },
+      },
+    },
+  });
   const [userState, userDispatch] = useReducer(userReducer, initialUserState);
   const [authStage, setAuthStage] = useState<string>(
     "Checking localstorage ..."
@@ -57,35 +76,37 @@ const Application: React.FunctionComponent<IApplicationProps> = (props) => {
 
   return (
     <UserContextProvider value={userContextValues}>
-      <Switch>
-        {routes.map((route, index) => {
-          if (route.protected) {
+      <ThemeProvider theme={theme}>
+        <Switch>
+          {routes.map((route, index) => {
+            if (route.protected) {
+              return (
+                <Route
+                  path={route.path}
+                  exact={route.exact}
+                  key={index}
+                  render={(routeProps: RouteComponentProps) => (
+                    <AuthRoute>
+                      <route.component {...routeProps} />
+                    </AuthRoute>
+                  )}
+                />
+              );
+            }
+
             return (
               <Route
                 path={route.path}
                 exact={route.exact}
                 key={index}
                 render={(routeProps: RouteComponentProps) => (
-                  <AuthRoute>
-                    <route.component {...routeProps} />
-                  </AuthRoute>
+                  <route.component {...routeProps} />
                 )}
               />
             );
-          }
-
-          return (
-            <Route
-              path={route.path}
-              exact={route.exact}
-              key={index}
-              render={(routeProps: RouteComponentProps) => (
-                <route.component {...routeProps} />
-              )}
-            />
-          );
-        })}
-      </Switch>
+          })}
+        </Switch>
+      </ThemeProvider>
     </UserContextProvider>
   );
 };

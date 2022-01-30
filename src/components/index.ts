@@ -19,4 +19,4 @@ export * from "./createTransactionModal";
 export * from "./createCategoryModal";
 export * from "./createSubscriptionModal";
 export * from "./modalComponents";
-export * from "./transcationDetailModal";
+export * from "./transactionDetailModal";

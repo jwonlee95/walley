@@ -5,81 +5,94 @@ import {
   DialogTitle,
   TextField,
   ToggleButtonGroup,
-  Card,
+  ToggleButton,
   Icon,
-  Popover,
   IconButton,
+  Card,
+  Popover,
   Paper,
   Stack,
 } from "@mui/material";
 import {
   CMButton,
   CMNumberFormat,
-  CMToggleButton,
   colors,
+  EditButton,
   ModalCloseButton,
-  PlusButton,
+  TableData,
 } from "components";
 import { useHistory } from "react-router-dom";
-import { ICategory } from "interfaces";
+import { ICategory, ITransaction } from "interfaces";
 import { useDispatch, useSelector } from "react-redux";
 import { reducerState } from "common/store";
-import { CreateTransactionData, AddSpentData } from "common/action";
-import { SetterContext, StateContext, UserContext } from "contexts";
+import {
+  CreateTransactionData,
+  EditTransactionData,
+  UpdateSpentData,
+} from "common/action";
+import { StateContext, SetterContext, UserContext } from "contexts";
+
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-
 import produce from "immer";
 
-export interface ICreateTransactionModalProps {
+interface ITransactionDetailModalProps {
   open: boolean;
   onClose: () => void;
+  selectedTransaction: ITransaction | undefined;
+  selectedRow: TableData | undefined;
+  setModifiedTransaction: React.Dispatch<
+    React.SetStateAction<ITransaction | undefined>
+  >;
 }
 
-export const CreateTransactionModal: React.FC<ICreateTransactionModalProps> = (
-  props
-) => {
-  const [type, setType] = useState<string>("expense");
-  const handleChangeType = (
-    event: React.MouseEvent<HTMLElement>,
-    newType: string
-  ) => {
-    setType(newType);
-  };
-
+export const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
+  selectedTransaction,
+  selectedRow,
+  ...props
+}) => {
+  let history = useHistory();
+  // const transType = selectedTransaction.type;
   const { user } = useContext(UserContext).userState;
-  const { setTransaction, setAddTransaction } = useContext(SetterContext);
-  const { category } = useContext(StateContext);
+  const { category, idToCategory, transaction } = useContext(StateContext);
+  const { setTransaction } = useContext(SetterContext);
   const dispatch = useDispatch();
   const transactionSelector = useSelector(
     (state: reducerState) => state.transaction
   );
+
   const [description, setDescription] = useState<string>("");
   const [date, setDate] = useState<Date | null>(null);
   const [amount, setAmount] = useState<string>("");
-  const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(
-    null
-  );
+
   const [memo, setMemo] = useState<string>("");
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
+  const [selectedCategory, setSelectedCategory] = useState<
+    ICategory | undefined
+  >(undefined);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
   const openPopover = Boolean(anchorEl);
 
   const [isDescriptionEmpty, setIsDescriptionEmpty] = useState<boolean>(false);
-  const [isDateEmpty, setIsDateEmpty] = useState<boolean>(false);
   const [isAmountEmpty, setIsAmountEmpty] = useState<boolean>(false);
-  const [isCategoryEmpty, setIsCategoryEmpty] = useState<boolean>(false);
+  const [isDateEmpty, setIsDateEmpty] = useState<boolean>(false);
 
   useEffect(() => {
+    if (props.open && selectedRow && selectedTransaction) {
+      setDescription(selectedRow.description);
+      setDate(selectedTransaction.date);
+      setAmount(`USD ${selectedTransaction.amount.toString()}`);
+      setMemo(selectedTransaction.memo);
+      console.log();
+      setSelectedCategory(idToCategory[selectedTransaction.category]);
+    }
     if (!props.open) {
       setTimeout(() => {
-        setDescription("");
-        setDate(null);
-        setAmount("");
-        setSelectedCategory(null);
-        setMemo("");
-      }, 500);
+        setIsEdit(false);
+        setSelectedCategory(undefined);
+      });
     }
   }, [props.open]);
 
@@ -102,32 +115,31 @@ export const CreateTransactionModal: React.FC<ICreateTransactionModalProps> = (
   }, [amount]);
 
   useEffect(() => {
-    if (isCategoryEmpty) {
-      setIsCategoryEmpty(false);
-    }
-  }, [selectedCategory]);
-
-  useEffect(() => {
-    setDescription("");
-    setDate(null);
-    setAmount("");
-    setSelectedCategory(null);
-    setMemo("");
-  }, [type]);
-
-  useEffect(() => {
-    if (transactionSelector.createTransactionData) {
+    if (transactionSelector.editTransactionData) {
       setTransaction(
         produce((draft) => {
-          draft.push(transactionSelector.createTransactionData);
-          setAddTransaction(true);
+          const index = draft.findIndex(
+            (tran) => tran._id === transactionSelector.editTransactionData._id
+          );
+          if (index !== -1) {
+            draft[index] = transactionSelector.editTransactionData;
+          }
         })
       );
+      const data: ITransaction = {
+        _id: transactionSelector.editTransactionData._id,
+        category: transactionSelector.editTransactionData.category,
+        description: transactionSelector.editTransactionData.description,
+        amount: transactionSelector.editTransactionData.amount,
+        date: transactionSelector.editTransactionData.date,
+        memo: transactionSelector.editTransactionData.memo,
+        type: transactionSelector.editTransactionData.type,
+      };
+      props.setModifiedTransaction(data);
     }
-  }, [transactionSelector.createTransactionData]);
-
-  const handleChangeAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(e.target.value);
+  }, [transactionSelector.editTransactionData]);
+  const handleClickEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setIsEdit(true);
   };
 
   const handleChangeDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -138,15 +150,20 @@ export const CreateTransactionModal: React.FC<ICreateTransactionModalProps> = (
     setDate(newValue);
   };
 
+  const handleChangeAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAmount(e.target.value);
+  };
+
   const handleClickIcon = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(e.currentTarget);
+    if (isEdit) {
+      setAnchorEl(e.currentTarget);
+    }
   };
 
   const handlePopoverClose = () => {
     setAnchorEl(null);
   };
 
-  /* FIXME: It needs to get object id, not name */
   const handleSelectCategory = (
     e: React.MouseEvent<HTMLButtonElement>,
     category: ICategory
@@ -159,88 +176,65 @@ export const CreateTransactionModal: React.FC<ICreateTransactionModalProps> = (
     setMemo(e.target.value);
   };
 
-  const handleSaveTransaction = () => {
-    if (
-      description === "" ||
-      date === null ||
-      amount === "" ||
-      (selectedCategory === null && type === "expense")
-    ) {
+  const handleClickSave = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (description === "" || date === null || amount === "") {
       setIsDescriptionEmpty(description === "");
-      setIsDateEmpty(date === null);
+      setIsDateEmpty(date == null);
       setIsAmountEmpty(amount === "");
-      setIsCategoryEmpty(selectedCategory === null && type === "expense");
       return;
     }
-
-    //FIXME: category: should pass object_id
+    // API
     const _amount = parseFloat(amount.slice(4).replace(/,/g, ""));
-    const data = {
-      category: selectedCategory ? selectedCategory.name : "",
-      amount: _amount,
-      description: description,
-      type: type,
-      memo: memo,
-      date: date,
-    };
-    dispatch(CreateTransactionData(user._id, data));
+    if (selectedTransaction) {
+      if (selectedTransaction.type === "expense" && selectedCategory) {
+        const data = {
+          category: selectedCategory.name,
+          amount: _amount,
+          description: description,
+          type: selectedTransaction.type,
+          memo: memo,
+          date: date,
+        };
+        dispatch(EditTransactionData(user._id, selectedTransaction._id, data));
+      } else {
+        const data = {
+          category: "",
+          amount: _amount,
+          description: description,
+          type: selectedTransaction.type,
+          memo: memo,
+          date: date,
+        };
+        dispatch(EditTransactionData(user._id, selectedTransaction._id, data));
+      }
+    }
     props.onClose();
   };
 
+  const handleDeleteTransaction = (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log(selectedCategory);
+  };
   return (
     <Dialog
       open={props.open}
       onClose={props.onClose}
-      aria-labelledby="add-subscription-modal-title"
-      aria-describedby="add-subscription-modal-desc"
+      aria-labelledby="atransaction-detail-title"
+      aria-describedby="transaction-detail-desc"
       fullWidth
       maxWidth="xs"
       PaperProps={{
         style: { borderRadius: 10 },
       }}
     >
-      <DialogTitle id="add-subscription-modal-title">
-        <div className="modal-title">Add Transaction</div>
-        <ModalCloseButton onClose={props.onClose} />
+      <DialogTitle id="transaction-detail-title">
+        <div className="modal-title flex justify align capitalize">
+          {selectedTransaction && selectedTransaction.type}
+          <EditButton fontSize={20} ml={1} onClick={handleClickEdit} />
+          <ModalCloseButton onClose={props.onClose} />
+        </div>
       </DialogTitle>
       <DialogContent>
         <div className="dialog-content">
-          <Card
-            variant="outlined"
-            className="cm-card"
-            sx={{ height: "50px", justifyContent: "center" }}
-          >
-            <ToggleButtonGroup
-              color="primary"
-              value={type}
-              onChange={handleChangeType}
-              exclusive
-            >
-              <CMToggleButton
-                value="expense"
-                sx={{
-                  height: "30px",
-                  width: "130px",
-                  textTransform: "none",
-                  whiteSpace: "nowrap",
-                }}
-                disableRipple
-              >
-                Expense
-              </CMToggleButton>
-              <CMToggleButton
-                value="income"
-                sx={{
-                  height: "30px",
-                  width: "130px",
-                  textTransform: "none",
-                }}
-                disableRipple
-              >
-                Income
-              </CMToggleButton>
-            </ToggleButtonGroup>
-          </Card>
           <TextField
             autoComplete="off"
             error={isDescriptionEmpty}
@@ -251,16 +245,16 @@ export const CreateTransactionModal: React.FC<ICreateTransactionModalProps> = (
             fullWidth
             value={description}
             onChange={handleChangeDescription}
+            inputProps={{ readOnly: !isEdit }}
             sx={{ mb: 2 }}
-            size="small"
           />
-
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DesktopDatePicker
               label="Date"
               value={date}
               onChange={handleChangeDate}
               inputFormat="MM/dd/yyyy"
+              readOnly={!isEdit}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -271,48 +265,35 @@ export const CreateTransactionModal: React.FC<ICreateTransactionModalProps> = (
               )}
             />
           </LocalizationProvider>
-
           <CMNumberFormat
             label="Amount"
-            error={isAmountEmpty}
+            readonly={!isEdit}
+            // error={isAmountEmpty}
             value={amount}
             onChange={handleChangeAmount}
             sx={{ mb: 1, mt: 1 }}
           />
-          {type === "expense" ? (
+          {selectedTransaction && selectedTransaction.type === "expense" ? (
             <div className="modal-content-comp wrap">
-              <div
-                className={
-                  isCategoryEmpty
-                    ? `content-title small red`
-                    : `content-title small`
-                }
-              >
-                Category
-              </div>
+              <div className="content-title small">Category</div>
               <Card
                 variant="outlined"
                 className="cm-card"
                 sx={{
                   height: "68px",
-                  border: isCategoryEmpty ? `1px solid ${colors["red"]}` : "",
                 }}
               >
-                {selectedCategory ? (
-                  <Icon
-                    onClick={handleClickIcon}
-                    sx={{
-                      ml: 1,
-                      cursor: "pointer",
-                      fontSize: "50px",
-                      color: selectedCategory.color,
-                    }}
-                  >
-                    {selectedCategory.icon}
-                  </Icon>
-                ) : (
-                  <PlusButton fontSize={50} onClick={handleClickIcon} />
-                )}
+                <Icon
+                  onClick={handleClickIcon}
+                  sx={{
+                    ml: 1,
+                    cursor: isEdit ? "pointer" : "auto",
+                    fontSize: "50px",
+                    color: selectedCategory?.color,
+                  }}
+                >
+                  {selectedCategory?.icon}
+                </Icon>
                 <Popover
                   open={openPopover}
                   anchorEl={anchorEl}
@@ -372,6 +353,7 @@ export const CreateTransactionModal: React.FC<ICreateTransactionModalProps> = (
                   height: "70px",
                   fontSize: "14px",
                 },
+                readOnly: !isEdit,
               }}
               value={memo}
               onChange={handleChangeMemo}
@@ -379,21 +361,23 @@ export const CreateTransactionModal: React.FC<ICreateTransactionModalProps> = (
           </div>
           <div className="modal-content-comp btns-wrapper flex">
             <CMButton
-              text="Save"
-              bgcolor="#28B463"
-              width={120}
+              animation={isEdit}
+              text={isEdit ? "Save" : "Cancel"}
+              bgcolor={isEdit ? "#28B463" : "rgb(255, 255, 255)"}
+              border={isEdit ? "" : `1px solid ${colors["gray"]}`}
+              color={isEdit ? "" : colors["gray"]}
+              width={90}
               height={37.5}
               mr={1}
-              onClick={handleSaveTransaction}
+              onClick={isEdit ? handleClickSave : props.onClose}
             />
-
             <CMButton
-              text="Cancel"
+              text={`Delete ${selectedTransaction?.type}`}
               bgcolor="rgba(235, 87, 87, 0.1)"
               border={`1px solid ${colors["red"]}`}
               color={colors["red"]}
-              width={120}
-              onClick={props.onClose}
+              width={150}
+              onClick={handleDeleteTransaction}
             />
           </div>
         </div>

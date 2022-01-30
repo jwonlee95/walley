@@ -55,6 +55,7 @@ interface INumberFormatProps {
   label: string;
   error?: boolean;
   sx?: SxProps<Theme>;
+  readonly?: boolean;
 
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -64,6 +65,7 @@ export const CMNumberFormat: React.FC<INumberFormatProps> = ({
   error,
   sx,
   onChange,
+  readonly,
 }) => {
   return (
     <NumberFormat
@@ -80,6 +82,8 @@ export const CMNumberFormat: React.FC<INumberFormatProps> = ({
       fullWidth
       required
       thousandSeparator={true}
+      size="small"
+      inputProps={{ readOnly: readonly }}
     />
   );
 };
@@ -172,7 +176,8 @@ interface ICMButtonProps {
   border?: string;
   boxShadow?: string;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  mr?: string;
+  mr?: number;
+  animation?: boolean;
 }
 
 export const CMButton: React.FC<ICMButtonProps> = (props) => {
