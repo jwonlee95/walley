@@ -21,16 +21,16 @@ const MainSection: React.FC<{}> = () => {
   const [redirect, setRedirect] = useState<boolean>(false);
   const { user } = useContext(UserContext).userState;
 
-  useEffect(() => {
-    if (user) {
-      setRedirect(true);
-    }
-  }, []);
-  useEffect(() => {
-    if (redirect) {
-      history.push("/home");
-    }
-  }, [redirect]);
+  // useEffect(() => {
+  //   if (user) {
+  //     setRedirect(true);
+  //   }
+  // }, []);
+  // useEffect(() => {
+  //   if (redirect) {
+  //     history.push("/home");
+  //   }
+  // }, [redirect]);
   return (
     <section className="landing-section">
       {/* <div className="test"></div> */}

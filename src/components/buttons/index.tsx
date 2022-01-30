@@ -3,15 +3,18 @@ import IconButton from "@mui/material/IconButton";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import EditIcon from "@mui/icons-material/Edit";
 import styled from "@emotion/styled";
+import { Avatar } from "@mui/material";
 
 interface CMButtonProps {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  fontSize?: string;
+  fontSize?: number;
   disabled?: boolean;
+  ml?: number;
 }
 const CMIconButton = styled(IconButton)({
   color: "#83b0f3",
 });
+
 export const PlusButton: React.FC<CMButtonProps> = ({
   onClick,
   fontSize,
@@ -29,10 +32,22 @@ export const PlusButton: React.FC<CMButtonProps> = ({
   );
 };
 
-export const EditButton: React.FC<CMButtonProps> = ({ onClick, fontSize }) => {
+export const EditButton: React.FC<CMButtonProps> = ({
+  onClick,
+  fontSize,
+  ml,
+  ...props
+}) => {
   return (
-    <CMIconButton className="edit-button" onClick={onClick} disableRipple>
-      <EditIcon fontSize="large" sx={{ fontSize: fontSize }} />
+    <CMIconButton
+      sx={{ ml: ml }}
+      className="edit-button"
+      onClick={onClick}
+      disableRipple
+    >
+      <Avatar sx={{ bgcolor: "#83b0f3", width: 30, height: 30 }}>
+        <EditIcon fontSize="medium" sx={{ fontSize: fontSize }} />
+      </Avatar>
     </CMIconButton>
   );
 };

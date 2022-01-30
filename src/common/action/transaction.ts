@@ -16,7 +16,7 @@ export const CreateTransactionData = actions(
 export const EDIT_TRANSACTION_DATA = "EDIT_TRANSACTION_DATA";
 export const EditTransactionData = actions(
   EDIT_TRANSACTION_DATA,
-  async (uid: string, eid: string, data: object) => {
-    return await FetchApiPatch(transactionPath + `/edit/${uid}/${eid}`, data);
+  async (uid: string, tid: string, data: object) => {
+    return await FetchApiPatch(transactionPath + `/edit/${uid}/${tid}`, data);
   }
 );

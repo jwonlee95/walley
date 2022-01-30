@@ -116,7 +116,7 @@ export const CreateSubscriptionModal: React.FC<
       }}
     >
       <DialogTitle id="add-subscription-modal-title">
-        <div className="add-modal-title">Add Subscription</div>
+        <div className="modal-title">Add Subscription</div>
         <ModalCloseButton onClose={props.onClose} />
       </DialogTitle>
       <DialogContent>
@@ -131,13 +131,14 @@ export const CreateSubscriptionModal: React.FC<
             fullWidth
             value={name}
             onChange={handleChangeName}
+            size="small"
           />
           <CMNumberFormat
             label="Amount"
             error={isAmountEmpty}
             value={amount}
             onChange={handleChangeAmount}
-            sx={{ mb: 3 }}
+            sx={{ mb: 2 }}
           />
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DesktopDatePicker
@@ -160,8 +161,7 @@ export const CreateSubscriptionModal: React.FC<
               text="Save"
               bgcolor="#28B463"
               width={120}
-              height={37.5}
-              mr="10px"
+              mr={1}
               onClick={handleSaveSubscription}
             />
 

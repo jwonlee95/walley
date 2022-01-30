@@ -27,7 +27,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
       className="card"
       sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
     >
-      <PlusButton fontSize="70px" onClick={onClick} />
+      <PlusButton fontSize={70} onClick={onClick} />
     </Card>
   ) : (
     <Card variant="outlined" className="card">
