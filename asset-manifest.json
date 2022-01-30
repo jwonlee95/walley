@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/walley/static/css/main.42253b26.css",
-    "main.js": "/walley/static/js/main.3f782efe.js",
+    "main.css": "/walley/static/css/main.0ec97ce6.css",
+    "main.js": "/walley/static/js/main.35da692f.js",
     "static/js/787.97919710.chunk.js": "/walley/static/js/787.97919710.chunk.js",
     "static/media/logo.png": "/walley/static/media/logo.7199efc6756e2050e48d.png",
     "static/media/budget-planner.svg": "/walley/static/media/budget-planner.d39e85096b50903728ed9e0e69e174a4.svg",
@@ -22,12 +22,12 @@
     "static/media/stacked-rectangle.svg": "/walley/static/media/stacked-rectangle.859b39ddd8928ce2fe9b464659e4ff5f.svg",
     "static/media/large-rectangle.svg": "/walley/static/media/large-rectangle.911c3035797a32ea55b7e0303e015f27.svg",
     "static/media/small-rectangle.svg": "/walley/static/media/small-rectangle.bdbe8ca6a3a382c26d5bdb94c976b39e.svg",
-    "main.42253b26.css.map": "/walley/static/css/main.42253b26.css.map",
-    "main.3f782efe.js.map": "/walley/static/js/main.3f782efe.js.map",
+    "main.0ec97ce6.css.map": "/walley/static/css/main.0ec97ce6.css.map",
+    "main.35da692f.js.map": "/walley/static/js/main.35da692f.js.map",
     "787.97919710.chunk.js.map": "/walley/static/js/787.97919710.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.42253b26.css",
-    "static/js/main.3f782efe.js"
+    "static/css/main.0ec97ce6.css",
+    "static/js/main.35da692f.js"
   ]
 }
