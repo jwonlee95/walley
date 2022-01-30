@@ -13,7 +13,6 @@ import {
 import { StateContext, UserContext } from "contexts";
 import moment from "moment";
 import { useDispatch } from "react-redux";
-import { PostNewRecurDate } from "common/action";
 
 const TabSectionHeading: React.FC<{
   title: string;
@@ -82,7 +81,6 @@ const SubscriptionSection = () => {
   return (
     <div className="tab-wrapper">
       <CreateSubscriptionModal open={open} onClose={handleClose} />
-
       <TabSectionHeading title="Subscription" onClick={handleAddClick} />
       <div className="cards-wrapper">
         {subscription.length === 0 ? (

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, Icon } from "@mui/material";
 import { PlusButton } from "components";
 
@@ -21,16 +21,30 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
   remain,
   color,
 }) => {
+  const [open, setOpen] = useState<boolean>(false);
+
+  const handleClick = () => {
+    console.log("HELLO");
+  };
   return empty ? (
     <Card
       variant="outlined"
       className="card"
-      sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
     >
       <PlusButton fontSize={70} onClick={onClick} />
     </Card>
   ) : (
-    <Card variant="outlined" className="card">
+    <Card
+      variant="outlined"
+      className="card"
+      sx={{ cursor: "pointer" }}
+      onClick={handleClick}
+    >
       <div className="card-heading">
         <Icon className="icon" fontSize="medium" sx={{ color: color }}>
           {icon}
