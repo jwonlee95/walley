@@ -20,3 +20,11 @@ export const EditTransactionData = actions(
     return await FetchApiPatch(transactionPath + `/edit/${uid}/${eid}`, data);
   }
 );
+
+export const GET_TRANSACTION_DATA = "GET_TRANSACTION_DATA";
+export const GetTransactionData = actions(
+  GET_TRANSACTION_DATA,
+  async (uid: string, data: object) => {
+    return await FetchApiPatch(transactionPath + `/readAll/${uid}`, data);
+  }
+);
