@@ -17,6 +17,7 @@ import {
   CMButton,
   CMNumberFormat,
   colors,
+  createData,
   EditButton,
   ModalCloseButton,
   TableData,
@@ -27,6 +28,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { reducerState } from "common/store";
 import {
   CreateTransactionData,
+  DeleteTransactionData,
   EditTransactionData,
   UpdateSpentData,
 } from "common/action";
@@ -35,20 +37,20 @@ import { StateContext, SetterContext, UserContext } from "contexts";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import produce from "immer";
+import moment from "moment";
 
 interface ITransactionDetailModalProps {
   open: boolean;
   onClose: () => void;
   selectedTransaction: ITransaction | undefined;
   selectedRow: TableData | undefined;
-  setModifiedTransaction: React.Dispatch<
-    React.SetStateAction<ITransaction | undefined>
-  >;
+  setRows: React.Dispatch<React.SetStateAction<TableData[]>>;
 }
 
 export const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
   selectedTransaction,
   selectedRow,
+  setRows,
   ...props
 }) => {
   let history = useHistory();
@@ -85,14 +87,14 @@ export const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
       setDate(selectedTransaction.date);
       setAmount(`USD ${selectedTransaction.amount.toString()}`);
       setMemo(selectedTransaction.memo);
-      console.log();
+      console.log(selectedTransaction);
       setSelectedCategory(idToCategory[selectedTransaction.category]);
     }
     if (!props.open) {
       setTimeout(() => {
         setIsEdit(false);
         setSelectedCategory(undefined);
-      });
+      }, 500);
     }
   }, [props.open]);
 
@@ -126,18 +128,51 @@ export const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
           }
         })
       );
-      const data: ITransaction = {
-        _id: transactionSelector.editTransactionData._id,
-        category: transactionSelector.editTransactionData.category,
-        description: transactionSelector.editTransactionData.description,
-        amount: transactionSelector.editTransactionData.amount,
-        date: transactionSelector.editTransactionData.date,
-        memo: transactionSelector.editTransactionData.memo,
-        type: transactionSelector.editTransactionData.type,
-      };
-      props.setModifiedTransaction(data);
+      const _category =
+        idToCategory[transactionSelector.editTransactionData.category] ===
+        undefined
+          ? { icon: "paid_money", color: "#ffd60a", name: "Income" }
+          : idToCategory[transactionSelector.editTransactionData.category];
+      const _id = transactionSelector.editTransactionData._id;
+      console.log(transactionSelector.editTransactionData.amount);
+      setRows(
+        produce((draft) => {
+          const index = draft.findIndex((row) => _id === row._id);
+          draft[index] = createData(
+            _category.icon,
+            _category.color,
+            _category.name,
+            moment(transactionSelector.editTransactionData.date).format("ll"),
+            transactionSelector.editTransactionData.description,
+            transactionSelector.editTransactionData.amount,
+            0,
+            transactionSelector.editTransactionData.type,
+            _id
+          );
+        })
+      );
     }
   }, [transactionSelector.editTransactionData]);
+
+  useEffect(() => {
+    if (transactionSelector.deleteTransactionData) {
+      const deletedId = transactionSelector.deleteTransactionData;
+      setTransaction(
+        produce((draft) => {
+          const index = draft.findIndex((trans) => trans._id === deletedId);
+          if (index !== -1) draft.splice(index, 1);
+        })
+      );
+      setRows(
+        produce((draft) => {
+          const index = draft.findIndex((row) => row._id === deletedId);
+          if (index !== -1) draft.splice(index, 1);
+        })
+      );
+      props.onClose();
+    }
+  }, [transactionSelector.deleteTransactionData]);
+
   const handleClickEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
     setIsEdit(true);
   };
@@ -212,7 +247,23 @@ export const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
   };
 
   const handleDeleteTransaction = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(selectedCategory);
+    if (selectedTransaction) {
+      dispatch(DeleteTransactionData(user._id, selectedTransaction._id));
+    }
+  };
+  const handleTest = () => {
+    const money = [123, 4, 7, 102, 15];
+    for (let i = 0; i < 5; i++) {
+      const data = {
+        category: i % 2 === 0 ? "Pet" : "Food",
+        description: `Test ${i}`,
+        amount: money[i],
+        date: new Date("01/15/2022"),
+        memo: "",
+        type: "expense",
+      };
+      dispatch(CreateTransactionData(user._id, data));
+    }
   };
   return (
     <Dialog
@@ -226,6 +277,7 @@ export const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
         style: { borderRadius: 10 },
       }}
     >
+      <button onClick={handleTest}>onClickc</button>
       <DialogTitle id="transaction-detail-title">
         <div className="modal-title flex justify align capitalize">
           {selectedTransaction && selectedTransaction.type}

@@ -40,7 +40,7 @@ export interface TableData {
   type: string;
   _id: string;
 }
-const createData = (
+export const createData = (
   icon: string,
   color: string,
   category: string,
@@ -87,9 +87,7 @@ export const FinanceTable = () => {
   const [selectedTransaction, setSelectedTransaction] = useState<
     ITransaction | undefined
   >(undefined);
-  const [modifiedTransaction, setModifiedTransaction] = useState<
-    ITransaction | undefined
-  >(undefined);
+
   const [selectedRow, setSelectedRow] = useState<TableData | undefined>(
     undefined
   );
@@ -150,33 +148,7 @@ export const FinanceTable = () => {
       setAddTransaction(false);
     };
   }, [addTransaction]);
-  useEffect(() => {
-    if (modifiedTransaction) {
-      const _category =
-        idToCategory[modifiedTransaction.category] === undefined
-          ? { icon: "paid_money", color: "#ffd60a", name: "Income" }
-          : idToCategory[modifiedTransaction.category];
-      const _id = modifiedTransaction._id;
-      console.log(modifiedTransaction.amount);
-      setRows(
-        produce((draft) => {
-          const index = draft.findIndex((row) => _id === row._id);
-          draft[index] = createData(
-            _category.icon,
-            _category.color,
-            _category.name,
-            moment(modifiedTransaction.date).format("ll"),
-            modifiedTransaction.description,
-            modifiedTransaction.amount,
-            0,
-            modifiedTransaction.type,
-            _id
-          );
-        })
-      );
-    }
-    return () => setModifiedTransaction(undefined);
-  }, [modifiedTransaction]);
+
   const handleRowClick = (
     e: React.MouseEvent<HTMLTableRowElement>,
     // _id: string
@@ -184,6 +156,7 @@ export const FinanceTable = () => {
     row: TableData
   ) => {
     setOpen(true);
+    console.log(transaction);
     setSelectedTransaction(transaction);
     setSelectedRow(row);
   };
@@ -197,7 +170,7 @@ export const FinanceTable = () => {
         onClose={handleClose}
         selectedTransaction={selectedTransaction}
         selectedRow={selectedRow}
-        setModifiedTransaction={setModifiedTransaction}
+        setRows={setRows}
       />
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table stickyHeader aria-label="finance-table">
@@ -219,8 +192,6 @@ export const FinanceTable = () => {
           </TableHead>
           <TableBody>
             {rows.map((row, idx) => {
-              if (row.type === "income") {
-              }
               return (
                 <TableRow
                   hover

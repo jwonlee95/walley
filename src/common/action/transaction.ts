@@ -1,4 +1,9 @@
-import { FetchApiGet, FetchApiPatch, FetchApiPost } from "../network";
+import {
+  FetchApiDelete,
+  FetchApiGet,
+  FetchApiPatch,
+  FetchApiPost,
+} from "../network";
 import actions from "../creator";
 import config from "config/config";
 import { Config } from "firebase/auth";
@@ -18,6 +23,14 @@ export const EditTransactionData = actions(
   EDIT_TRANSACTION_DATA,
   async (uid: string, tid: string, data: object) => {
     return await FetchApiPatch(transactionPath + `/edit/${uid}/${tid}`, data);
+  }
+);
+
+export const DELETE_TRANSACTION_DATA = "DELETE_TRANSACTION_DATA";
+export const DeleteTransactionData = actions(
+  DELETE_TRANSACTION_DATA,
+  async (uid: string, tid: string) => {
+    return await FetchApiDelete(transactionPath + `/delete/${uid}/${tid}`);
   }
 );
 

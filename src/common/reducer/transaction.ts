@@ -1,6 +1,7 @@
 import { AnyAction } from "redux";
 import {
   CREATE_TRANSACTION_DATA,
+  DELETE_TRANSACTION_DATA,
   EDIT_TRANSACTION_DATA,
   GET_TRANSACTION_DATA,
 } from "common/action";
@@ -8,13 +9,15 @@ import {
 export type TransactionDataState = {
   createTransactionData: any;
   editTransactionData: any;
-  getTransactionDate: any;
+  getTransactionData: any;
+  deleteTransactionData: any;
 };
 
 const initialState: TransactionDataState = {
   createTransactionData: undefined,
   editTransactionData: undefined,
-  getTransactionDate: undefined,
+  getTransactionData: undefined,
+  deleteTransactionData: undefined,
 };
 
 export const transaction = (
@@ -37,6 +40,11 @@ export const transaction = (
       return {
         ...state,
         editTransactionData: payload.data,
+      };
+    case DELETE_TRANSACTION_DATA:
+      return {
+        ...state,
+        deleteTransactionData: payload.data,
       };
     default:
       return state;
