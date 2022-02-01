@@ -17,6 +17,7 @@ import { ITransaction } from "interfaces";
 import { reducerState } from "common/store";
 import moment from "moment";
 import { daysToWeeks } from "date-fns";
+import { Button } from "@mui/material";
 
 const TabSectionHeading: React.FC<{ title: string }> = (props) => {
   return <div className="tab-section-heading">{props.title}</div>;
@@ -61,6 +62,7 @@ const BarChartSection = () => {
 
   //console.log("Now is", nowDate);
   const monthData: number[] = [];
+  const sixMonthData: number[] = [];
 
   for (var i = 0, max = sortedTransaction.length; i < max; i++) {
     if (sortedTransaction[i].type === "expense") {
@@ -89,25 +91,49 @@ const BarChartSection = () => {
     }
   }
 
+  let nowMonthIndex = 0;
+  const getNowMonth = () => {
+    var dt = new Date();
+    const nowMonth = dt.getMonth();
+    nowMonthIndex = nowMonth;
+    console.log("Now Month is: ", nowMonthIndex);
+  };
+  getNowMonth();
+
+  const getSixData = (nowMonthIndex: number) => {
+    sixMonthData[5] = monthData[nowMonthIndex];
+    sixMonthData[4] = monthData[nowMonthIndex - 1];
+    sixMonthData[3] = monthData[nowMonthIndex - 2];
+    sixMonthData[2] = monthData[nowMonthIndex - 3];
+    sixMonthData[1] = monthData[nowMonthIndex - 4];
+    sixMonthData[0] = monthData[nowMonthIndex - 5];
+    return sixMonthData;
+  };
+
   const barDataMonth = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Current Month"],
     datasets: [
       {
-        label: "Budget",
-        data: [100, 200, 300, 400, 500, 600, 700, 800],
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
-      },
-      {
         label: "Spent",
-        data: monthData,
+        data: getSixData(nowMonthIndex),
         backgroundColor: "rgba(53, 162, 235, 0.5)",
       },
     ],
   };
+  const handleLastMonth = () => {
+    nowMonthIndex = nowMonthIndex - 1;
+    if (nowMonthIndex === 0) {
+      nowMonthIndex = 11;
+    }
+    return getSixData(nowMonthIndex);
+  };
 
   return (
-    <div style={{ width: 1523 }}>
+    <div>
       <Bar options={barOptions} data={barDataMonth} />
+      <button id="0" type="button" onClick={handleLastMonth}>
+        Previous Month
+      </button>
     </div>
   );
 };
@@ -120,8 +146,10 @@ const BarChartSectionWeek = () => {
   );
 
   var tempWeek = 0;
+  const now = moment().format("MM-DD-YYYY");
 
   const weekData: number[] = [];
+  const sixWeekData: number[] = [];
 
   const weekTest = () => {
     let mondayOfWeek = moment().year(2022).month(0).date(1).day(8);
@@ -164,18 +192,39 @@ const BarChartSectionWeek = () => {
         }
       }
     }
-    console.log("Week Number is: ", weekData);
+    for (var i = 0, max = weeklyRange.length; i < max; i++) {
+      if (
+        moment(now).isBetween(
+          weeklyRange[i].startDate,
+          weeklyRange[i].endDate,
+          undefined,
+          "[]"
+        )
+      ) {
+        weekNumber = i;
+        console.log(weekData);
+      }
+    }
+    if (weekNumber >= 4) {
+      sixWeekData[5] = weekData[weekNumber];
+      sixWeekData[4] = weekData[weekNumber - 1];
+      sixWeekData[3] = weekData[weekNumber - 2];
+      sixWeekData[2] = weekData[weekNumber - 3];
+      sixWeekData[1] = weekData[weekNumber - 4];
+    }
+
+    console.log("Week Number is: ", sixWeekData);
     //console.log(weeklyRange);
   };
 
   weekTest();
 
   const barDataWeek = {
-    labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    labels: [1, 2, 3, 4, 5, 6],
     datasets: [
       {
         label: "Weekly Spent",
-        data: weekData,
+        data: sixWeekData,
         backgroundColor: "red",
       },
     ],
@@ -346,10 +395,10 @@ export const SummaryTab: React.FC<TabPanelProps> = ({ value, index }) => {
     <>
       {value === index && (
         <>
-          <BarChartSectionDay />
+          {/* <BarChartSectionDay /> */}
           <BarChartSectionWeek />
           <BarChartSection />
-          <PieChartSection />
+          {/* <PieChartSection /> */}
         </>
       )}
     </>
