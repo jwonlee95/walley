@@ -192,7 +192,7 @@ const BarChartSectionWeek = () => {
         }
       }
     }
-    for (var i = 0, max = weeklyRange.length; i < max; i++) {
+    for (i = 0, weeklyRange.length; i < max; i++) {
       if (
         moment(now).isBetween(
           weeklyRange[i].startDate,
