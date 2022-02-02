@@ -207,12 +207,12 @@ const BarChartSectionWeek = () => {
       }
     }
     if (weekNumber >= 5) {
-      for (var i = 0; i < 6; i++) {
+      for (i = 0; i < 6; i++) {
         sixWeekData[i] = weekData[weekNumber];
         weekNumber--;
       }
     } else {
-      for (var i = 0; i < 6; i++) {
+      for (i = 0; i < 6; i++) {
         if (weekNumber >= 0) {
           sixWeekData[i] = weekData[weekNumber];
           weekNumber--;
@@ -414,9 +414,8 @@ const PieChartSection = () => {
     text: "123",
   };
 
-  {
-    category.map((ele, idx) => (categoryName[idx] = ele.name));
-  }
+  category.map((ele, idx) => (categoryName[idx] = ele.name));
+
   for (var i = 0; i < categoryName.length; i++) {
     pieMonthData[i] = {
       temp: 0,
@@ -425,7 +424,7 @@ const PieChartSection = () => {
   }
   console.log("pieMonthData: ", pieMonthData);
   const temp: number[] = [categoryName.length];
-  for (var i = 0; i < categoryName.length; i++) {
+  for (i = 0; i < categoryName.length; i++) {
     for (var j = 0; j < transaction.length; j++) {
       if (categoryName[i] === transaction[j].category) {
         pieMonthData[i].value = pieMonthData[i].temp + transaction[j].amount;
