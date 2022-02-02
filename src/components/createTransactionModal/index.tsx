@@ -187,6 +187,20 @@ export const CreateTransactionModal: React.FC<ICreateTransactionModalProps> = (
     props.onClose();
   };
 
+  const handleAddSpent = () => {
+    const _amount = parseFloat(amount.slice(4).replace(/,/g, ""));
+    const dataSpent = {
+      name: selectedCategory ? selectedCategory.name : "",
+      spent: _amount,
+    };
+    dispatch(AddSpentData(user._id, dataSpent));
+  };
+
+  const handleOnClick = () => {
+    handleSaveTransaction();
+    handleAddSpent();
+  };
+
   return (
     <Dialog
       open={props.open}
@@ -384,7 +398,7 @@ export const CreateTransactionModal: React.FC<ICreateTransactionModalProps> = (
               width={120}
               height={37.5}
               mr={1}
-              onClick={handleSaveTransaction}
+              onClick={handleOnClick}
             />
 
             <CMButton
