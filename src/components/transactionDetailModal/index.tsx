@@ -81,6 +81,10 @@ export const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
   const [isAmountEmpty, setIsAmountEmpty] = useState<boolean>(false);
   const [isDateEmpty, setIsDateEmpty] = useState<boolean>(false);
 
+  const [oldAmount, setOldAmount] = useState<number>();
+  const [oldCategorySpent, setOldCategorySpent] = useState<number>();
+  const [oldCategoryName, setOldCategoryName] = useState<string>("");
+
   useEffect(() => {
     if (props.open && selectedRow && selectedTransaction) {
       setDescription(selectedRow.description);
@@ -244,6 +248,17 @@ export const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
       }
     }
     props.onClose();
+  };
+
+  const handleChangeAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAmount(e.target.value);
+    setOldAmount(expense?.amount);
+    for (const cate of category) {
+      if (cate.name === expense?.category) {
+        setOldCategorySpent(cate.spent);
+        setOldCategoryName(cate.name);
+      }
+    }
   };
 
   const handleDeleteTransaction = (e: React.MouseEvent<HTMLButtonElement>) => {
