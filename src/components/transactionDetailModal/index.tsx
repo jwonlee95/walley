@@ -246,9 +246,9 @@ export const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
         const dataSpent = {
           name: selectedCategory.name,
           spent: _amount,
-          oldSpent: oldCategorySpent,
-          oldAmount: oldAmount,
-          oldName: oldCategoryName,
+          oldSpent: selectedCategory.spent,
+          oldAmount: selectedTransaction.amount,
+          oldName: selectedTransaction.category,
         };
         dispatch(EditTransactionData(user._id, selectedTransaction._id, data));
         dispatch(UpdateSpentData(user._id, dataSpent));
