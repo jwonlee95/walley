@@ -18,6 +18,7 @@ import { reducerState } from "common/store";
 import moment from "moment";
 import { daysToWeeks } from "date-fns";
 import { Button } from "@mui/material";
+import { elementAcceptingRef } from "@mui/utils";
 
 const TabSectionHeading: React.FC<{ title: string }> = (props) => {
   return <div className="tab-section-heading">{props.title}</div>;
@@ -387,21 +388,56 @@ const plugins = [
   },
 ];
 
-const pieData = {
-  labels: ["Food", "Gift", "Pet", "Others"],
-  datasets: [
-    {
-      data: [550, 550, 500, 550],
-      backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#555555"],
-      hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#555555"],
-    },
-  ],
-  text: "123",
-};
-
 const PieChartSection = () => {
+  const { transaction } = useContext(StateContext);
+  const { category } = useContext(StateContext);
+
+  const sortedTransaction = transaction.sort((x, y) =>
+    y.date.toLocaleString().localeCompare(x.date.toLocaleString())
+  );
+  interface IData {
+    temp: number;
+    value: number;
+  }
+  const pieMonthData: IData[] = [];
+  const categoryName: string[] = [];
+
+  const pieData = {
+    labels: categoryName,
+    datasets: [
+      {
+        data: pieMonthData,
+        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#555555"],
+        hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#555555"],
+      },
+    ],
+    text: "123",
+  };
+
+  {
+    category.map((ele, idx) => (categoryName[idx] = ele.name));
+  }
+  for (var i = 0; i < categoryName.length; i++) {
+    pieMonthData[i] = {
+      temp: 0,
+      value: 0,
+    };
+  }
+  console.log("pieMonthData: ", pieMonthData);
+  const temp: number[] = [categoryName.length];
+  for (var i = 0; i < categoryName.length; i++) {
+    for (var j = 0; j < transaction.length; j++) {
+      if (categoryName[i] === transaction[j].category) {
+        pieMonthData[i].value = pieMonthData[i].temp + transaction[j].amount;
+        pieMonthData[i].temp = pieMonthData[i].value;
+        console.log(temp);
+      }
+    }
+  }
+  console.log("Categories are: ", categoryName);
+  console.log("Categories are: ", pieMonthData);
   return (
-    <div style={{ width: 500 }}>
+    <div>
       <Doughnut options={pieOptions} data={pieData} />
     </div>
   );
@@ -415,7 +451,7 @@ export const SummaryTab: React.FC<TabPanelProps> = ({ value, index }) => {
           <BarChartSectionDay />
           <BarChartSectionWeek />
           <BarChartSection />
-          {/* <PieChartSection /> */}
+          <PieChartSection />
         </>
       )}
     </>
