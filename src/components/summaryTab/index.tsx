@@ -205,12 +205,22 @@ const BarChartSectionWeek = () => {
         console.log(weekData);
       }
     }
-    if (weekNumber >= 4) {
-      sixWeekData[5] = weekData[weekNumber];
-      sixWeekData[4] = weekData[weekNumber - 1];
-      sixWeekData[3] = weekData[weekNumber - 2];
-      sixWeekData[2] = weekData[weekNumber - 3];
-      sixWeekData[1] = weekData[weekNumber - 4];
+    if (weekNumber >= 5) {
+      for (var i = 0; i < 6; i++) {
+        sixWeekData[i] = weekData[weekNumber];
+        weekNumber--;
+      }
+    } else {
+      for (var i = 0; i < 6; i++) {
+        if (weekNumber >= 0) {
+          sixWeekData[i] = weekData[weekNumber];
+          weekNumber--;
+        } else {
+          weekNumber = 52;
+          sixWeekData[i] = weekData[weekNumber];
+          weekNumber--;
+        }
+      }
     }
 
     console.log("Week Number is: ", sixWeekData);
@@ -224,13 +234,20 @@ const BarChartSectionWeek = () => {
     datasets: [
       {
         label: "Weekly Spent",
-        data: sixWeekData,
+        data: [
+          sixWeekData[5],
+          sixWeekData[4],
+          sixWeekData[3],
+          sixWeekData[2],
+          sixWeekData[1],
+          sixWeekData[0],
+        ],
         backgroundColor: "red",
       },
     ],
   };
   return (
-    <div style={{ width: 1523 }}>
+    <div>
       <Bar options={barOptions} data={barDataWeek} />
     </div>
   );
@@ -322,7 +339,7 @@ const BarChartSectionDay = () => {
     ],
   };
   return (
-    <div style={{ width: 1523 }}>
+    <div>
       <Bar options={barOptions} data={barDataDay} />
     </div>
   );
@@ -395,7 +412,7 @@ export const SummaryTab: React.FC<TabPanelProps> = ({ value, index }) => {
     <>
       {value === index && (
         <>
-          {/* <BarChartSectionDay /> */}
+          <BarChartSectionDay />
           <BarChartSectionWeek />
           <BarChartSection />
           {/* <PieChartSection /> */}
