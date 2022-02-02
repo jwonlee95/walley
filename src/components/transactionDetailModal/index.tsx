@@ -20,7 +20,7 @@ import {
   createData,
   EditButton,
   ModalCloseButton,
-  TableData,
+  FinanceTableData,
 } from "components";
 import { useHistory } from "react-router-dom";
 import { ICategory, ITransaction } from "interfaces";
@@ -43,8 +43,8 @@ interface ITransactionDetailModalProps {
   open: boolean;
   onClose: () => void;
   selectedTransaction: ITransaction | undefined;
-  selectedRow: TableData | undefined;
-  setRows: React.Dispatch<React.SetStateAction<TableData[]>>;
+  selectedRow: FinanceTableData | undefined;
+  setRows: React.Dispatch<React.SetStateAction<FinanceTableData[]>>;
 }
 
 export const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
@@ -251,20 +251,7 @@ export const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
       dispatch(DeleteTransactionData(user._id, selectedTransaction._id));
     }
   };
-  const handleTest = () => {
-    const money = [123, 4, 7, 102, 15];
-    for (let i = 0; i < 5; i++) {
-      const data = {
-        category: i % 2 === 0 ? "Pet" : "Food",
-        description: `Test ${i}`,
-        amount: money[i],
-        date: new Date("01/15/2022"),
-        memo: "",
-        type: "expense",
-      };
-      dispatch(CreateTransactionData(user._id, data));
-    }
-  };
+
   return (
     <Dialog
       open={props.open}
@@ -277,7 +264,6 @@ export const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
         style: { borderRadius: 10 },
       }}
     >
-      <button onClick={handleTest}>onClickc</button>
       <DialogTitle id="transaction-detail-title">
         <div className="modal-title flex justify align capitalize">
           {selectedTransaction && selectedTransaction.type}

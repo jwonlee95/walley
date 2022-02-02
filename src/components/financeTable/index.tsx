@@ -6,7 +6,6 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  styled,
   TableRow,
   Icon,
 } from "@mui/material";
@@ -29,7 +28,7 @@ const columns: readonly Column[] = [
   { id: "amount", label: "Amount", minWidth: 100 },
   { id: "balance", label: "Balance", minWidth: 100 },
 ];
-export interface TableData {
+export interface FinanceTableData {
   icon: string;
   color: string;
   category: string;
@@ -50,7 +49,7 @@ export const createData = (
   balance: number,
   type: string,
   _id: string
-): TableData => {
+): FinanceTableData => {
   return {
     icon,
     color,
@@ -82,13 +81,13 @@ export const FinanceTable = () => {
   const { transaction, idToCategory, addTransaction } =
     useContext(StateContext);
   const { setAddTransaction } = useContext(SetterContext);
-  const [rows, setRows] = useState<TableData[]>([]);
+  const [rows, setRows] = useState<FinanceTableData[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [selectedTransaction, setSelectedTransaction] = useState<
     ITransaction | undefined
   >(undefined);
 
-  const [selectedRow, setSelectedRow] = useState<TableData | undefined>(
+  const [selectedRow, setSelectedRow] = useState<FinanceTableData | undefined>(
     undefined
   );
 
@@ -153,7 +152,7 @@ export const FinanceTable = () => {
     e: React.MouseEvent<HTMLTableRowElement>,
     // _id: string
     transaction: ITransaction | undefined,
-    row: TableData
+    row: FinanceTableData
   ) => {
     setOpen(true);
     console.log(transaction);

@@ -1,2 +1,6 @@
 @import "../abstracts/mixins";
 @import "../abstracts/variables";
+
+.MuiTableRow-root {
+  height: 20px;
+}

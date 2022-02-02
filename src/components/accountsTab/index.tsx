@@ -13,6 +13,8 @@ import {
 import { StateContext, UserContext } from "contexts";
 import moment from "moment";
 import { useDispatch } from "react-redux";
+import { CategoryDetailModal } from "components/categoryDetailModal";
+import { ICategory } from "interfaces";
 
 const TabSectionHeading: React.FC<{
   title: string;
@@ -29,32 +31,47 @@ const TabSectionHeading: React.FC<{
 
 const CategorySection = () => {
   const { category } = useContext(StateContext);
-  const [open, setOpen] = useState<boolean>(false);
+  const [openCreate, setOpenCreate] = useState<boolean>(false);
+  const [openDetail, setOpenDetail] = useState<boolean>(false);
+
+  const [selectedCategory, setSelectedCategory] = useState<
+    ICategory | undefined
+  >(undefined);
 
   const handleAddClick = () => {
-    setOpen(true);
+    setOpenCreate(true);
   };
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseCreate = () => {
+    setOpenCreate(false);
   };
+  const handleCloseDetail = () => {
+    setOpenDetail(false);
+  };
+
+  const handleOpenDetail = (ele: ICategory) => {
+    setOpenDetail(true);
+    setSelectedCategory(ele);
+  };
+
   return (
     <div className="tab-wrapper">
-      <CreateCategoryModal open={open} onClose={handleClose} />
+      <CreateCategoryModal open={openCreate} onClose={handleCloseCreate} />
+      <CategoryDetailModal
+        open={openDetail}
+        onClose={handleCloseDetail}
+        category={selectedCategory}
+      />
       <TabSectionHeading title="Category" onClick={handleAddClick} />
       <div className="cards-wrapper">
         {category.length === 0 ? (
-          <CategoryCard empty onClick={handleAddClick} />
+          <CategoryCard category={undefined} onClick={handleAddClick} />
         ) : (
           category.map((ele, idx) => {
             return (
               <CategoryCard
-                empty={false}
-                icon={ele.icon}
-                name={ele.name}
-                budget={ele.budget}
-                remain={ele.budget - ele.spent}
-                color={ele.color}
+                category={ele}
                 key={`${ele.name}-${idx}`}
+                onClick={() => handleOpenDetail(ele)}
               />
             );
           })

@@ -1,32 +1,37 @@
 import React, { useState } from "react";
-import { Card, Icon } from "@mui/material";
+import { Card, Icon, CardActionArea } from "@mui/material";
 import { PlusButton } from "components";
+import { ICategory } from "interfaces";
 
 interface CategoryCardProps {
-  empty: boolean;
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  icon?: string;
-  name?: string;
-  budget?: number;
-  remain?: number;
-  color?: string;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) => void;
+  category?: ICategory | undefined;
 }
 
 export const CategoryCard: React.FC<CategoryCardProps> = ({
-  empty,
   onClick,
-  icon,
-  name,
-  budget,
-  remain,
-  color,
+  category,
 }) => {
-  const [open, setOpen] = useState<boolean>(false);
-
-  const handleClick = () => {
-    console.log("HELLO");
-  };
-  return empty ? (
+  return category ? (
+    <div className="card-wrapper" onClick={onClick}>
+      <Card variant="outlined" className="card" sx={{ cursor: "pointer" }}>
+        <div className="card-heading">
+          <Icon
+            className="icon"
+            fontSize="medium"
+            sx={{ color: category.color }}
+          >
+            {category.icon}
+          </Icon>
+          {category.name}
+        </div>
+        <div className="card-content-wrapper">
+          <div className="card-content">{`Budget: $ ${category.budget}`}</div>
+          <div className="card-content">{`Remain: $ ${category.budget}`}</div>
+        </div>
+      </Card>
+    </div>
+  ) : (
     <Card
       variant="outlined"
       className="card"
@@ -37,24 +42,6 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
       }}
     >
       <PlusButton fontSize={70} onClick={onClick} />
-    </Card>
-  ) : (
-    <Card
-      variant="outlined"
-      className="card"
-      sx={{ cursor: "pointer" }}
-      onClick={handleClick}
-    >
-      <div className="card-heading">
-        <Icon className="icon" fontSize="medium" sx={{ color: color }}>
-          {icon}
-        </Icon>
-        {name}
-      </div>
-      <div className="card-content-wrapper">
-        <div className="card-content">{`Budget: $ ${budget}`}</div>
-        <div className="card-content">{`Remain: $ ${remain}`}</div>
-      </div>
     </Card>
   );
 };
