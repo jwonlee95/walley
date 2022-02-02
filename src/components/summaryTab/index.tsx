@@ -18,6 +18,7 @@ import { reducerState } from "common/store";
 import moment from "moment";
 import { daysToWeeks } from "date-fns";
 import { Button } from "@mui/material";
+import { elementAcceptingRef } from "@mui/utils";
 
 const TabSectionHeading: React.FC<{ title: string }> = (props) => {
   return <div className="tab-section-heading">{props.title}</div>;
@@ -205,12 +206,22 @@ const BarChartSectionWeek = () => {
         console.log(weekData);
       }
     }
-    if (weekNumber >= 4) {
-      sixWeekData[5] = weekData[weekNumber];
-      sixWeekData[4] = weekData[weekNumber - 1];
-      sixWeekData[3] = weekData[weekNumber - 2];
-      sixWeekData[2] = weekData[weekNumber - 3];
-      sixWeekData[1] = weekData[weekNumber - 4];
+    if (weekNumber >= 5) {
+      for (i = 0; i < 6; i++) {
+        sixWeekData[i] = weekData[weekNumber];
+        weekNumber--;
+      }
+    } else {
+      for (i = 0; i < 6; i++) {
+        if (weekNumber >= 0) {
+          sixWeekData[i] = weekData[weekNumber];
+          weekNumber--;
+        } else {
+          weekNumber = 52;
+          sixWeekData[i] = weekData[weekNumber];
+          weekNumber--;
+        }
+      }
     }
 
     console.log("Week Number is: ", sixWeekData);
@@ -224,13 +235,20 @@ const BarChartSectionWeek = () => {
     datasets: [
       {
         label: "Weekly Spent",
-        data: sixWeekData,
+        data: [
+          sixWeekData[5],
+          sixWeekData[4],
+          sixWeekData[3],
+          sixWeekData[2],
+          sixWeekData[1],
+          sixWeekData[0],
+        ],
         backgroundColor: "red",
       },
     ],
   };
   return (
-    <div style={{ width: 1523 }}>
+    <div>
       <Bar options={barOptions} data={barDataWeek} />
     </div>
   );
@@ -322,7 +340,7 @@ const BarChartSectionDay = () => {
     ],
   };
   return (
-    <div style={{ width: 1523 }}>
+    <div>
       <Bar options={barOptions} data={barDataDay} />
     </div>
   );
@@ -370,21 +388,55 @@ const plugins = [
   },
 ];
 
-const pieData = {
-  labels: ["Food", "Gift", "Pet", "Others"],
-  datasets: [
-    {
-      data: [550, 550, 500, 550],
-      backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#555555"],
-      hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#555555"],
-    },
-  ],
-  text: "123",
-};
-
 const PieChartSection = () => {
+  const { transaction } = useContext(StateContext);
+  const { category } = useContext(StateContext);
+
+  const sortedTransaction = transaction.sort((x, y) =>
+    y.date.toLocaleString().localeCompare(x.date.toLocaleString())
+  );
+  interface IData {
+    temp: number;
+    value: number;
+  }
+  const pieMonthData: IData[] = [];
+  const categoryName: string[] = [];
+
+  const pieData = {
+    labels: categoryName,
+    datasets: [
+      {
+        data: pieMonthData,
+        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#555555"],
+        hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#555555"],
+      },
+    ],
+    text: "123",
+  };
+
+  category.map((ele, idx) => (categoryName[idx] = ele.name));
+
+  for (var i = 0; i < categoryName.length; i++) {
+    pieMonthData[i] = {
+      temp: 0,
+      value: 0,
+    };
+  }
+  console.log("pieMonthData: ", pieMonthData);
+  const temp: number[] = [categoryName.length];
+  for (i = 0; i < categoryName.length; i++) {
+    for (var j = 0; j < transaction.length; j++) {
+      if (categoryName[i] === transaction[j].category) {
+        pieMonthData[i].value = pieMonthData[i].temp + transaction[j].amount;
+        pieMonthData[i].temp = pieMonthData[i].value;
+        console.log(temp);
+      }
+    }
+  }
+  console.log("Categories are: ", categoryName);
+  console.log("Categories are: ", pieMonthData);
   return (
-    <div style={{ width: 500 }}>
+    <div>
       <Doughnut options={pieOptions} data={pieData} />
     </div>
   );
@@ -395,10 +447,10 @@ export const SummaryTab: React.FC<TabPanelProps> = ({ value, index }) => {
     <>
       {value === index && (
         <>
-          {/* <BarChartSectionDay /> */}
+          <BarChartSectionDay />
           <BarChartSectionWeek />
           <BarChartSection />
-          {/* <PieChartSection /> */}
+          <PieChartSection />
         </>
       )}
     </>
