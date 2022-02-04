@@ -171,14 +171,14 @@ const WeeklyBarChartSection = () => {
       mondayOfWeek.add(7, "days");
       nextMondayOfWeek.add(7, "day");
     }
-    for (i = 0; i < weeklyRange.length; i++) {
+    for (var i = 0; i < weeklyRange.length; i++) {
       weekData[i] = {
         temp: 0,
         value: 0,
       };
     }
     let weekNumber = 0;
-    for (var i = 0, max = weeklyRange.length; i < max; i++) {
+    for (i = 0; i < weeklyRange.length; i++) {
       for (var j = 0, maxT = sortedTransaction.length; j < maxT; j++) {
         if (sortedTransaction[j].type === "expense") {
           const ele = sortedTransaction[j];
@@ -197,7 +197,7 @@ const WeeklyBarChartSection = () => {
         }
       }
     }
-    for (i = 0, weeklyRange.length; i < max; i++) {
+    for (i = 0; i < weeklyRange.length; i++) {
       if (
         moment(now).isBetween(
           weeklyRange[i].startDate,
@@ -487,7 +487,7 @@ const WeeklyPieChartSection = () => {
       mondayOfWeek.add(7, "days");
       nextMondayOfWeek.add(7, "day");
     }
-    for (i = 0; i < weeklyRange.length; i++) {
+    for (var i = 0; i < weeklyRange.length; i++) {
       var dt = moment().format("MM-DD-YYYY");
       if (
         moment(dt).isBetween(
@@ -500,11 +500,11 @@ const WeeklyPieChartSection = () => {
         weekNumber = i;
       }
     }
-    for (var i = 0, max = weeklyRange.length; i < max; i++) {
+    for (i = 0; i < weeklyRange.length; i++) {
       for (var j = 0, maxT = sortedTransaction.length; j < maxT; j++) {
         if (sortedTransaction[j].type === "expense") {
           const ele = sortedTransaction[j];
-          var dt = moment(ele.date).format("MM-DD-YYYY");
+          dt = moment(ele.date).format("MM-DD-YYYY");
           var now = moment().format("MM-DD-YYYY");
           if (
             moment(dt).isBetween(
