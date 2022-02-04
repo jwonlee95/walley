@@ -61,7 +61,6 @@ const BarChartSection = () => {
   const nowDay = moment().day(); //화요일: 2
   const nowDate = moment().date(); //1일
 
-  //console.log("Now is", nowDate);
   const monthData: number[] = [];
   const sixMonthData: number[] = [];
 
@@ -97,7 +96,6 @@ const BarChartSection = () => {
     var dt = new Date();
     const nowMonth = dt.getMonth();
     nowMonthIndex = nowMonth;
-    console.log("Now Month is: ", nowMonthIndex);
   };
   getNowMonth();
 
@@ -139,17 +137,21 @@ const BarChartSection = () => {
   );
 };
 
-const BarChartSectionWeek = () => {
+const WeeklyBarChartSection = () => {
   const { transaction } = useContext(StateContext);
 
   const sortedTransaction = transaction.sort((x, y) =>
     y.date.toLocaleString().localeCompare(x.date.toLocaleString())
   );
 
-  var tempWeek = 0;
+  interface IData {
+    temp: number;
+    value: number;
+  }
+
   const now = moment().format("MM-DD-YYYY");
 
-  const weekData: number[] = [];
+  const weekData: IData[] = [];
   const sixWeekData: number[] = [];
 
   const weekTest = () => {
@@ -157,8 +159,6 @@ const BarChartSectionWeek = () => {
     if (mondayOfWeek.date() > 7) mondayOfWeek.day(-6);
 
     let nextMondayOfWeek = mondayOfWeek.clone().add(7, "day");
-    //console.log(mondayOfWeek.format("l"));
-    //console.log(nextMondayOfWeek.format("l"));
 
     let count = 0;
     const weeklyRange: any[] = [];
@@ -168,12 +168,17 @@ const BarChartSectionWeek = () => {
         endDate: moment(nextMondayOfWeek).subtract(1, "day").format("l"),
       };
       weeklyRange.push(weekRange);
-      //console.log(count);
       mondayOfWeek.add(7, "days");
       nextMondayOfWeek.add(7, "day");
     }
+    for (var i = 0; i < weeklyRange.length; i++) {
+      weekData[i] = {
+        temp: 0,
+        value: 0,
+      };
+    }
     let weekNumber = 0;
-    for (var i = 0, max = weeklyRange.length; i < max; i++) {
+    for (i = 0; i < weeklyRange.length; i++) {
       for (var j = 0, maxT = sortedTransaction.length; j < maxT; j++) {
         if (sortedTransaction[j].type === "expense") {
           const ele = sortedTransaction[j];
@@ -186,14 +191,13 @@ const BarChartSectionWeek = () => {
               "[]"
             )
           ) {
-            weekNumber = i;
-            weekData[i] = tempWeek + ele.amount;
-            tempWeek = weekData[i];
+            weekData[i].value = weekData[i].temp + ele.amount;
+            weekData[i].temp = weekData[i].value;
           }
         }
       }
     }
-    for (i = 0, weeklyRange.length; i < max; i++) {
+    for (i = 0; i < weeklyRange.length; i++) {
       if (
         moment(now).isBetween(
           weeklyRange[i].startDate,
@@ -203,29 +207,28 @@ const BarChartSectionWeek = () => {
         )
       ) {
         weekNumber = i;
-        console.log(weekData);
       }
     }
+
     if (weekNumber >= 5) {
       for (i = 0; i < 6; i++) {
-        sixWeekData[i] = weekData[weekNumber];
+        sixWeekData[i] = weekData[weekNumber].value;
         weekNumber--;
       }
     } else {
       for (i = 0; i < 6; i++) {
         if (weekNumber >= 0) {
-          sixWeekData[i] = weekData[weekNumber];
+          sixWeekData[i] = weekData[weekNumber].value;
           weekNumber--;
         } else {
-          weekNumber = 52;
-          sixWeekData[i] = weekData[weekNumber];
+          weekNumber = weeklyRange.length - 1;
+          sixWeekData[i] = weekData[weekNumber].value;
           weekNumber--;
         }
       }
     }
 
     console.log("Week Number is: ", sixWeekData);
-    //console.log(weeklyRange);
   };
 
   weekTest();
@@ -247,6 +250,7 @@ const BarChartSectionWeek = () => {
       },
     ],
   };
+  console.log("barDataWeek", sixWeekData);
   return (
     <div>
       <Bar options={barOptions} data={barDataWeek} />
@@ -274,8 +278,6 @@ const BarChartSectionDay = () => {
 
   const nowDate = moment().date(); //1일
 
-  console.log("now is ", nowq);
-
   const dayData: number[] = [];
 
   let tempDayOne = 0;
@@ -289,11 +291,8 @@ const BarChartSectionDay = () => {
   const getDayData = () => {
     for (var i = 0, max = sortedTransaction.length; i < max; i++) {
       const ele = sortedTransaction[i];
-      console.log(ele);
       var dt = moment(ele.date).format("MM-DD-YYYY");
-      console.log("dt is: ", dt);
       if (moment(dt).isSame(now)) {
-        console.log("Today added");
         dayData[6] = tempDayOne + ele.amount;
         tempDayOne = dayData[6];
       } else if (moment(dt).isSame(yesterday)) {
@@ -316,7 +315,6 @@ const BarChartSectionDay = () => {
         tempDaySeven = dayData[0];
       }
     }
-    console.log("Day Data is: ", dayData);
   };
 
   getDayData();
@@ -388,9 +386,13 @@ const plugins = [
   },
 ];
 
-const PieChartSection = () => {
+// --------------------------------PIE CHART------------------------------------------------------------------------
+
+const MonthlyPieChartSection = () => {
   const { transaction } = useContext(StateContext);
   const { category } = useContext(StateContext);
+
+  const nowMonth = moment().month();
 
   const sortedTransaction = transaction.sort((x, y) =>
     y.date.toLocaleString().localeCompare(x.date.toLocaleString())
@@ -401,6 +403,14 @@ const PieChartSection = () => {
   }
   const pieMonthData: IData[] = [];
   const categoryName: string[] = [];
+  const nowMonthTransaction: ITransaction[] = [];
+
+  for (var i = 0, max = transaction.length; i < max; i++) {
+    const ele = transaction[i];
+    if (moment(ele.date).month() === nowMonth) {
+      nowMonthTransaction.push(ele);
+    }
+  }
 
   const pieData = {
     labels: categoryName,
@@ -416,25 +426,203 @@ const PieChartSection = () => {
 
   category.map((ele, idx) => (categoryName[idx] = ele.name));
 
-  for (var i = 0; i < categoryName.length; i++) {
+  for (i = 0; i < categoryName.length; i++) {
     pieMonthData[i] = {
       temp: 0,
       value: 0,
     };
   }
-  console.log("pieMonthData: ", pieMonthData);
   const temp: number[] = [categoryName.length];
   for (i = 0; i < categoryName.length; i++) {
-    for (var j = 0; j < transaction.length; j++) {
-      if (categoryName[i] === transaction[j].category) {
-        pieMonthData[i].value = pieMonthData[i].temp + transaction[j].amount;
+    for (var j = 0; j < nowMonthTransaction.length; j++) {
+      if (categoryName[i] === nowMonthTransaction[j].category) {
+        pieMonthData[i].value =
+          pieMonthData[i].temp + nowMonthTransaction[j].amount;
         pieMonthData[i].temp = pieMonthData[i].value;
-        console.log(temp);
       }
     }
   }
-  console.log("Categories are: ", categoryName);
-  console.log("Categories are: ", pieMonthData);
+  return (
+    <div>
+      <Doughnut options={pieOptions} data={pieData} />
+    </div>
+  );
+};
+
+const WeeklyPieChartSection = () => {
+  const { transaction } = useContext(StateContext);
+  const { category } = useContext(StateContext);
+
+  const sortedTransaction = transaction.sort((x, y) =>
+    y.date.toLocaleString().localeCompare(x.date.toLocaleString())
+  );
+
+  interface IData {
+    temp: number;
+    value: number;
+  }
+  const pieWeekData: IData[] = [];
+  const categoryName: string[] = [];
+  const nowWeekTransaction: ITransaction[] = [];
+  let weekNumber = 0;
+  var tempWeek = 0;
+  const now = moment().format("MM-DD-YYYY");
+
+  const weekData: number[] = [];
+
+  const weekTest = () => {
+    let mondayOfWeek = moment().year(2022).month(0).date(1).day(8);
+    if (mondayOfWeek.date() > 7) mondayOfWeek.day(-6);
+
+    let nextMondayOfWeek = mondayOfWeek.clone().add(7, "day");
+
+    let count = 0;
+    const weeklyRange: any[] = [];
+    while (moment(mondayOfWeek).year() === moment(nextMondayOfWeek).year()) {
+      const weekRange = {
+        startDate: moment(mondayOfWeek).format("l"),
+        endDate: moment(nextMondayOfWeek).subtract(1, "day").format("l"),
+      };
+      weeklyRange.push(weekRange);
+      mondayOfWeek.add(7, "days");
+      nextMondayOfWeek.add(7, "day");
+    }
+    for (var i = 0; i < weeklyRange.length; i++) {
+      var dt = moment().format("MM-DD-YYYY");
+      if (
+        moment(dt).isBetween(
+          weeklyRange[i].startDate,
+          weeklyRange[i].endDate,
+          undefined,
+          "[]"
+        )
+      ) {
+        weekNumber = i;
+      }
+    }
+    for (i = 0; i < weeklyRange.length; i++) {
+      for (var j = 0, maxT = sortedTransaction.length; j < maxT; j++) {
+        if (sortedTransaction[j].type === "expense") {
+          const ele = sortedTransaction[j];
+          dt = moment(ele.date).format("MM-DD-YYYY");
+          var now = moment().format("MM-DD-YYYY");
+          if (
+            moment(dt).isBetween(
+              weeklyRange[i].startDate,
+              weeklyRange[i].endDate,
+              undefined,
+              "[]"
+            ) &&
+            moment(now).isBetween(
+              weeklyRange[i].startDate,
+              weeklyRange[i].endDate,
+              undefined,
+              "[]"
+            )
+          ) {
+            nowWeekTransaction.push(ele);
+          }
+        }
+      }
+    }
+
+    console.log("nowWeekTransaction: ", nowWeekTransaction);
+  };
+
+  weekTest();
+
+  const pieData = {
+    labels: categoryName,
+    datasets: [
+      {
+        data: pieWeekData,
+        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#555555"],
+        hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#555555"],
+      },
+    ],
+    text: "123",
+  };
+
+  category.map((ele, idx) => (categoryName[idx] = ele.name));
+
+  for (var i = 0; i < categoryName.length; i++) {
+    pieWeekData[i] = {
+      temp: 0,
+      value: 0,
+    };
+  }
+
+  const temp: number[] = [categoryName.length];
+  for (i = 0; i < categoryName.length; i++) {
+    for (var j = 0; j < nowWeekTransaction.length; j++) {
+      if (categoryName[i] === nowWeekTransaction[j].category) {
+        pieWeekData[i].value =
+          pieWeekData[i].temp + nowWeekTransaction[j].amount;
+        pieWeekData[i].temp = pieWeekData[i].value;
+      }
+    }
+  }
+
+  return (
+    <div>
+      <Doughnut options={pieOptions} data={pieData} />
+    </div>
+  );
+};
+
+const DailyPieChartSection = () => {
+  const { transaction } = useContext(StateContext);
+  const { category } = useContext(StateContext);
+
+  const now = moment().format("MM-DD-YYYY");
+  console.log(now);
+
+  interface IData {
+    temp: number;
+    value: number;
+  }
+  const pieDayData: IData[] = [];
+  const categoryName: string[] = [];
+  const nowDayTransaction: ITransaction[] = [];
+
+  for (var i = 0, max = transaction.length; i < max; i++) {
+    const ele = transaction[i];
+    var dt = moment(ele.date).format("MM-DD-YYYY");
+    console.log(dt);
+    if (moment(dt).isSame(moment(now))) {
+      nowDayTransaction.push(ele);
+    }
+  }
+
+  const pieData = {
+    labels: categoryName,
+    datasets: [
+      {
+        data: pieDayData,
+        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#555555"],
+        hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#555555"],
+      },
+    ],
+    text: "123",
+  };
+
+  category.map((ele, idx) => (categoryName[idx] = ele.name));
+
+  for (i = 0; i < categoryName.length; i++) {
+    pieDayData[i] = {
+      temp: 0,
+      value: 0,
+    };
+  }
+  const temp: number[] = [categoryName.length];
+  for (i = 0; i < categoryName.length; i++) {
+    for (var j = 0; j < nowDayTransaction.length; j++) {
+      if (categoryName[i] === nowDayTransaction[j].category) {
+        pieDayData[i].value = pieDayData[i].temp + nowDayTransaction[j].amount;
+        pieDayData[i].temp = pieDayData[i].value;
+      }
+    }
+  }
   return (
     <div>
       <Doughnut options={pieOptions} data={pieData} />
@@ -448,9 +636,11 @@ export const SummaryTab: React.FC<TabPanelProps> = ({ value, index }) => {
       {value === index && (
         <>
           <BarChartSectionDay />
-          <BarChartSectionWeek />
+          <WeeklyBarChartSection />
           <BarChartSection />
-          <PieChartSection />
+          <MonthlyPieChartSection />
+          <WeeklyPieChartSection />
+          <DailyPieChartSection />
         </>
       )}
     </>
