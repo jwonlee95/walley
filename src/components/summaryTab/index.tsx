@@ -11,14 +11,10 @@ import {
   ArcElement,
 } from "chart.js";
 import { Bar, Doughnut, Chart } from "react-chartjs-2";
-import { useDispatch, useSelector } from "react-redux";
-import { StateContext, UserContext } from "contexts";
+import { StateContext } from "contexts";
 import { ITransaction } from "interfaces";
-import { reducerState } from "common/store";
+import "styles/components/_chart.scss";
 import moment from "moment";
-import { daysToWeeks } from "date-fns";
-import { Button } from "@mui/material";
-import { elementAcceptingRef } from "@mui/utils";
 
 const TabSectionHeading: React.FC<{ title: string }> = (props) => {
   return <div className="tab-section-heading">{props.title}</div>;
@@ -367,24 +363,24 @@ const pieOptions = {
   },
 };
 
-const plugins = [
-  {
-    beforeDraw: function (chart: ChartJS) {
-      var width = chart.width,
-        height = chart.height,
-        ctx = chart.ctx;
-      ctx.restore();
-      var fontSize = (height / 160).toFixed(2);
-      ctx.font = fontSize + "em sans-serif";
-      ctx.textBaseline = "top";
-      var text = "Foo-bar",
-        textX = Math.round((width - ctx.measureText(text).width) / 2),
-        textY = height / 2;
-      ctx.fillText(text, textX, textY);
-      ctx.save();
-    },
-  },
-];
+// const plugins = [
+//   {
+//     beforeDraw: function (chart: ChartJS) {
+//       var width = chart.width,
+//         height = chart.height,
+//         ctx = chart.ctx;
+//       ctx.restore();
+//       var fontSize = (height / 160).toFixed(2);
+//       ctx.font = fontSize + "em sans-serif";
+//       ctx.textBaseline = "top";
+//       var text = "Foo-bar",
+//         textX = Math.round((width - ctx.measureText(text).width) / 2),
+//         textY = height / 2;
+//       ctx.fillText(text, textX, textY);
+//       ctx.save();
+//     },
+//   },
+// ];
 
 // --------------------------------PIE CHART------------------------------------------------------------------------
 
@@ -432,7 +428,7 @@ const MonthlyPieChartSection = () => {
       value: 0,
     };
   }
-  const temp: number[] = [categoryName.length];
+
   for (i = 0; i < categoryName.length; i++) {
     for (var j = 0; j < nowMonthTransaction.length; j++) {
       if (categoryName[i] === nowMonthTransaction[j].category) {
@@ -443,8 +439,14 @@ const MonthlyPieChartSection = () => {
     }
   }
   return (
-    <div>
+    // <div>
+    //   <Doughnut options={pieOptions} data={pieData} />
+    // </div>
+    <div className="chartContainer">
       <Doughnut options={pieOptions} data={pieData} />
+      <div className="chartInner">
+        <div className="chartValue">$100,000</div>
+      </div>
     </div>
   );
 };
