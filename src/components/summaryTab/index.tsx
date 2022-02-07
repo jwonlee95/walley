@@ -11,14 +11,10 @@ import {
   ArcElement,
 } from "chart.js";
 import { Bar, Doughnut, Chart } from "react-chartjs-2";
-import { useDispatch, useSelector } from "react-redux";
-import { StateContext, UserContext } from "contexts";
+import { StateContext } from "contexts";
 import { ITransaction } from "interfaces";
-import { reducerState } from "common/store";
+import "styles/components/_chart.scss";
 import moment from "moment";
-import { daysToWeeks } from "date-fns";
-import { Button } from "@mui/material";
-import { elementAcceptingRef } from "@mui/utils";
 
 const TabSectionHeading: React.FC<{ title: string }> = (props) => {
   return <div className="tab-section-heading">{props.title}</div>;
@@ -54,12 +50,6 @@ const BarChartSection = () => {
   );
 
   var tempMonth = 0;
-
-  const now = moment().format("MM-DD-YYYY");
-  const nowYear = moment().year();
-  const nowMonth = moment().month();
-  const nowDay = moment().day(); //화요일: 2
-  const nowDate = moment().date(); //1일
 
   const monthData: number[] = [];
   const sixMonthData: number[] = [];
@@ -160,7 +150,6 @@ const WeeklyBarChartSection = () => {
 
     let nextMondayOfWeek = mondayOfWeek.clone().add(7, "day");
 
-    let count = 0;
     const weeklyRange: any[] = [];
     while (moment(mondayOfWeek).year() === moment(nextMondayOfWeek).year()) {
       const weekRange = {
@@ -266,17 +255,12 @@ const BarChartSectionDay = () => {
   );
 
   const now = moment().format("MM-DD-YYYY");
-  const nowq = moment().format("ll");
-  const nowYear = moment().year();
-  const nowMonth = moment().month();
   const yesterday = moment().subtract(1, "days").format("MM-DD-YYYY"); //화요일: 2
   const twoDaysBefore = moment().subtract(2, "days").format("MM-DD-YYYY");
   const threeDaysBefore = moment().subtract(3, "days").format("MM-DD-YYYY");
   const fourDaysBefore = moment().subtract(4, "days").format("MM-DD-YYYY");
   const fiveDaysBefore = moment().subtract(5, "days").format("MM-DD-YYYY");
   const sixDaysBefore = moment().subtract(6, "days").format("MM-DD-YYYY");
-
-  const nowDate = moment().date(); //1일
 
   const dayData: number[] = [];
 
@@ -367,25 +351,6 @@ const pieOptions = {
   },
 };
 
-const plugins = [
-  {
-    beforeDraw: function (chart: ChartJS) {
-      var width = chart.width,
-        height = chart.height,
-        ctx = chart.ctx;
-      ctx.restore();
-      var fontSize = (height / 160).toFixed(2);
-      ctx.font = fontSize + "em sans-serif";
-      ctx.textBaseline = "top";
-      var text = "Foo-bar",
-        textX = Math.round((width - ctx.measureText(text).width) / 2),
-        textY = height / 2;
-      ctx.fillText(text, textX, textY);
-      ctx.save();
-    },
-  },
-];
-
 // --------------------------------PIE CHART------------------------------------------------------------------------
 
 const MonthlyPieChartSection = () => {
@@ -394,9 +359,6 @@ const MonthlyPieChartSection = () => {
 
   const nowMonth = moment().month();
 
-  const sortedTransaction = transaction.sort((x, y) =>
-    y.date.toLocaleString().localeCompare(x.date.toLocaleString())
-  );
   interface IData {
     temp: number;
     value: number;
@@ -421,7 +383,6 @@ const MonthlyPieChartSection = () => {
         hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#555555"],
       },
     ],
-    text: "123",
   };
 
   category.map((ele, idx) => (categoryName[idx] = ele.name));
@@ -432,7 +393,7 @@ const MonthlyPieChartSection = () => {
       value: 0,
     };
   }
-  const temp: number[] = [categoryName.length];
+
   for (i = 0; i < categoryName.length; i++) {
     for (var j = 0; j < nowMonthTransaction.length; j++) {
       if (categoryName[i] === nowMonthTransaction[j].category) {
@@ -442,9 +403,23 @@ const MonthlyPieChartSection = () => {
       }
     }
   }
+
+  var totalValue = 0;
+  for (i = 0; i < pieMonthData.length; i++) {
+    totalValue += pieMonthData[i].value;
+  }
   return (
-    <div>
-      <Doughnut options={pieOptions} data={pieData} />
+    <div className="chartContainer">
+      {totalValue === 0 ? (
+        <div>No Spend Data</div>
+      ) : (
+        <div className="chartContainer">
+          <Doughnut options={pieOptions} data={pieData} />
+          <div className="chartInner">
+            <div className="chartValue">${totalValue}</div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -465,10 +440,6 @@ const WeeklyPieChartSection = () => {
   const categoryName: string[] = [];
   const nowWeekTransaction: ITransaction[] = [];
   let weekNumber = 0;
-  var tempWeek = 0;
-  const now = moment().format("MM-DD-YYYY");
-
-  const weekData: number[] = [];
 
   const weekTest = () => {
     let mondayOfWeek = moment().year(2022).month(0).date(1).day(8);
@@ -476,7 +447,6 @@ const WeeklyPieChartSection = () => {
 
     let nextMondayOfWeek = mondayOfWeek.clone().add(7, "day");
 
-    let count = 0;
     const weeklyRange: any[] = [];
     while (moment(mondayOfWeek).year() === moment(nextMondayOfWeek).year()) {
       const weekRange = {
@@ -551,8 +521,6 @@ const WeeklyPieChartSection = () => {
       value: 0,
     };
   }
-
-  const temp: number[] = [categoryName.length];
   for (i = 0; i < categoryName.length; i++) {
     for (var j = 0; j < nowWeekTransaction.length; j++) {
       if (categoryName[i] === nowWeekTransaction[j].category) {
@@ -563,9 +531,26 @@ const WeeklyPieChartSection = () => {
     }
   }
 
+  var totalValue = 0;
+  var empty = true;
+  for (i = 0; i < pieWeekData.length; i++) {
+    totalValue += pieWeekData[i].value;
+    if (totalValue !== 0) {
+      empty = false;
+    }
+  }
   return (
-    <div>
-      <Doughnut options={pieOptions} data={pieData} />
+    <div className="chartContainer">
+      {totalValue === 0 ? (
+        <div>No Spend Data</div>
+      ) : (
+        <div className="chartContainer">
+          <Doughnut options={pieOptions} data={pieData} />
+          <div className="chartInner">
+            <div className="chartValue">${totalValue}</div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -603,7 +588,6 @@ const DailyPieChartSection = () => {
         hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#555555"],
       },
     ],
-    text: "123",
   };
 
   category.map((ele, idx) => (categoryName[idx] = ele.name));
@@ -614,7 +598,7 @@ const DailyPieChartSection = () => {
       value: 0,
     };
   }
-  const temp: number[] = [categoryName.length];
+
   for (i = 0; i < categoryName.length; i++) {
     for (var j = 0; j < nowDayTransaction.length; j++) {
       if (categoryName[i] === nowDayTransaction[j].category) {
@@ -623,9 +607,22 @@ const DailyPieChartSection = () => {
       }
     }
   }
+  var totalValue = 0;
+  for (i = 0; i < pieDayData.length; i++) {
+    totalValue += pieDayData[i].value;
+  }
   return (
-    <div>
-      <Doughnut options={pieOptions} data={pieData} />
+    <div className="chartContainer">
+      {totalValue === 0 ? (
+        <div>No Spend Data</div>
+      ) : (
+        <div className="chartContainer">
+          <Doughnut options={pieOptions} data={pieData} />
+          <div className="chartInner">
+            <div className="chartValue">${totalValue}</div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
