@@ -15,6 +15,7 @@ import { StateContext } from "contexts";
 import { ITransaction } from "interfaces";
 import "styles/components/_chart.scss";
 import moment from "moment";
+import { Button } from "@mui/material";
 
 const TabSectionHeading: React.FC<{ title: string }> = (props) => {
   return <div className="tab-section-heading">{props.title}</div>;
@@ -628,16 +629,42 @@ const DailyPieChartSection = () => {
 };
 
 export const SummaryTab: React.FC<TabPanelProps> = ({ value, index }) => {
+  const [state, setState] = useState("monthly");
+
+  const handleDaily = () => {
+    setState("daily");
+  };
+  const handleWeekly = () => {
+    setState("weekly");
+  };
+  const handleMonthly = () => {
+    setState("monthly");
+  };
   return (
     <>
       {value === index && (
         <>
-          <BarChartSectionDay />
-          <WeeklyBarChartSection />
-          <BarChartSection />
-          <MonthlyPieChartSection />
-          <WeeklyPieChartSection />
-          <DailyPieChartSection />
+          <Button onClick={handleDaily}>Daily</Button>
+          <Button onClick={handleWeekly}>Weekly</Button>
+          <Button onClick={handleMonthly}>Monthly</Button>
+          {state === "monthly" && (
+            <>
+              <BarChartSection />
+              <MonthlyPieChartSection />
+            </>
+          )}
+          {state === "weekly" && (
+            <>
+              <WeeklyBarChartSection />
+              <WeeklyPieChartSection />
+            </>
+          )}
+          {state === "daily" && (
+            <>
+              <BarChartSectionDay />
+              <DailyPieChartSection />
+            </>
+          )}
         </>
       )}
     </>
