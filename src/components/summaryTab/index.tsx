@@ -45,6 +45,7 @@ const barOptions = {
 
 const BarChartSection = () => {
   const { transaction } = useContext(StateContext);
+  const [state, setState] = useState(0);
 
   const sortedTransaction = transaction.sort((x, y) =>
     y.date.toLocaleString().localeCompare(x.date.toLocaleString())
@@ -111,19 +112,23 @@ const BarChartSection = () => {
     ],
   };
   const handleLastMonth = () => {
+    handleDaily();
     nowMonthIndex = nowMonthIndex - 1;
     if (nowMonthIndex === 0) {
       nowMonthIndex = 11;
     }
-    return getSixData(nowMonthIndex);
+    getSixData(nowMonthIndex);
+    console.log("qqqqqqqqqqqq", getSixData(nowMonthIndex));
+  };
+  const handleDaily = () => {
+    setState(1);
   };
 
   return (
     <div>
-      <Bar options={barOptions} data={barDataMonth} />
-      <button id="0" type="button" onClick={handleLastMonth}>
-        Previous Month
-      </button>
+      <Button onClick={handleLastMonth}>Previous Month</Button>
+      {state === 0 && <Bar options={barOptions} data={barDataMonth} />}
+      {state === 1 && <Bar options={barOptions} data={barDataMonth} />}
     </div>
   );
 };
