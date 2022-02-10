@@ -118,7 +118,6 @@ const BarChartSection = () => {
       nowMonthIndex = 11;
     }
     getSixData(nowMonthIndex);
-    console.log("qqqqqqqqqqqq", getSixData(nowMonthIndex));
   };
   const handleDaily = () => {
     setState(1);
