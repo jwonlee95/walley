@@ -1,9 +1,16 @@
 import React, { useState } from "react";
 import { Card, Icon } from "@mui/material";
 import { PlusButton } from "components";
+import { ICategory } from "interfaces/category";
+import { CategoryDetailModal } from "components/categoryDetailModal";
 
 interface CategoryCardProps {
   empty: boolean;
+  category?: ICategory | undefined;
+  onClickCard?: (
+    e: React.MouseEvent<HTMLDivElement>,
+    card: ICategory | undefined
+  ) => void;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   icon?: string;
   name?: string;
@@ -14,6 +21,8 @@ interface CategoryCardProps {
 
 export const CategoryCard: React.FC<CategoryCardProps> = ({
   empty,
+  category,
+  onClickCard,
   onClick,
   icon,
   name,
@@ -22,9 +31,19 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
   color,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
+  const [selectedCategory, setSelectedCategory] = useState<
+    ICategory | undefined
+  >(undefined);
 
-  const handleClick = () => {
-    console.log("HELLO");
+  const handleClick = (
+    e: React.MouseEvent<HTMLDivElement>,
+    card: ICategory | undefined
+  ) => {
+    setSelectedCategory(card);
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
   };
   return empty ? (
     <Card
@@ -43,8 +62,13 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
       variant="outlined"
       className="card"
       sx={{ cursor: "pointer" }}
-      onClick={handleClick}
+      onClick={(e) => handleClick(e, category)}
     >
+      <CategoryDetailModal
+        open={open}
+        onClose={handleClose}
+        selectedCategory={selectedCategory}
+      />
       <div className="card-heading">
         <Icon className="icon" fontSize="medium" sx={{ color: color }}>
           {icon}
