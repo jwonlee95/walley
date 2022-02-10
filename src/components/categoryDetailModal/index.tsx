@@ -1,13 +1,16 @@
 import { Dialog } from "@mui/material";
+import { ICategory } from "interfaces/category";
 import React from "react";
 
 interface ICategoryDetailModalProps {
   open: boolean;
   onClose: () => void;
+  selectedCategory: ICategory | undefined;
 }
-export const CategoryDetailModal: React.FC<ICategoryDetailModalProps> = (
-  props
-) => {
+export const CategoryDetailModal: React.FC<ICategoryDetailModalProps> = ({
+  selectedCategory,
+  ...props
+}) => {
   return (
     <Dialog
       open={props.open}

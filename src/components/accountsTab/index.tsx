@@ -13,6 +13,8 @@ import {
 import { StateContext, UserContext } from "contexts";
 import moment from "moment";
 import { useDispatch } from "react-redux";
+import { CategoryDetailModal } from "components/categoryDetailModal";
+import { ICategory } from "interfaces/category";
 
 const TabSectionHeading: React.FC<{
   title: string;
@@ -30,15 +32,31 @@ const TabSectionHeading: React.FC<{
 const CategorySection = () => {
   const { category } = useContext(StateContext);
   const [open, setOpen] = useState<boolean>(false);
+  const [detailOpen, setDetailOpen] = useState<boolean>(false);
+  const [selectedCategory, setSelectedCategory] = useState<
+    ICategory | undefined
+  >(undefined);
 
   const handleAddClick = () => {
     setOpen(true);
   };
+  const handleCardClick = (category: ICategory | undefined) => {
+    setSelectedCategory(category);
+    setDetailOpen(true);
+  };
   const handleClose = () => {
     setOpen(false);
   };
+  const handleDetailClose = () => {
+    setDetailOpen(false);
+  };
   return (
     <div className="tab-wrapper">
+      {/* <CategoryDetailModal
+        open={detailOpen}
+        onClose={handleDetailClose}
+        selectedCategory={selectedCategory}
+      /> */}
       <CreateCategoryModal open={open} onClose={handleClose} />
       <TabSectionHeading title="Category" onClick={handleAddClick} />
       <div className="cards-wrapper">
@@ -55,6 +73,7 @@ const CategorySection = () => {
                 remain={ele.budget - ele.spent}
                 color={ele.color}
                 key={`${ele.name}-${idx}`}
+                onClickCard={(e) => handleCardClick(ele)}
               />
             );
           })
